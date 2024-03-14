@@ -40,49 +40,49 @@ export default function Navbar() {
             <Divider />
             <List component="nav">
                 <React.Fragment>
-                    <ListItemButton component={Link} href="/asset_type">
+                    <ListItemButton component={Link} href={process.env.NEXT_PUBLIC_ROOT_URL || "/"}>
                         <ListItemIcon>
                             <DashboardIcon />
                         </ListItemIcon>
                         <ListItemText primary="유형별 자산관리" />
                     </ListItemButton>
                     {/*  */}
-                    <ListItemButton component={Link} href="/asset_class">
+                    <ListItemButton component={Link} href={process.env.NEXT_PUBLIC_ASSET_CLASS_URL || "/"}>
                         <ListItemIcon>
                             <BarChartIcon />
                         </ListItemIcon>
                         <ListItemText primary="분류별 자산관리" />
                     </ListItemButton>
                     {/*  */}
-                    <ListItemButton component={Link} href="/">
+                    <ListItemButton component={Link} href={process.env.NEXT_PUBLIC_ASSET_TRANSACTION_URL || "/"}>
                         <ListItemIcon>
                             <PriceCheckIcon />
                         </ListItemIcon>
                         <ListItemText primary="자산거래 기록" />
                     </ListItemButton>
                     {/*  */}
-                    <ListItemButton component={Link} href="/">
+                    <ListItemButton component={Link} href={process.env.NEXT_PUBLIC_DIVIDEND_URL || "/"}>
                         <ListItemIcon>
                             <PaymentsIcon />
                         </ListItemIcon>
                         <ListItemText primary="확정배당금 기록" />
                     </ListItemButton>
                     {/*  */}
-                    <ListItemButton component={Link} href="/">
+                    <ListItemButton component={Link} href={process.env.NEXT_PUBLIC_CASH_FLOW_URL || "/"}>
                         <ListItemIcon>
                             <CurrencyExchangeIcon />
                         </ListItemIcon>
                         <ListItemText primary="현금흐름 기록" />
                     </ListItemButton>
                     {/*  */}
-                    <ListItemButton component={Link} href="/">
+                    <ListItemButton component={Link} href={process.env.NEXT_PUBLIC_ASSET_EARNING_URL || "/"}>
                         <ListItemIcon>
                             <SavingsIcon />
                         </ListItemIcon>
                         <ListItemText primary="자산수익 기록" />
                     </ListItemButton>
                     {/*  */}
-                    <ListItemButton component={Link} href="/">
+                    <ListItemButton component={Link} href={process.env.NEXT_PUBLIC_SPENDING_URL || "/"}>
                         <ListItemIcon>
                             <CreditScoreIcon />
                         </ListItemIcon>
