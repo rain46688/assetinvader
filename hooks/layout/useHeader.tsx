@@ -1,4 +1,3 @@
-import { setCookie, getCookie, deleteCookie } from "@/utils/cookie";
 import { useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { sendPost } from "@/utils/fetch";
@@ -25,7 +24,7 @@ export const useHeader = () => {
             const result = await sendPost(data, 'member/refresh');
             if (result.status == 'success') {
                 // 재발급이가능한 경우
-                setCookie("jtoken", result.data.jtoken, 5);
+                sessionStorage.setItem('jtoken', result.data.jtoken);
             } else {
                 // 재발급이 불가능하면 그냥 메인으로 이동
                 userouter.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
@@ -33,7 +32,7 @@ export const useHeader = () => {
         }
 
         // 토큰이 없으면 로그인 페이지로 이동
-        const jtoken = getCookie("jtoken");
+        const jtoken = sessionStorage.getItem('jtoken');
         if (jtoken == null) {
             const user_id = sessionStorage.getItem('user_id');
             if (user_id != null) {
@@ -49,8 +48,8 @@ export const useHeader = () => {
     // 로그 아웃 함수
     const handleLogout = () => {
         console.log(" === handleLogout === ");
-        // 쿠키 삭제
-        deleteCookie("jtoken");
+        // token 삭제
+        sessionStorage.removeItem('jtoken');
         // 세션 스토리지 삭제
         sessionStorage.removeItem('id');
         sessionStorage.removeItem('user_id');

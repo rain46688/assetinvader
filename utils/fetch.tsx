@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getCookie } from './cookie';
 
 /**
  * sendPost 함수 : POST 요청을 보내는 함수
@@ -12,7 +11,7 @@ export function sendPost(data: string, url: string): Promise<any> {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${getCookie('jtoken')}`
+            Authorization: `Bearer ${sessionStorage.getItem('jtoken')}`
         },
         data: data,
     };
@@ -42,7 +41,7 @@ export function sendPost(data: string, url: string): Promise<any> {
 export function sendGet(url: string): Promise<any> {
     const options = {
         headers: {
-            Authorization: `Bearer ${getCookie('jtoken')}`
+            Authorization: `Bearer ${sessionStorage.getItem('jtoken')}`
         },
     };
 
@@ -74,7 +73,7 @@ export function sendPut(data: string, url: string): Promise<any> {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${getCookie('jtoken')}`
+            Authorization: `Bearer ${sessionStorage.getItem('jtoken')}`
         },
         data: data,
     };
@@ -105,7 +104,7 @@ export function sendDelete(url: string): Promise<any> {
     const options = {
         method: 'DELETE',
         headers: {
-            Authorization: `Bearer ${getCookie('jtoken')}`
+            Authorization: `Bearer ${sessionStorage.getItem('jtoken')}`
         },
     };
 
