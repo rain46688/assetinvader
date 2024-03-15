@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { sendPost } from "@/utils/fetch";
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { setOpened } from '@/redux/layout/layoutSlice';
+import { isExpirationJwtoken } from '@/utils/util';
 
 // material-ui 관련 임포트
 import { styled } from '@mui/material/styles';
@@ -33,7 +34,7 @@ export const useHeader = () => {
 
         // 토큰이 없으면 로그인 페이지로 이동
         const jtoken = sessionStorage.getItem('jtoken');
-        if (jtoken == null) {
+        if (isExpirationJwtoken(''+jtoken)) {
             const user_id = sessionStorage.getItem('user_id');
             if (user_id != null) {
                 // 토큰 재발급 함수 호출
