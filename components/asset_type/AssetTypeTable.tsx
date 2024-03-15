@@ -112,6 +112,10 @@ export default function AssetTypeTable() {
                                         onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'amount')}
                                         onBlur={(event) => handleDataBlur(event, row.id, 'amount')} />
                                     </TableCell>
+                                    <TableCell align="center"><Input value={row.earning_rate || 0}
+                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'earning_rate')}
+                                        onBlur={(event) => handleDataBlur(event, row.id, 'earning_rate')} />
+                                    </TableCell>
                                     <TableCell align="center">{row.reg_date}</TableCell>
                                 </TableRow>
                             );

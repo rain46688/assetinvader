@@ -24,7 +24,7 @@ export const useAssetType = () => {
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
-    const rows = useAppSelector(state => state.assetReducer);
+    const rows = useAppSelector(state => state.assetTypeReducer);
 
     // 데이터 가져오기
     useEffect(() => {

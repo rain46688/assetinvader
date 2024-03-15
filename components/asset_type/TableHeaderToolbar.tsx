@@ -28,7 +28,7 @@ interface EnhancedTableToolbarProps {
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected, selected, setSelected, setPage, rowsPerPage } = props;
   const dispatch = useAppDispatch();
-  const list = useAppSelector(state => state.assetReducer); // Redux 상태에서 필요한 데이터 읽어오기
+  const list = useAppSelector(state => state.assetTypeReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
   // 항목 추가
   const handleAddList = async () => {
@@ -121,7 +121,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="h6"
           id="tableTitle"
           component="div">
-          AssetTypeList
+          유형별 자산관리
         </Typography>
       )}
       {numSelected > 0 ? (
