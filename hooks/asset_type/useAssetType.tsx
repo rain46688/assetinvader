@@ -89,6 +89,7 @@ export const useAssetType = () => {
         event: MouseEvent<unknown>,
         property: keyof AssetTypeData,
     ) => {
+        console.log(" ==== handleRequestSort ==== ");
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);

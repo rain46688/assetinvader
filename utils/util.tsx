@@ -95,7 +95,7 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
         // 정규식 없음
         default:
             console.log(" === 정규식 없음 === ");
-            result = false;
+            result = true;
             break;
     }
     return result;
