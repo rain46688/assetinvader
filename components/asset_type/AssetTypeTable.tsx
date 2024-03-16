@@ -16,7 +16,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
-import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
 
 export default function AssetTypeTable() {
 
@@ -30,6 +30,7 @@ export default function AssetTypeTable() {
         emptyRows,
         page,
         rowsPerPage,
+        validationList,
         setPage,
         isSelected,
         handleSelectAllClick,
@@ -43,7 +44,7 @@ export default function AssetTypeTable() {
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage}/>
+            <EnhancedTableToolbar numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage} />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
@@ -72,8 +73,8 @@ export default function AssetTypeTable() {
                                     tabIndex={-1}
                                     key={row.id}
                                     selected={isItemSelected}
-                                    sx={{ cursor: 'pointer' }}
-                                >
+                                    sx={{ cursor: 'pointer' }}>
+                                    {/*  */}
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             color="primary"
@@ -83,6 +84,7 @@ export default function AssetTypeTable() {
                                             }}
                                         />
                                     </TableCell>
+                                    {/*  */}
                                     <TableCell
                                         component="th"
                                         id={labelId}
@@ -91,8 +93,8 @@ export default function AssetTypeTable() {
                                         align="center">
                                         <NativeSelect
                                             value={row.asset_type}
-                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_type')}
-                                            onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, 'asset_type')}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_type')}
+                                            onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, index, 'asset_type')}
                                             style={{ width: '150px', border: 'none' }}
                                             inputProps={{ 'aria-label': 'Without label' }}>
                                             <option value={'투자'}>투자</option>
@@ -100,23 +102,51 @@ export default function AssetTypeTable() {
                                             <option value={'예적금'}>예적금</option>
                                         </NativeSelect>
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.asset_acnt || ''}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_acnt')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'asset_acnt')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={validationList[index].asset_acnt ? "한글 영문 입력" : ''}
+                                            error={validationList[index].asset_acnt} 
+                                            value={row.asset_acnt || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.asset_name || ''}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_name')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'asset_name')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={validationList[index].asset_name ? "한글 영문 입력" : ''}
+                                            error={validationList[index].asset_name} 
+                                            value={row.asset_name || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.amount || 0}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'amount')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'amount')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={validationList[index].amount ? "숫자 입력" : ''}
+                                            error={validationList[index].amount} 
+                                            value={row.amount || 0}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.earning_rate || 0}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'earning_rate')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'earning_rate')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={validationList[index].earning_rate ? "소수 2자리 숫자 입력" : ''}
+                                            error={validationList[index].earning_rate} 
+                                            value={row.earning_rate || 0}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'earning_rate')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'earning_rate')} />
                                     </TableCell>
-                                    <TableCell align="center">{row.reg_date}</TableCell>
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        {row.reg_date}
+                                    </TableCell>
+                                    {/*  */}
                                 </TableRow>
                             );
                         })}

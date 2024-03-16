@@ -47,3 +47,56 @@ export const refresh_jwtoken = async () => {
             return { 'status': 'fail' }
         });
 }
+
+/**
+ * validationCheck 함수 : 유효성 검사 함수
+ * @param {string} value - 입력값
+ * @param {string} field - 필드명
+ * @param {any} fieldDataType - 필드 데이터 타입
+ * @param {any} fieldData - 필드 데이터
+ * @returns {boolean} - 유효성 검사 결과
+ */
+export const validationCheck = (value: string, field: string, fieldDataType: any, fieldData: any) => {
+    console.log(" ==== validationCheck ==== ");
+    // 유효성 검사 타입
+    let result = false;
+
+    switch (fieldDataType[field]) {
+        // 문자만 입력
+        case "string":
+            if (/^[가-힣a-zA-Z\s]*$/.test(value)) {
+                fieldData[field] = false;
+                result = true;
+            } else {
+                fieldData[field] = true;
+                result = false;
+            }
+            break;
+        // 숫자만 입력
+        case "number":
+            if (/^[0-9]*$/.test(value)) {
+                fieldData[field] = false;
+                result = true;
+            } else {
+                fieldData[field] = true;
+                result = false;
+            }
+            break;
+        // 소수점 2자리까지 입력
+        case "double":
+            if (/^\d+(\.\d{1,2})?$/.test(value)) {
+                fieldData[field] = false;
+                result = true;
+            } else {
+                fieldData[field] = true;
+                result = false;
+            }
+            break;
+        // 정규식 없음
+        default:
+            console.log(" === 정규식 없음 === ");
+            result = false;
+            break;
+    }
+    return result;
+}

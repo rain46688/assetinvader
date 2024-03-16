@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet, sendPut } from "@/utils/fetch";
 import { formatDate } from "@/utils/format";
-import { AssetTypeData, createData } from "@/redux/asset_type/AssetType";
+import { AssetTypeData, AssetTypeValidation, createData } from "@/redux/asset_type/AssetType";
 import { Order, getComparator, stableSort } from '@/utils/sort';
+import { validationCheck } from '@/utils/util';
 
 // redux 관련 임포트
 import { setAssetTypeList } from '@/redux/asset_type/assetTypeSlice';
@@ -21,6 +22,10 @@ export const useAssetType = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     // 이전 데이터 저장
     const [previousData, setPreviousData] = useState('');
+    // 유효성 검사 리스트
+    const [validationList, setValidationList] = useState<AssetTypeValidation[]>([]);
+    // 유효성 검사 성공 여부
+    const [validation, setValidation] = useState(false);
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -31,11 +36,24 @@ export const useAssetType = () => {
         const getList = async (id: string) => {
             const res = await sendGet('/asset/getlist_asset_type/' + id);
             if (res.status === 'success') {
+                // 유효성 검사 리스트
+                const valList: AssetTypeValidation[] = [];
+                // 데이터 저장
                 const list = res.data;
                 // 데이터 변환
-                const newList = list.map((item: AssetTypeData) =>
+                const newList = list.map((item: AssetTypeData, index: number) => {
+
+                    // 유효성 검사 리스트에 저장
+                    valList.push({
+                        id: index,
+                        asset_acnt: false,
+                        asset_name: false,
+                        amount: false,
+                        earning_rate: false
+                    });
+
                     // 타입 변환 필요
-                    createData(
+                    return createData(
                         item.id,
                         item.member_id,
                         item.asset_type,
@@ -49,7 +67,10 @@ export const useAssetType = () => {
                         formatDate(item.mod_date),
                         item.use_flag
                     )
+                }
                 );
+                // 유효성 검사 리스트 저장
+                setValidationList(valList);
                 // 데이터 저장
                 dispatch(setAssetTypeList(newList));
             } else {
@@ -85,7 +106,6 @@ export const useAssetType = () => {
 
     // 데이터 선택 관련 함수
     const handleClick = (event: MouseEvent<unknown>, id: number) => {
-        console.log(" ==== handleClick ==== ");
         const selectcheck = (event.target as HTMLInputElement).value;
 
         // 체크박스가 아닌 곳을 클릭했을 때
@@ -141,11 +161,27 @@ export const useAssetType = () => {
     );
 
     // 데이터 변경 함수
-    const handleDataChange = (event: ChangeEvent<any>, id: number, field: string) => {
+    const handleDataChange = (event: ChangeEvent<any>, id: number, index: number, field: string) => {
         console.log(" ==== handleChange ==== ");
         const updatedRows = rows.map(item => {
             if (item.id === id) {
-                console.log((item as any)[field] + " -> " + event.target.value);
+
+                // 입력한 값
+                const value = event.target.value;
+
+                // 유효성 검사 타입
+                const fieldDataType = {
+                    asset_acnt: "string",
+                    asset_name: "string",
+                    amount: "number",
+                    earning_rate: "double"
+                }
+
+                // 유효성 검사
+                const result = validationCheck(value, field, fieldDataType, (validationList[index] as any));
+                setValidation(result);
+
+                // 이전 데이터 저장
                 setPreviousData((item as any)[field]);
                 return {
                     ...item,
@@ -160,14 +196,23 @@ export const useAssetType = () => {
     };
 
     // 데이터 변경 함수
-    const handleDataBlur = async (event: ChangeEvent<any>, id: number, field: string) => {
+    const handleDataBlur = async (event: ChangeEvent<any>, id: number, index: number, field: string) => {
         console.log(" ==== handleDataBlur ==== ");
-        // list에서 해당 아이디에 매칭되는 데이터를 뽑아옴
-        const item = rows.find(item => item.id === id);
         // 이전 데이터와 현재 데이터가 같다면 return
         if (previousData === "") {
+            console.log(" === 데이터 동일 === ");
             return;
         }
+
+        // 유효성 검사
+        if (validation == false) {
+            // 유효성 검사 실패시 return
+            console.log(" === 유효성 검사 실패 === ");
+            return;
+        }
+
+        // list에서 해당 아이디에 매칭되는 데이터를 뽑아옴
+        const item = rows.find(item => item.id === id);
         const data = JSON.stringify({
             "asset_type": item?.asset_type,
             "asset_name": item?.asset_name,
@@ -194,6 +239,7 @@ export const useAssetType = () => {
         emptyRows,
         page,
         rowsPerPage,
+        validationList,
         setPage,
         isSelected,
         handleSelectAllClick,
