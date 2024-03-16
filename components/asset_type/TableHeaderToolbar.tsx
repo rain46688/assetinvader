@@ -2,6 +2,7 @@ import * as React from 'react';
 import { sendPost, sendDelete } from '@/utils/fetch';
 import { formatDate } from '@/utils/format';
 import { createData } from '@/redux/asset_type/AssetType';
+import { AssetTypeData } from '@/redux/asset_type/AssetType';
 
 // redux 관련 임포트
 import { setAssetTypeList } from '@/redux/asset_type/assetTypeSlice';
@@ -16,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -23,21 +25,22 @@ interface EnhancedTableToolbarProps {
   setSelected: React.Dispatch<React.SetStateAction<readonly number[]>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
+  setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
+  setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetTypeData>>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage } = props;
+  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTypeReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
   // 항목 추가
   const handleAddList = async () => {
     console.log('=== handleAddList === ');
-    console.log("list : ", list);
     const id = sessionStorage.getItem('id');
     const data = JSON.stringify({
       "member_id": id,
-      "asset_type": "",
+      "asset_type": "투자",
       "asset_big_class": "",
       "asset_mid_class": "",
       "asset_acnt": "",
@@ -67,8 +70,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       ];
       // 추가 시에 마지막 페이지로 이동
       const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-      console.log("movePage : ", movePage);
       setPage(movePage);
+      setOrder('asc');
+      setOrderBy('id');
       dispatch(setAssetTypeList(newList));
     } else {
       console.log("fail");
@@ -78,8 +82,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 선택된 항목 삭제
   const handleDeleteList = async () => {
     console.log('=== handleDeleteList === ');
-    console.log("selected : ", selected);
-
     selected.forEach(async (id) => {
       const result = await sendDelete('asset/delete_asset/' + id);
       if (result.status === 'success') {
@@ -87,13 +89,22 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         setSelected([]);
         // 삭제 시에 마지막 페이지로 이동
         const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-        console.log("movePage : ", movePage);
         setPage(movePage);
+        setOrder('asc');
+        setOrderBy('id');
         dispatch(setAssetTypeList(newList));
       } else {
         console.log("fail");
       }
     });
+  };
+
+  // 목록 새로고침
+  const handleRefreshList = () => {
+    console.log('=== handleRefreshList === ');
+    setOrder('asc');
+    setOrderBy('id');
+    setPage(0);
   };
 
   return (
@@ -124,6 +135,11 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           유형별 자산관리
         </Typography>
       )}
+      <Tooltip title="Refresh">
+        <IconButton aria-label="refresh" onClick={handleRefreshList}>
+          <RefreshIcon />
+        </IconButton>
+      </Tooltip>
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={handleDeleteList}>

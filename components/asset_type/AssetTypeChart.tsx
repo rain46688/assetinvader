@@ -1,11 +1,16 @@
 "use client"
 
-import Paper from '@mui/material/Paper';
-import { PieChart } from '@mui/x-charts/PieChart';
 import { useState, useEffect } from 'react';
 import { sendGet } from '@/utils/fetch';
+
+// material-ui 관련 임포트
+import Paper from '@mui/material/Paper';
+import { PieChart } from '@mui/x-charts/PieChart';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function AssetTypeChart() {
 
@@ -49,11 +54,13 @@ export default function AssetTypeChart() {
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
-            <IconButton aria-label="delete" onClick={handleRefreshClick}>
-                <RefreshIcon />
-            </IconButton>
-            <PieChart
-                series={[
+            <Tooltip title="Refresh">
+                <IconButton aria-label="refresh" onClick={handleRefreshClick}>
+                    <RefreshIcon />
+                </IconButton>
+            </Tooltip>
+            {chartData.length > 0 ? (
+                <PieChart series={[
                     {
                         data: chartData,
                         innerRadius: 30,
@@ -64,9 +71,18 @@ export default function AssetTypeChart() {
                         highlightScope: { faded: 'global', highlighted: 'item' },
                         faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                     },
-                ]}
-                height={300}
-            />
+                ]} height={300} />
+            ) : (
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '8vh',
+                }}>
+                    <Typography variant="h5" component="h3" align="center">
+                        {'데이터가 없습니다.'}
+                    </Typography>
+                </Box>
+            )}
         </Paper>
     );
 }

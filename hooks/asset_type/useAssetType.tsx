@@ -241,6 +241,8 @@ export const useAssetType = () => {
         page,
         rowsPerPage,
         validationList,
+        setOrder,
+        setOrderBy,
         setPage,
         isSelected,
         handleSelectAllClick,

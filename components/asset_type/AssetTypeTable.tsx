@@ -31,6 +31,8 @@ export default function AssetTypeTable() {
         page,
         rowsPerPage,
         validationList,
+        setOrder,
+        setOrderBy,
         setPage,
         isSelected,
         handleSelectAllClick,
@@ -44,13 +46,13 @@ export default function AssetTypeTable() {
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage} />
+            <EnhancedTableToolbar numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage} setOrder={setOrder} setOrderBy={setOrderBy}/>
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
                     size='small' // 테이블 사이즈 middle / small
-                >
+                    >
                     <EnhancedTableHead
                         numSelected={selected.length}
                         order={order}
