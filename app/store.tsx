@@ -6,6 +6,7 @@ import userReducer from '@/redux/user/userSlice';
 import layoutReducer from '@/redux/layout/layoutSlice';
 import assetReducer from '@/redux/asset_type/assetTypeSlice';
 import assetClassReducer from '@/redux/asset_class/assetClassSlice';
+import assetTypeReducer from '@/redux/asset_type/assetTypeSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     layoutReducer,
     assetReducer,
     assetClassReducer,
+    assetTypeReducer,
   },
 });
 

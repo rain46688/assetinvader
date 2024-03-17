@@ -1,3 +1,5 @@
+
+// 타입 정의
 export interface AssetTypeData {
     id: number;
     member_id: number;
@@ -13,6 +15,16 @@ export interface AssetTypeData {
     use_flag: number;
 }
 
+// 유효성 검사 타입 정의
+export interface AssetTypeValidation {
+    id: number;
+    asset_acnt: boolean;
+    asset_name: boolean;
+    amount: boolean;
+    earning_rate: boolean;
+}
+
+// 데이터 생성 함수
 export function createData(
     id: number,
     member_id: number,

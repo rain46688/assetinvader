@@ -12,23 +12,27 @@ interface HeadCell {
 const headCells: readonly HeadCell[] = [
     {
         id: 'asset_type',
-        label: 'AssetType',
+        label: '자산 유형',
     },
     {
         id: 'asset_acnt',
-        label: 'AssetAcnt',
+        label: '자산 계좌 이름',
     },
     {
         id: 'asset_name',
-        label: 'AssetName',
+        label: '자산 이름',
     },
     {
         id: 'amount',
-        label: 'Amount',
+        label: '자산 금액(원)',
+    },
+    {
+        id: 'earning_rate',
+        label: '연 수익률(%)',
     },
     {
         id: 'reg_date',
-        label: 'RegDate',
+        label: '등록일',
     },
 ];
 
@@ -39,12 +43,12 @@ interface EnhancedTableProps {
     order: Order;
     orderBy: string;
     rowCount: number;
-}
+    }
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property: keyof AssetTypeData) => (event: MouseEvent<unknown>) => {
-        onRequestSort(event, property);
+                onRequestSort(event, property);
     };
 
     return (

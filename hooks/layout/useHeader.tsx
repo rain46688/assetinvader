@@ -1,49 +1,27 @@
 import { useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import { sendPost } from "@/utils/fetch";
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { setOpened } from '@/redux/layout/layoutSlice';
-import { isExpirationJwtoken } from '@/utils/util';
+import { refresh_jwtoken } from '@/utils/util';
 
 // material-ui 관련 임포트
 import { styled } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
 export const useHeader = () => {
-    
     const userouter = useRouter();
     const dispatch = useAppDispatch();
     const isopened = useAppSelector(state => state.layoutReducer.isopened);
 
     useEffect(() => {
-        // 토큰 재발급 함수
-        const refresh_jwtoken = async (user_id: string) => {
-            const data = JSON.stringify({
-                "user_id": user_id
-            });
-
-            const result = await sendPost(data, 'member/refresh');
-            if (result.status == 'success') {
-                // 재발급이가능한 경우
-                sessionStorage.setItem('jtoken', result.data.jtoken);
-            } else {
-                // 재발급이 불가능하면 그냥 메인으로 이동
-                userouter.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
+        // 토큰 재발급 함수 호출
+        refresh_jwtoken().then((res) => {
+            if (res !== undefined && res.status === 'fail') {
+                console.log(" === 로그아웃 처리 === ");
+                // 로그아웃 처리
+                handleLogout();
             }
-        }
-
-        // 토큰이 없으면 로그인 페이지로 이동
-        const jtoken = sessionStorage.getItem('jtoken');
-        if (isExpirationJwtoken(''+jtoken)) {
-            const user_id = sessionStorage.getItem('user_id');
-            if (user_id != null) {
-                // 토큰 재발급 함수 호출
-                refresh_jwtoken(user_id);
-            } else {
-                console.log("user_id 없음");
-                userouter.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
-            }
-        }
+        });
     }, []);
 
     // 로그 아웃 함수

@@ -8,16 +8,32 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 // 로크인 컴포넌트
 export default function Login() {
 
     // custom hook 사용
-    const { handleLogin, dispatch, user_id, password } = useLogin();
+    const { handleLogin, dispatch, user_id, password, idVaild, passwordVaild, snack, snackMessage, handleSnackClose } = useLogin();
 
     return (
-        // ThemeProvider dark theme 적용 해줘
         <Container component="main" maxWidth="xs">
+            {/* 스낵바 설정 */}
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={snack}
+                autoHideDuration={5000}
+                onClose={handleSnackClose}>
+                <Alert
+                    onClose={handleSnackClose}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: '100%' }}>
+                    {snackMessage}
+                </Alert>
+            </Snackbar>
+            {/*  */}
             <Typography component="h1" variant="h5" align="center">
                 Login
             </Typography>
@@ -33,6 +49,8 @@ export default function Login() {
                     autoComplete="id"
                     autoFocus
                     onChange={(event) => dispatch(setUser({ user_id: event.target.value, password }))}
+                    error={idVaild}
+                    helperText={idVaild ? "아이디를 제대로 입력해주세요." : ""}
                 />
                 <TextField
                     margin="normal"
@@ -45,6 +63,8 @@ export default function Login() {
                     id="password"
                     autoComplete="current-password"
                     onChange={(event) => dispatch(setUser({ user_id, password: event.target.value }))}
+                    error={passwordVaild}
+                    helperText={passwordVaild ? "비밀번호를 제대로 입력해주세요." : ""}
                 />
                 <Button
                     type="submit"
