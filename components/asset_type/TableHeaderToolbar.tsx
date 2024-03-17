@@ -72,7 +72,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
       setPage(movePage);
       setOrder('asc');
-      setOrderBy('id');
+      setOrderBy('asset_type');
       dispatch(setAssetTypeList(newList));
     } else {
       console.log("fail");
@@ -91,7 +91,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
         setPage(movePage);
         setOrder('asc');
-        setOrderBy('id');
+        setOrderBy('asset_type');
         dispatch(setAssetTypeList(newList));
       } else {
         console.log("fail");
@@ -103,7 +103,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
     setOrder('asc');
-    setOrderBy('id');
+    setOrderBy('asset_type');
     setPage(0);
   };
 

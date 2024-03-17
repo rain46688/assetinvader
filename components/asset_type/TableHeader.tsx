@@ -43,12 +43,12 @@ interface EnhancedTableProps {
     order: Order;
     orderBy: string;
     rowCount: number;
-}
+    }
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property: keyof AssetTypeData) => (event: MouseEvent<unknown>) => {
-        onRequestSort(event, property);
+                onRequestSort(event, property);
     };
 
     return (

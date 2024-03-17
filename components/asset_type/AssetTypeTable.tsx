@@ -46,21 +46,28 @@ export default function AssetTypeTable() {
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage} setOrder={setOrder} setOrderBy={setOrderBy}/>
+            {/* 툴바 props */}
+            <EnhancedTableToolbar
+                numSelected={selected.length}
+                selected={selected}
+                setSelected={setSelected}
+                setPage={setPage}
+                rowsPerPage={rowsPerPage}
+                setOrder={setOrder}
+                setOrderBy={setOrderBy} />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
-                    size='small' // 테이블 사이즈 middle / small
-                    >
+                    size='small'>
+                    {/* 헤더 props */}
                     <EnhancedTableHead
                         numSelected={selected.length}
                         order={order}
                         orderBy={orderBy}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={rows.length}
-                    />
+                        rowCount={rows.length} />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
@@ -109,7 +116,7 @@ export default function AssetTypeTable() {
                                         <TextField
                                             variant="standard"
                                             helperText={validationList[index].asset_acnt ? "한글 영문 입력" : ''}
-                                            error={validationList[index].asset_acnt} 
+                                            error={validationList[index].asset_acnt}
                                             value={row.asset_acnt || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
@@ -119,7 +126,7 @@ export default function AssetTypeTable() {
                                         <TextField
                                             variant="standard"
                                             helperText={validationList[index].asset_name ? "한글 영문 입력" : ''}
-                                            error={validationList[index].asset_name} 
+                                            error={validationList[index].asset_name}
                                             value={row.asset_name || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
@@ -129,7 +136,7 @@ export default function AssetTypeTable() {
                                         <TextField
                                             variant="standard"
                                             helperText={validationList[index].amount ? "숫자 입력" : ''}
-                                            error={validationList[index].amount} 
+                                            error={validationList[index].amount}
                                             value={row.amount || 0}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
@@ -139,7 +146,7 @@ export default function AssetTypeTable() {
                                         <TextField
                                             variant="standard"
                                             helperText={validationList[index].earning_rate ? "소수 2자리 숫자 입력" : ''}
-                                            error={validationList[index].earning_rate} 
+                                            error={validationList[index].earning_rate}
                                             value={row.earning_rate || 0}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'earning_rate')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'earning_rate')} />

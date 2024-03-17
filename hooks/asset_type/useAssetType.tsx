@@ -13,7 +13,7 @@ export const useAssetType = () => {
     // 정렬 ASC / DESC 관련
     const [order, setOrder] = useState<Order>('asc');
     // 정렬 기준 관련
-    const [orderBy, setOrderBy] = useState<keyof AssetTypeData>('id');
+    const [orderBy, setOrderBy] = useState<keyof AssetTypeData>('asset_type');
     // 데이터 선택 관련
     const [selected, setSelected] = useState<readonly number[]>([]);
     // 페이지 관련
@@ -89,7 +89,6 @@ export const useAssetType = () => {
         event: MouseEvent<unknown>,
         property: keyof AssetTypeData,
     ) => {
-        console.log(" ==== handleRequestSort ==== ");
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -111,6 +110,8 @@ export const useAssetType = () => {
 
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
+            setOrder('asc');
+            setOrderBy('asset_type');
             return;
         }
 
@@ -134,7 +135,6 @@ export const useAssetType = () => {
 
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
-        console.log(" ==== handleChangePage ==== ");
         setPage(newPage);
     };
 
@@ -152,14 +152,17 @@ export const useAssetType = () => {
 
     // 화면에 뿌려질 데이터
     // useMemo는 특정 값이 변경될 때만 함수를 실행하고 그렇지 않으면 이전 값을 재사용  
-    const visibleRows = useMemo(
-        () =>
-            stableSort(rows, getComparator(order, orderBy)).slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage,
-            ),
-        [order, orderBy, page, rowsPerPage, rows],
-    );
+    const visibleRows = useMemo(() => {
+        console.log(" ==== useMemo ==== ");
+        let sortedRows: any[] = [];
+        sortedRows = stableSort(rows, getComparator(order, orderBy));
+        const slicedRows = sortedRows.slice(
+            page * rowsPerPage,
+            page * rowsPerPage + rowsPerPage,
+        );
+
+        return slicedRows;
+    }, [order, orderBy, page, rowsPerPage, rows]);
 
     // 데이터 변경 함수
     const handleDataChange = (event: ChangeEvent<any>, id: number, index: number, field: string) => {

@@ -62,9 +62,9 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
     let result = false;
 
     switch (fieldDataType[field]) {
-        // 문자만 입력
+        // 한글, 영문, 숫자, 공백, 일부 특수문자만 입력
         case "string":
-            if (/^[가-힣a-zA-Z\s]*$/.test(value)) {
+            if (/^[가-힣a-zA-Z0-9\s{}[\]()-_/&]*$/.test(value)) {
                 fieldData[field] = false;
                 result = true;
             } else {
