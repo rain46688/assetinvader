@@ -127,8 +127,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index].asset_acnt ? "한글 영문 입력" : ''}
-                                            error={validationList[index].asset_acnt}
+                                            helperText={validationList[index]?.asset_acnt ? "한글 영문 입력" : ''}
+                                            error={validationList[index]?.asset_acnt}
                                             value={row.asset_acnt || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
@@ -137,8 +137,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index].asset_name ? "한글 영문 입력" : ''}
-                                            error={validationList[index].asset_name}
+                                            helperText={validationList[index]?.asset_name ? "한글 영문 입력" : ''}
+                                            error={validationList[index]?.asset_name}
                                             value={row.asset_name || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
@@ -147,8 +147,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index].amount ? "숫자 입력" : ''}
-                                            error={validationList[index].amount}
+                                            helperText={validationList[index]?.amount ? "숫자 입력" : ''}
+                                            error={validationList[index]?.amount}
                                             value={row.amount || 0}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
@@ -157,8 +157,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index].earning_rate ? "소수 2자리 숫자 입력" : ''}
-                                            error={validationList[index].earning_rate}
+                                            helperText={validationList[index]?.earning_rate ? "소수 2자리 숫자 입력" : ''}
+                                            error={validationList[index]?.earning_rate}
                                             value={row.earning_rate || 0}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'earning_rate')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'earning_rate')} />
