@@ -242,13 +242,13 @@ export const useAssetType = () => {
         }
     };
 
+    // 스낵바 닫기 함수
     const handleSnackClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
-    
         setSnack(false);
-      };
+    };
 
     // 함수 반환
     return {
