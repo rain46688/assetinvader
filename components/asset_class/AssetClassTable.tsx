@@ -5,6 +5,7 @@ import { useAssetClass } from '@/hooks/asset_class/useAssetClass';
 import { ChangeEvent } from 'react';
 import { EnhancedTableHead } from "@/components/asset_class/TableHeader";
 import { EnhancedTableToolbar } from "@/components/asset_class/TableHeaderToolbar";
+import AssetMidClass from './AssetMidClass';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -103,9 +104,8 @@ export default function AssetClassTable() {
                                             <option value={'현금자산'}>현금자산</option>
                                         </NativeSelect>
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.asset_mid_class || ''}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_mid_class')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'asset_mid_class')} />
+                                    <TableCell align="center">
+                                        <AssetMidClass/>
                                     </TableCell>
                                     <TableCell align="center"><Input value={row.asset_acnt || ''}
                                         onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_acnt')}
