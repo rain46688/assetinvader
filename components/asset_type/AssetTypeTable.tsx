@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 
 export default function AssetTypeTable() {
 
@@ -31,6 +32,8 @@ export default function AssetTypeTable() {
         page,
         rowsPerPage,
         validationList,
+        snack,
+        snackMessage,
         setOrder,
         setOrderBy,
         setPage,
@@ -41,11 +44,20 @@ export default function AssetTypeTable() {
         handleDataChange,
         handleDataBlur,
         handleChangePage,
-        handleChangeRowsPerPage
+        handleChangeRowsPerPage,
+        handleSnackClose,
     } = useAssetType();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
+            {/* 스낵바 설정 */}
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                autoHideDuration={5000}
+                open={snack}
+                message={snackMessage}
+                onClose={handleSnackClose}
+            />
             {/* 툴바 props */}
             <EnhancedTableToolbar
                 numSelected={selected.length}

@@ -26,6 +26,10 @@ export const useAssetType = () => {
     const [validationList, setValidationList] = useState<AssetTypeValidation[]>([]);
     // 유효성 검사 성공 여부
     const [validation, setValidation] = useState(false);
+    // 스낵바 관련
+    const [snack, setSnack] = useState(false);
+    // 스낵바 메시지 관련
+    const [snackMessage, setSnackMessage] = useState('');
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -110,8 +114,13 @@ export const useAssetType = () => {
 
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
-            setOrder('asc');
-            setOrderBy('asset_type');
+            if (orderBy !== 'asset_type' || order !== 'asc') {
+                console.log(" === 수정시 정렬 초기화 === ");
+                setSnack(true);
+                setSnackMessage('수정 작업시 정렬이 초기화 됩니다.');
+                setOrder('asc');
+                setOrderBy('asset_type');
+            }
             return;
         }
 
@@ -233,6 +242,14 @@ export const useAssetType = () => {
         }
     };
 
+    const handleSnackClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setSnack(false);
+      };
+
     // 함수 반환
     return {
         selected, setSelected,
@@ -244,6 +261,8 @@ export const useAssetType = () => {
         page,
         rowsPerPage,
         validationList,
+        snack,
+        snackMessage,
         setOrder,
         setOrderBy,
         setPage,
@@ -255,5 +274,6 @@ export const useAssetType = () => {
         handleDataBlur,
         handleChangePage,
         handleChangeRowsPerPage,
+        handleSnackClose,
     };
 }
