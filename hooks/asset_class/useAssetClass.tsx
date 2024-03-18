@@ -145,11 +145,12 @@ export const useAssetClass = () => {
         console.log(" ==== handleChange ==== ");
         const updatedRows = rows.map(item => {
             if (item.id === id) {
-                console.log((item as any)[field] + " -> " + event.target.value);
+                const changeValue = event.target.nodeName === 'SELECT' ? event.target.value : event.target.textContent.split('"')[1];
+                console.log((item as any)[field] + " -> " + changeValue);
                 setPreviousData((item as any)[field]);
                 return {
                     ...item,
-                    [field]: event.target.value
+                    [field]: changeValue
                 };
             }
             return item;

@@ -18,8 +18,6 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import Input from '@mui/material/Input';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 
 export default function AssetClassTable() {
 
@@ -105,7 +103,7 @@ export default function AssetClassTable() {
                                         </NativeSelect>
                                     </TableCell>
                                     <TableCell align="center">
-                                        <AssetMidClass/>
+                                        <AssetMidClass row_id={row.id} row_value={row.asset_mid_class || ''}/>
                                     </TableCell>
                                     <TableCell align="center"><Input value={row.asset_acnt || ''}
                                         onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_acnt')}
