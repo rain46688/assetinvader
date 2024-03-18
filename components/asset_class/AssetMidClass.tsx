@@ -3,7 +3,9 @@ import TextField from "@mui/material/TextField";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useAssetClass } from "@/hooks/asset_class/useAssetClass";
-import { ChangeEvent } from 'react';
+import { ChangeEvent } from "react";
+import { sendGet } from "@/utils/fetch";
+import { AssetClassData } from "@/redux/asset_class/AssetClass";
 
 interface mid_class_name {
   inputValue?: string;
@@ -35,9 +37,9 @@ export default function AssetMidClass(props: AssetMidClassProps) {
   const [value, setValue] = React.useState<mid_class_name | null>(null);
 
   React.useEffect(() => {
-      setValue({
-        name: row_value,
-      });
+    setValue({
+      name: row_value,
+    });
   }, []);
 
   React.useEffect(() => {
@@ -51,6 +53,28 @@ export default function AssetMidClass(props: AssetMidClassProps) {
       await sleep(1e3); // For demo purposes.
 
       if (active) {
+        // 세션 스토리지에 저장된 id값 가져오기
+        const id = sessionStorage.getItem("id");
+        const res = await sendGet("/asset/getlist_asset_class/" + id);
+        let mid_class_names: any = [];
+        if (res.status === "success") {
+          const list = res.data;
+          // 데이터 변환
+          mid_class_names = list.map((item: AssetClassData) => ({
+            name: item.asset_mid_class,
+          }));
+
+          // 중복된 name 값을 제거하기 위해 Set을 활용
+          const uniqueNames = Array.from(
+            new Set(mid_class_names.map((item: mid_class_name) => item.name))
+          );
+
+          // 중복 제거된 name 값을 기반으로 중복 제거된 객체 배열 생성
+          mid_class_names = uniqueNames.map((name) => ({ name }));
+          console.log("mid_class_names : ", mid_class_names);
+        } else {
+          mid_class_names = [{ name: "값 없음" }];
+        }
         setOptions([...mid_class_names]);
       }
     })();
@@ -96,7 +120,9 @@ export default function AssetMidClass(props: AssetMidClassProps) {
         }
         handleDataChange(event, row_id, "asset_mid_class");
       }}
-      onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row_id, 'asset_mid_class')}
+      onBlur={(event: ChangeEvent<any>) =>
+        handleDataBlur(event, row_id, "asset_mid_class")
+      }
       filterOptions={(options, params) => {
         const filtered = filter(options, params);
         const { inputValue } = params;
@@ -110,9 +136,9 @@ export default function AssetMidClass(props: AssetMidClassProps) {
         }
         return filtered;
       }}
-    //   selectOnFocus
-    //   clearOnBlur
-    //   handleHomeEndKeys
+      //   selectOnFocus
+      //   clearOnBlur
+      //   handleHomeEndKeys
       getOptionLabel={(option) => {
         // Value selected with enter, right from the input
         if (typeof option === "string") {
@@ -149,9 +175,3 @@ export default function AssetMidClass(props: AssetMidClassProps) {
     />
   );
 }
-
-const mid_class_names = [
-  { name: "중분류1" },
-  { name: "중분류2" },
-  { name: "중분류3" },
-];
