@@ -5,12 +5,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import userReducer from '@/redux/user/userSlice';
 import layoutReducer from '@/redux/layout/layoutSlice';
 import assetTypeReducer from '@/redux/asset_type/assetTypeSlice';
+import assetTransactionReducer from '@/redux/asset_transaction/assetTransactionSlice';
 
 export const store = configureStore({
   reducer: {
     userReducer,
     layoutReducer,
     assetTypeReducer,
+    assetTransactionReducer,
   },
 });
 
