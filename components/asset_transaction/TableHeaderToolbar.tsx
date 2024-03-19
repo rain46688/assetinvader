@@ -40,9 +40,9 @@ interface EnhancedTableToolbarProps {
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy, 
-  validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus } = props;
-  
+  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
+    validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus } = props;
+
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTransactionReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -131,6 +131,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     if (validation == false) {
       // 유효성 검사 실패시 return
       console.log(" === 유효성 검사 실패 === ");
+      setSnack(true);
+      setSnackMessage("데이터 입력 필요.");
+      setSnackBarStatus("warning");
       return;
     }
 

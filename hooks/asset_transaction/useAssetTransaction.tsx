@@ -174,6 +174,7 @@ export const useAssetTransaction = () => {
         } else {
             sortedRows = stableSort(rows, getComparator(order, orderBy));
         }
+        // 항목 추가시에 맨뒤에 빈 항목이 추가 안되면 주석 해제
 
         const slicedRows = sortedRows.slice(
             page * rowsPerPage,
