@@ -39,27 +39,33 @@ interface EnhancedTableProps {
     order: Order;
     orderBy: string;
     rowCount: number;
-    }
+    addStatus: boolean;
+}
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, addStatus } = props;
     const createSortHandler = (property: keyof AssetTransactionData) => (event: MouseEvent<unknown>) => {
-                onRequestSort(event, property);
+        onRequestSort(event, property);
     };
 
     return (
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
+                    {!addStatus ? (
+                        <Checkbox
+                            color="primary"
+                            indeterminate={numSelected > 0 && numSelected < rowCount}
+                            checked={rowCount > 0 && numSelected === rowCount}
+                            onChange={onSelectAllClick}
+                            inputProps={{
+                                'aria-label': 'select all desserts',
+                            }}
+                        />
+                    ) : (
+                        <></>
+                    )}
+
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell

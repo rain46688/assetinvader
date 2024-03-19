@@ -3,6 +3,7 @@ import { sendPost, sendDelete } from '@/utils/fetch';
 import { formatDate } from '@/utils/format';
 import { createData } from '@/redux/asset_transaction/AssetTransaction';
 import { AssetTransactionData } from '@/redux/asset_transaction/AssetTransaction';
+import { AssetTransactionValidation } from '@/redux/asset_transaction/AssetTransaction';
 
 // redux 관련 임포트
 import { setAssetTransactionList } from '@/redux/asset_transaction/assetTransactionSlice';
@@ -18,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import CheckIcon from '@mui/icons-material/Check';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -27,84 +29,106 @@ interface EnhancedTableToolbarProps {
   rowsPerPage: number;
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
   setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetTransactionData>>;
+  validationList: AssetTransactionValidation[];
+  setValidationList: React.Dispatch<React.SetStateAction<AssetTransactionValidation[]>>;
+  addStatus: boolean;
+  setAddStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  validation: boolean;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy } = props;
+  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy, validationList, setValidationList, addStatus, setAddStatus, validation } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTransactionReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
   // 항목 추가
   const handleAddList = async () => {
     console.log('=== handleAddList === ');
-    const id = sessionStorage.getItem('id');
-    const data = JSON.stringify({
-      "member_id": id,
-      "asset_type": "투자",
-      "asset_big_class": "",
-      "asset_mid_class": "",
-      "asset_acnt": "",
-      "asset_name": "",
-      "amount": 0,
-      "earning_rate": 0,
+
+    // 추가 버튼 클릭 시 addStatus 변경
+    if (addStatus == false) {
+      setAddStatus(true);
+    }
+
+    const newList = [
+      ...list,
+      createData(
+        0,
+        "",
+        "",
+        "",
+        0,
+        ""
+      )
+    ];
+
+    validationList.push({
+      id: list.length,
+      asset_name: true,
+      asset_acnt: true,
+      trns_type: true,
+      amount: true,
+      trns_date: true
     });
-    const result = await sendPost(data, 'asset/add_asset');
-    // if (result.status === 'success') {
-    //   const data = result.data;
-    //   const newList = [
-    //     ...list,
-    //     createData(
-    //       data.id,
-    //       data.member_id,
-    //       data.asset_type,
-    //       data.asset_big_class,
-    //       data.asset_mid_class,
-    //       data.asset_acnt,
-    //       data.asset_name,
-    //       data.amount,
-    //       data.earning_rate,
-    //       formatDate(new Date() + ''),
-    //       formatDate(new Date() + ''),
-    //       1
-    //     )
-    //   ];
-    //   // 추가 시에 마지막 페이지로 이동
-    //   const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-    //   setPage(movePage);
-    //   setOrder('asc');
-    //   setOrderBy('asset_type');
-    //   // dispatch(setAssetTransactionList(newList));
-    // } else {
-    //   console.log("fail");
-    // }
+
+    setValidationList(validationList);
+
+    // 추가 시에 마지막 페이지로 이동
+    const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
+    setPage(movePage);
+    setOrder('desc');
+    setOrderBy('id');
+    dispatch(setAssetTransactionList(newList));
   };
 
   // 선택된 항목 삭제
   const handleDeleteList = async () => {
     console.log('=== handleDeleteList === ');
-    selected.forEach(async (id) => {
-      const result = await sendDelete('asset/delete_asset/' + id);
-      if (result.status === 'success') {
-        const newList = list.filter((item) => !selected.includes(item.id));
-        setSelected([]);
-        // 삭제 시에 마지막 페이지로 이동
-        const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-        setPage(movePage);
-        setOrder('asc');
-        // setOrderBy('asset_type');
-        // dispatch(setAssetTransactionList(newList));
-      } else {
-        console.log("fail");
-      }
-    });
+    // selected.forEach(async (id) => {
+    //   const result = await sendDelete('asset/delete_asset/' + id);
+    //   if (result.status === 'success') {
+    //     const newList = list.filter((item) => !selected.includes(item.id));
+    //     setSelected([]);
+    //     // 삭제 시에 마지막 페이지로 이동
+    //     const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
+    //     setPage(movePage);
+    //     // setOrder('asc');
+    //     // setOrderBy('asset_type');
+    //     // dispatch(setAssetTransactionList(newList));
+    //   } else {
+    //     console.log("fail");
+    //   }
+    // });
   };
 
   // 목록 새로고침
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
-    setOrder('asc');
-    // setOrderBy('asset_type');
+    setOrder('desc');
+    setOrderBy('trns_date');
     setPage(0);
+  };
+
+  // 추가 완료
+  const handleCompleteList = () => {
+    console.log('=== handleCompleteList === ');
+    const new_data = list[list.length - 1];
+
+    // 유효성 검사
+    if (validation == false) {
+      // 유효성 검사 실패시 return
+      console.log(" === 유효성 검사 실패 === ");
+      return;
+    }
+
+    console.log(" === 유효성 검사 통과 === ");
+    console.log(new_data);
+
+    
+
+
+
+    // setAddStatus(false);
   };
 
   return (
@@ -135,11 +159,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           자산거래 기록
         </Typography>
       )}
-      <Tooltip title="Refresh">
-        <IconButton aria-label="refresh" onClick={handleRefreshList}>
-          <RefreshIcon />
-        </IconButton>
-      </Tooltip>
+
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={handleDeleteList}>
@@ -147,11 +167,28 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Add">
-          <IconButton onClick={handleAddList}>
-            <AddIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+          {!addStatus ? (
+            <>
+              <Tooltip title="Refresh">
+                <IconButton aria-label="refresh" onClick={handleRefreshList}>
+                  <RefreshIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Add">
+                <IconButton onClick={handleAddList}>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <Tooltip title="Complete">
+              <IconButton onClick={handleCompleteList}>
+                <CheckIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </>
       )}
     </Toolbar>
   );

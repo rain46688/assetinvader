@@ -19,6 +19,7 @@ import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Typography from '@mui/material/Typography';
 
 export default function AsetTransactionTable() {
 
@@ -32,9 +33,13 @@ export default function AsetTransactionTable() {
         emptyRows,
         page,
         rowsPerPage,
-        // validationList,
+        validationList,
         snack,
         snackMessage,
+        addStatus,
+        validation,
+        setAddStatus,
+        setValidationList,
         setOrder,
         setOrderBy,
         setPage,
@@ -67,7 +72,13 @@ export default function AsetTransactionTable() {
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
-                setOrderBy={setOrderBy} />
+                setOrderBy={setOrderBy}
+                validationList={validationList}
+                setValidationList={setValidationList}
+                addStatus={addStatus}
+                setAddStatus={setAddStatus}
+                validation={validation}
+            />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
@@ -80,7 +91,8 @@ export default function AsetTransactionTable() {
                         orderBy={orderBy}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={rows.length} />
+                        rowCount={rows.length}
+                        addStatus={addStatus} />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
@@ -98,13 +110,17 @@ export default function AsetTransactionTable() {
                                     sx={{ cursor: 'pointer' }}>
                                     {/*  */}
                                     <TableCell padding="checkbox">
-                                        <Checkbox
-                                            color="primary"
-                                            checked={isItemSelected}
-                                            inputProps={{
-                                                'aria-labelledby': labelId,
-                                            }}
-                                        />
+                                        {!addStatus ? (
+                                            <Checkbox
+                                                color="primary"
+                                                checked={isItemSelected}
+                                                inputProps={{
+                                                    'aria-labelledby': labelId,
+                                                }}
+                                            />
+                                        ) : (
+                                            <></>
+                                        )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell
@@ -113,53 +129,78 @@ export default function AsetTransactionTable() {
                                         scope="center"
                                         padding="none"
                                         align="center">
-                                        <TextField
-                                            variant="standard"
-                                            // helperText={validationList[index]?.asset_acnt ? "한글 영문 입력" : ''}
-                                            // error={validationList[index]?.asset_acnt}
-                                            value={row.asset_name || ''}
-                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
-                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
+                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                            <TextField
+                                                variant="standard"
+                                                value={row.asset_name || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
+                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
+                                        ) : (
+                                            <Typography variant="body1" align="center">
+                                                {row.asset_name || ''}
+                                            </Typography>
+                                        )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        <TextField
-                                            variant="standard"
-                                            // helperText={validationList[index]?.asset_acnt ? "한글 영문 입력" : ''}
-                                            // error={validationList[index]?.asset_acnt}
-                                            value={row.asset_acnt || ''}
-                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
-                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
+                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                            <TextField
+                                                disabled={true}
+                                                variant="standard"
+                                                value={row.asset_acnt || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
+                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
+                                        ) : (
+                                            <Typography variant="body1" align="center">
+                                                {row.asset_acnt || ''}
+                                            </Typography>
+                                        )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        <TextField
-                                            variant="standard"
-                                            // helperText={validationList[index]?.asset_name ? "한글 영문 입력" : ''}
-                                            // error={validationList[index]?.asset_name}
-                                            value={row.trns_type || ''}
-                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
-                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
+                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                            <TextField
+                                                variant="standard"
+                                                value={row.trns_type || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
+                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'trns_type')} />
+                                        ) : (
+                                            <Typography variant="body1" align="center">
+                                                {row.trns_type || ''}
+                                            </Typography>
+                                        )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        <TextField
-                                            variant="standard"
-                                            // helperText={validationList[index]?.amount ? "숫자 입력" : ''}
-                                            // error={validationList[index]?.amount}
-                                            value={row.amount || 0}
-                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
-                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
+                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                            <TextField
+                                                variant="standard"
+                                                helperText={validationList[index]?.amount ? "숫자 입력" : ''}
+                                                error={validationList[index]?.amount}
+                                                value={row.amount || 0}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
+                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
+                                        ) : (
+                                            <Typography variant="body1" align="center">
+                                                {row.amount || ''}
+                                            </Typography>
+                                        )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        <TextField
-                                            variant="standard"
-                                            // helperText={validationList[index]?.earning_rate ? "소수 2자리 숫자 입력" : ''}
-                                            // error={validationList[index]?.earning_rate}
-                                            value={row.trns_date || ''}
-                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'earning_rate')}
-                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'earning_rate')} />
+                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                            <TextField
+                                                variant="standard"
+                                                helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
+                                                error={validationList[index]?.trns_date}
+                                                value={row.trns_date || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_date')}
+                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'trns_date')} />
+                                        ) : (
+                                            <Typography variant="body1" align="center">
+                                                {row.trns_date || ''}
+                                            </Typography>
+                                        )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
@@ -173,8 +214,7 @@ export default function AsetTransactionTable() {
                             <TableRow
                                 style={{
                                     height: 33 * emptyRows, // 테이블 사이즈 middle : 53 / small : 33
-                                }}
-                            >
+                                }}>
                                 <TableCell colSpan={6} />
                             </TableRow>
                         )}
