@@ -1,12 +1,10 @@
 "use client"
 
-
 import * as React from 'react';
 import { useAssetTransaction } from '@/hooks/asset_transaction/useAssetTransaction';
 import { ChangeEvent } from 'react';
 import { EnhancedTableHead } from "@/components/asset_transaction/TableHeader";
 import { EnhancedTableToolbar } from "@/components/asset_transaction/TableHeaderToolbar";
-import { AssetName } from '@/redux/asset_transaction/AssetTransaction';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -19,21 +17,21 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import { AlertColor } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import dayjs, { Dayjs } from 'dayjs';
+// 스낵바 관련 임포트
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { AlertColor } from '@mui/material';
+
+// 날짜 관련 임포트
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 
 export default function AsetTransactionTable() {
-
-    // const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
 
     // custom hook 사용
     const {
@@ -66,7 +64,6 @@ export default function AsetTransactionTable() {
         handleRequestSort,
         handleClick,
         handleDataChange,
-        handleDataBlur,
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
@@ -179,7 +176,7 @@ export default function AsetTransactionTable() {
                                                 variant="standard"
                                                 value={row.asset_acnt || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
-                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
+                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
                                                 {row.asset_acnt || ''}
@@ -192,7 +189,6 @@ export default function AsetTransactionTable() {
                                             <NativeSelect
                                                 value={row.trns_type}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
-                                                onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, index, 'trns_type')}
                                                 style={{ width: '150px', border: 'none' }}
                                                 inputProps={{ 'aria-label': 'Without label' }}>
                                                 <option value={'매수'}>매수</option>
@@ -213,7 +209,7 @@ export default function AsetTransactionTable() {
                                                 error={validationList[index]?.amount}
                                                 value={row.amount || 0}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
-                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
+                                            />
                                         ) : (
                                             <Typography variant="body1" align="center">
                                                 {row.amount || ''}

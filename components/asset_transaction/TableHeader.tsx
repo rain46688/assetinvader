@@ -1,8 +1,10 @@
 import { ChangeEvent, MouseEvent } from 'react';
 import { visuallyHidden } from '@mui/utils';
-import { Box, Checkbox, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 import { Order } from '@/utils/sort';
 import { AssetTransactionData } from "@/redux/asset_transaction/AssetTransaction";
+
+// material-ui 관련 임포트
+import { Box, Checkbox, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 
 interface HeadCell {
     id: keyof AssetTransactionData;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
-import { sendGet, sendPut } from "@/utils/fetch";
+import { sendGet } from "@/utils/fetch";
 import { formatDateV3 } from "@/utils/format";
 import { AssetTransactionData, AssetTransactionValidation, AssetName, createData } from "@/redux/asset_transaction/AssetTransaction";
 import { Order, getComparator, stableSort } from '@/utils/sort';
@@ -8,7 +8,6 @@ import { validationCheck } from '@/utils/util';
 // redux 관련 임포트
 import { setAssetTransactionList } from '@/redux/asset_transaction/assetTransactionSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { format } from 'path';
 
 export const useAssetTransaction = () => {
     // 정렬 ASC / DESC 관련
@@ -125,13 +124,6 @@ export const useAssetTransaction = () => {
 
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
-            // if (orderBy !== 'asset_type' || order !== 'asc') {
-            //     console.log(" === 수정시 정렬 초기화 === ");
-            //     setSnack(true);
-            //     setSnackMessage('수정 작업시 정렬이 초기화 됩니다.');
-            //     setOrder('asc');
-            //     setOrderBy('asset_type');
-            // }
             return;
         }
 
@@ -176,10 +168,9 @@ export const useAssetTransaction = () => {
         console.log(" ==== useMemo ==== ");
         let sortedRows: any[] = [];
 
+        // 추가 상태일 때 정렬하지 않음
         if (addStatus) {
             sortedRows = rows;
-            // setSnack(true);
-            // setSnackMessage('추가 작업 중 정렬은 불가능합니다.');
         } else {
             sortedRows = stableSort(rows, getComparator(order, orderBy));
         }
@@ -247,39 +238,6 @@ export const useAssetTransaction = () => {
         });
         dispatch(setAssetTransactionList(updatedRows));
     };
-    // 데이터 변경 함수
-    const handleDataBlur = async (event: ChangeEvent<any>, id: number, index: number, field: string) => {
-        console.log(" ==== handleDataBlur ==== ");
-        // 이전 데이터와 현재 데이터가 같다면 return
-        if (previousData === "") {
-            console.log(" === 데이터 동일 === ");
-            return;
-        }
-
-        // // 유효성 검사
-        // if (validation == false) {
-        //     // 유효성 검사 실패시 return
-        //     console.log(" === 유효성 검사 실패 === ");
-        //     return;
-        // }
-
-        // list에서 해당 아이디에 매칭되는 데이터를 뽑아옴
-        // const item = rows.find(item => item.id === id);
-        // const data = JSON.stringify({
-        //     "asset_type": item?.asset_type,
-        //     "asset_name": item?.asset_name,
-        //     "amount": item?.amount,
-        //     "asset_acnt": item?.asset_acnt,
-        //     "earning_rate": item?.earning_rate
-        // });
-
-        // const result = await sendPut(data, 'asset/update_asset/' + id);
-        // if (result.status === 'success') {
-        //     console.log("수정 성공");
-        // } else {
-        //     console.log("수정 실패");
-        // }
-    };
 
     // 스낵바 닫기 함수
     const handleSnackClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -320,7 +278,6 @@ export const useAssetTransaction = () => {
         handleRequestSort,
         handleClick,
         handleDataChange,
-        handleDataBlur,
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
