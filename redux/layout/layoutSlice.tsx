@@ -7,7 +7,7 @@ type LayoutState = {
 
 // 초기 상태 정의
 const initialState: LayoutState = {
-    isopened: false,
+    isopened: true,
 };
 
 // createSlice를 이용한 slice 생성

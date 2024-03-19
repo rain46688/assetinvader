@@ -20,6 +20,8 @@ import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { AlertColor } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -28,7 +30,6 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
-
 
 export default function AsetTransactionTable() {
 
@@ -50,6 +51,10 @@ export default function AsetTransactionTable() {
         addStatus,
         validation,
         selectData,
+        snackBarStatus,
+        setSnackBarStatus,
+        setSnack,
+        setSnackMessage,
         handleDataAssetNameChange,
         setAddStatus,
         setValidationList,
@@ -72,11 +77,17 @@ export default function AsetTransactionTable() {
             {/* 스낵바 설정 */}
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                autoHideDuration={5000}
                 open={snack}
-                message={snackMessage}
-                onClose={handleSnackClose}
-            />
+                autoHideDuration={5000}
+                onClose={handleSnackClose}>
+                <Alert
+                    onClose={handleSnackClose}
+                    severity={snackBarStatus as AlertColor}
+                    variant="filled"
+                    sx={{ width: '100%' }}>
+                    {snackMessage}
+                </Alert>
+            </Snackbar>
             {/* 툴바 props */}
             <EnhancedTableToolbar
                 numSelected={selected.length}
@@ -91,6 +102,9 @@ export default function AsetTransactionTable() {
                 addStatus={addStatus}
                 setAddStatus={setAddStatus}
                 validation={validation}
+                setSnack={setSnack}
+                setSnackMessage={setSnackMessage}
+                setSnackBarStatus={setSnackBarStatus}
             />
             <TableContainer>
                 <Table
@@ -213,6 +227,7 @@ export default function AsetTransactionTable() {
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
                                                         variant="standard"
+                                                        format="YYYY-MM"
                                                         helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
                                                         onChange={(event: any) => handleDataChange(event, row.id, index, 'trns_date')}
                                                         value={row.trns_date}

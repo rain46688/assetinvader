@@ -34,10 +34,13 @@ interface EnhancedTableToolbarProps {
   addStatus: boolean;
   setAddStatus: React.Dispatch<React.SetStateAction<boolean>>;
   validation: boolean;
+  setSnack: React.Dispatch<React.SetStateAction<boolean>>;
+  setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
+  setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy, validationList, setValidationList, addStatus, setAddStatus, validation } = props;
+  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy, validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTransactionReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -56,7 +59,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         0,
         "",
         "",
-        "",
+        "매수",
         0,
         ""
       )
@@ -110,9 +113,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   };
 
   // 추가 완료
-  const handleCompleteList = () => {
+  const handleCompleteList = async () => {
     console.log('=== handleCompleteList === ');
-    const new_data = list[list.length - 1];
+    const new_data = { ...list[list.length - 1] };
 
     // 유효성 검사
     if (validation == false) {
@@ -122,16 +125,33 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     }
 
     // 아무것도 없는 경우에는 맨위에 보여지는 매수 값으로 설정
-    if(new_data.trns_type === ""){
+    if (new_data.trns_type === "") {
       new_data.trns_type = "매수";
     }
     console.log(new_data);
 
+    // 서버에 데이터 추가
+    const data = JSON.stringify({
+      "asset_id": (new_data as any).asset_id,
+      "trns_type": new_data.trns_type,
+      "amount": new_data.amount,
+      "cash_amount": 0,
+      "trns_date": new_data.trns_date
+    });
 
-
-
-
-    // setAddStatus(false);
+    console.log(data);
+    const result = await sendPost(data, 'assettransaction/add_assettransaction');
+    if (result.status === 'success') {
+      setSnack(true);
+      setSnackMessage("데이터 추가 완료.");
+      setSnackBarStatus("success");
+      setAddStatus(false);
+    } else {
+      console.log("fail");
+      setSnack(true);
+      setSnackMessage("데이터 추가 실패.");
+      setSnackBarStatus("error");
+    }
   };
 
   return (

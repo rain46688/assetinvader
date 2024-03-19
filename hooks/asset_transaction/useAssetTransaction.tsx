@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet, sendPut } from "@/utils/fetch";
-import { formatDate, formatDateV2 } from "@/utils/format";
+import { formatDateV3 } from "@/utils/format";
 import { AssetTransactionData, AssetTransactionValidation, AssetName, createData } from "@/redux/asset_transaction/AssetTransaction";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
@@ -31,6 +31,8 @@ export const useAssetTransaction = () => {
     const [snack, setSnack] = useState(false);
     // 스낵바 메시지 관련
     const [snackMessage, setSnackMessage] = useState('');
+    // 스낵바 상태 관련
+    const [snackBarStatus, setSnackBarStatus] = useState("success");
     // 데이터 추가 상태 관련
     const [addStatus, setAddStatus] = useState(false);
     // 거래 내역 선택 데이터
@@ -78,7 +80,7 @@ export const useAssetTransaction = () => {
                         (item as any).asset.asset_acnt,
                         item.trns_type,
                         item.amount,
-                        formatDateV2(item.trns_date),
+                        formatDateV3(item.trns_date),
                     )
                 }
                 );
@@ -198,12 +200,12 @@ export const useAssetTransaction = () => {
             if (item.id === id) {
 
                 // 입력한 값
-                const value = event.target === undefined ? formatDateV2(event.$d) : event.target.value;
+                const value = event.target === undefined ? formatDateV3(event.$d) : event.target.value;
                 console.log(value);
 
                 // 유효성 검사 타입
                 const fieldDataType = {
-                    amount: "double8",
+                    amount: "double2",
                     trns_date: "date",
                 }
 
@@ -225,6 +227,7 @@ export const useAssetTransaction = () => {
         dispatch(setAssetTransactionList(updatedRows));
     };
 
+    // 거래 내역 이름 변경 함수
     const handleDataAssetNameChange = (event: ChangeEvent<any>, id: number, index: number, field: string, newValue: AssetName) => {
         console.log(" ==== handleDataAssetNameChange ==== ");
         console.log(newValue);
@@ -236,7 +239,8 @@ export const useAssetTransaction = () => {
                 return {
                     ...item,
                     asset_name: newValue.label,
-                    asset_acnt: newValue.asset_acnt
+                    asset_acnt: newValue.asset_acnt,
+                    asset_id: newValue.id
                 };
             }
             return item;
@@ -301,6 +305,10 @@ export const useAssetTransaction = () => {
         addStatus,
         validation,
         selectData,
+        snackBarStatus,
+        setSnackBarStatus,
+        setSnack,
+        setSnackMessage,
         handleDataAssetNameChange,
         setAddStatus,
         setValidationList,
