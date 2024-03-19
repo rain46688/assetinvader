@@ -6,6 +6,7 @@ import { useAssetTransaction } from '@/hooks/asset_transaction/useAssetTransacti
 import { ChangeEvent } from 'react';
 import { EnhancedTableHead } from "@/components/asset_transaction/TableHeader";
 import { EnhancedTableToolbar } from "@/components/asset_transaction/TableHeaderToolbar";
+import { AssetName } from '@/redux/asset_transaction/AssetTransaction';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -18,10 +19,20 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import Typography from '@mui/material/Typography';
+import Autocomplete from '@mui/material/Autocomplete';
+
+import dayjs, { Dayjs } from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
+
 
 export default function AsetTransactionTable() {
+
+    // const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
 
     // custom hook 사용
     const {
@@ -38,6 +49,8 @@ export default function AsetTransactionTable() {
         snackMessage,
         addStatus,
         validation,
+        selectData,
+        handleDataAssetNameChange,
         setAddStatus,
         setValidationList,
         setOrder,
@@ -130,11 +143,14 @@ export default function AsetTransactionTable() {
                                         padding="none"
                                         align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                variant="standard"
-                                                value={row.asset_name || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
-                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
+                                            <Autocomplete
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                options={selectData}
+                                                getOptionKey={(option) => option.id}
+                                                onChange={(event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', newValue || { id: 0, label: '', asset_acnt: '' })}
+                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params} />}
+                                            />
                                         ) : (
                                             <Typography variant="body1" align="center">
                                                 {row.asset_name || ''}
@@ -159,11 +175,15 @@ export default function AsetTransactionTable() {
                                     {/*  */}
                                     <TableCell align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                variant="standard"
-                                                value={row.trns_type || ''}
+                                            <NativeSelect
+                                                value={row.trns_type}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
-                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'trns_type')} />
+                                                onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, index, 'trns_type')}
+                                                style={{ width: '150px', border: 'none' }}
+                                                inputProps={{ 'aria-label': 'Without label' }}>
+                                                <option value={'매수'}>매수</option>
+                                                <option value={'매도'}>매도</option>
+                                            </NativeSelect>
                                         ) : (
                                             <Typography variant="body1" align="center">
                                                 {row.trns_type || ''}
@@ -189,13 +209,16 @@ export default function AsetTransactionTable() {
                                     {/*  */}
                                     <TableCell align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                variant="standard"
-                                                helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
-                                                error={validationList[index]?.trns_date}
-                                                value={row.trns_date || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_date')}
-                                                onBlur={(event) => handleDataBlur(event, row.id, index, 'trns_date')} />
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DemoContainer components={['DatePicker', 'DatePicker']}>
+                                                    <DateField
+                                                        variant="standard"
+                                                        helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
+                                                        onChange={(event: any) => handleDataChange(event, row.id, index, 'trns_date')}
+                                                        value={row.trns_date}
+                                                    />
+                                                </DemoContainer>
+                                            </LocalizationProvider>
                                         ) : (
                                             <Typography variant="body1" align="center">
                                                 {row.trns_date || ''}

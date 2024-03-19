@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet, sendPut } from "@/utils/fetch";
-import { formatDate } from "@/utils/format";
-import { AssetTransactionData, AssetTransactionValidation, createData } from "@/redux/asset_transaction/AssetTransaction";
+import { formatDate, formatDateV2 } from "@/utils/format";
+import { AssetTransactionData, AssetTransactionValidation, AssetName, createData } from "@/redux/asset_transaction/AssetTransaction";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
 
@@ -33,6 +33,8 @@ export const useAssetTransaction = () => {
     const [snackMessage, setSnackMessage] = useState('');
     // 데이터 추가 상태 관련
     const [addStatus, setAddStatus] = useState(false);
+    // 거래 내역 선택 데이터
+    const [selectData, setSelectData] = useState<AssetName[]>([]);
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -43,6 +45,15 @@ export const useAssetTransaction = () => {
         const getList = async (id: string) => {
             const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
             if (res.status === 'success') {
+
+                // 거래 내역 이름 데이터 가져오기
+                const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
+                const asset_type_rest_list = asset_type_rest.data;
+                asset_type_rest_list.map((item: any) => {
+                    selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
+                });
+                setSelectData(selectData);
+
                 // 유효성 검사 리스트
                 const valList: AssetTransactionValidation[] = [];
                 // 데이터 저장
@@ -67,7 +78,7 @@ export const useAssetTransaction = () => {
                         (item as any).asset.asset_acnt,
                         item.trns_type,
                         item.amount,
-                        formatDate(item.trns_date),
+                        formatDateV2(item.trns_date),
                     )
                 }
                 );
@@ -163,35 +174,37 @@ export const useAssetTransaction = () => {
         console.log(" ==== useMemo ==== ");
         let sortedRows: any[] = [];
 
-        console.log(" rows : ", rows);
-
-        sortedRows = stableSort(rows, getComparator(order, orderBy));
-
-        console.log(" sortedRows : ", sortedRows);
+        if (addStatus) {
+            sortedRows = rows;
+            // setSnack(true);
+            // setSnackMessage('추가 작업 중 정렬은 불가능합니다.');
+        } else {
+            sortedRows = stableSort(rows, getComparator(order, orderBy));
+        }
 
         const slicedRows = sortedRows.slice(
             page * rowsPerPage,
             page * rowsPerPage + rowsPerPage,
         );
 
-        console.log(" slicedRows : ", slicedRows);
-
         return slicedRows;
     }, [order, orderBy, page, rowsPerPage, rows]);
 
     // 데이터 변경 함수
-    const handleDataChange = (event: ChangeEvent<any>, id: number, index: number, field: string) => {
+    const handleDataChange = (event: any, id: number, index: number, field: string) => {
         console.log(" ==== handleChange ==== ");
+
         const updatedRows = rows.map(item => {
             if (item.id === id) {
 
                 // 입력한 값
-                const value = event.target.value;
+                const value = event.target === undefined ? formatDateV2(event.$d) : event.target.value;
+                console.log(value);
 
                 // 유효성 검사 타입
                 const fieldDataType = {
-                    amount: "number",
-                    trns_date: "string"
+                    amount: "double8",
+                    trns_date: "date",
                 }
 
                 // 유효성 검사
@@ -202,7 +215,7 @@ export const useAssetTransaction = () => {
                 setPreviousData((item as any)[field]);
                 return {
                     ...item,
-                    [field]: event.target.value
+                    [field]: value
                 };
             }
             return item;
@@ -212,6 +225,24 @@ export const useAssetTransaction = () => {
         dispatch(setAssetTransactionList(updatedRows));
     };
 
+    const handleDataAssetNameChange = (event: ChangeEvent<any>, id: number, index: number, field: string, newValue: AssetName) => {
+        console.log(" ==== handleDataAssetNameChange ==== ");
+        console.log(newValue);
+
+        // 수정된 배열을 설정
+        const updatedRows = rows.map(item => {
+            if (item.id === id) {
+                console.log(item);
+                return {
+                    ...item,
+                    asset_name: newValue.label,
+                    asset_acnt: newValue.asset_acnt
+                };
+            }
+            return item;
+        });
+        dispatch(setAssetTransactionList(updatedRows));
+    };
     // 데이터 변경 함수
     const handleDataBlur = async (event: ChangeEvent<any>, id: number, index: number, field: string) => {
         console.log(" ==== handleDataBlur ==== ");
@@ -269,6 +300,8 @@ export const useAssetTransaction = () => {
         snackMessage,
         addStatus,
         validation,
+        selectData,
+        handleDataAssetNameChange,
         setAddStatus,
         setValidationList,
         setOrder,

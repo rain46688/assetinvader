@@ -92,6 +92,26 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
                 result = false;
             }
             break;
+        // 소수점 8자리까지 입력
+        case "double8":
+            if (/^\d+\.\d{8}$/.test(value)) {
+                fieldData[field] = false;
+                result = true;
+            } else {
+                fieldData[field] = true;
+                result = false;
+            }
+            break;
+        // 날짜 형식
+        case "date":
+            if (/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(value)) {
+                fieldData[field] = false;
+                result = true;
+            } else {
+                fieldData[field] = true;
+                result = false;
+            }
+            break;
         // 정규식 없음
         default:
             console.log(" === 정규식 없음 === ");

@@ -19,6 +19,13 @@ export interface AssetTransactionValidation {
     trns_date: boolean;
 }
 
+// 거래 내역 타입 정의
+export interface AssetName {
+    id: number;
+    label: string;
+    asset_acnt: string;
+}
+
 // 데이터 생성 함수
 export function createData(
     id: number,

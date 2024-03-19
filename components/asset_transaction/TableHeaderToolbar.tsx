@@ -121,10 +121,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       return;
     }
 
-    console.log(" === 유효성 검사 통과 === ");
+    // 아무것도 없는 경우에는 맨위에 보여지는 매수 값으로 설정
+    if(new_data.trns_type === ""){
+      new_data.trns_type = "매수";
+    }
     console.log(new_data);
 
-    
+
 
 
 
