@@ -17,7 +17,11 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+
+// 스낵바 관련 임포트
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { AlertColor } from '@mui/material';
 
 export default function AssetTypeTable() {
 
@@ -34,6 +38,10 @@ export default function AssetTypeTable() {
         validationList,
         snack,
         snackMessage,
+        snackBarStatus,
+        setSnack,
+        setSnackMessage,
+        setSnackBarStatus,
         setOrder,
         setOrderBy,
         setPage,
@@ -53,11 +61,17 @@ export default function AssetTypeTable() {
             {/* 스낵바 설정 */}
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                autoHideDuration={5000}
                 open={snack}
-                message={snackMessage}
-                onClose={handleSnackClose}
-            />
+                autoHideDuration={5000}
+                onClose={handleSnackClose}>
+                <Alert
+                    onClose={handleSnackClose}
+                    severity={snackBarStatus as AlertColor}
+                    variant="filled"
+                    sx={{ width: '100%' }}>
+                    {snackMessage}
+                </Alert>
+            </Snackbar>
             {/* 툴바 props */}
             <EnhancedTableToolbar
                 numSelected={selected.length}
@@ -66,7 +80,11 @@ export default function AssetTypeTable() {
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
-                setOrderBy={setOrderBy} />
+                setOrderBy={setOrderBy}
+                setSnack={setSnack}
+                setSnackMessage={setSnackMessage}
+                setSnackBarStatus={setSnackBarStatus}
+                 />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}

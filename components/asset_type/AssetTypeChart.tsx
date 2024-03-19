@@ -92,7 +92,7 @@ export default function AssetTypeChart() {
                     flexDirection: 'column',
                     minHeight: '8vh',
                 }}>
-                    <Typography variant="h6" component="h3" align="center">
+                    <Typography variant="body1" align="center">
                         {'데이터가 없습니다.'}
                     </Typography>
                 </Box>

@@ -30,6 +30,8 @@ export const useAssetType = () => {
     const [snack, setSnack] = useState(false);
     // 스낵바 메시지 관련
     const [snackMessage, setSnackMessage] = useState('');
+    // 스낵바 상태 관련
+    const [snackBarStatus, setSnackBarStatus] = useState("success");
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -117,6 +119,7 @@ export const useAssetType = () => {
             if (orderBy !== 'asset_type' || order !== 'asc') {
                 console.log(" === 수정시 정렬 초기화 === ");
                 setSnack(true);
+                setSnackBarStatus("info");
                 setSnackMessage('수정 작업시 정렬이 초기화 됩니다.');
                 setOrder('asc');
                 setOrderBy('asset_type');
@@ -237,8 +240,14 @@ export const useAssetType = () => {
         const result = await sendPut(data, 'asset/update_asset/' + id);
         if (result.status === 'success') {
             console.log("수정 성공");
+            setSnack(true);
+            setSnackMessage("데이터 수정 완료.");
+            setSnackBarStatus("success");
         } else {
             console.log("수정 실패");
+            setSnack(true);
+            setSnackMessage("데이터 수정 실패.");
+            setSnackBarStatus("error");
         }
     };
 
@@ -263,6 +272,10 @@ export const useAssetType = () => {
         validationList,
         snack,
         snackMessage,
+        snackBarStatus,
+        setSnack,
+        setSnackMessage,
+        setSnackBarStatus,
         setOrder,
         setOrderBy,
         setPage,

@@ -27,10 +27,14 @@ interface EnhancedTableToolbarProps {
   rowsPerPage: number;
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
   setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetTypeData>>;
+  setSnack: React.Dispatch<React.SetStateAction<boolean>>;
+  setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
+  setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy } = props;
+  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
+    setSnack, setSnackMessage, setSnackBarStatus } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTypeReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -73,9 +77,15 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setPage(movePage);
       setOrder('asc');
       setOrderBy('asset_type');
+      setSnack(true);
+      setSnackMessage("데이터 추가 완료.");
+      setSnackBarStatus("success");
       dispatch(setAssetTypeList(newList));
     } else {
       console.log("fail");
+      setSnack(true);
+      setSnackMessage("데이터 추가 실패.");
+      setSnackBarStatus("error");
     }
   };
 
@@ -92,9 +102,15 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         setPage(movePage);
         setOrder('asc');
         setOrderBy('asset_type');
+        setSnack(true);
+        setSnackMessage("데이터 삭제 완료.");
+        setSnackBarStatus("success");
         dispatch(setAssetTypeList(newList));
       } else {
         console.log("fail");
+        setSnack(true);
+        setSnackMessage("데이터 삭제 실패.");
+        setSnackBarStatus("error");
       }
     });
   };
