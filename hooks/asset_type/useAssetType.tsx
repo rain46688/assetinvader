@@ -224,6 +224,9 @@ export const useAssetType = () => {
         if (validation == false) {
             // 유효성 검사 실패시 return
             console.log(" === 유효성 검사 실패 === ");
+            setSnack(true);
+            setSnackMessage("데이터 유효성 검사 실패.");
+            setSnackBarStatus("warning");
             return;
         }
 

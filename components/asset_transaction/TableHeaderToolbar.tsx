@@ -132,7 +132,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       // 유효성 검사 실패시 return
       console.log(" === 유효성 검사 실패 === ");
       setSnack(true);
-      setSnackMessage("데이터 입력 필요.");
+      setSnackMessage("데이터 유효성 검사 실패.");
       setSnackBarStatus("warning");
       return;
     }
