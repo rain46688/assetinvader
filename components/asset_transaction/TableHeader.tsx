@@ -42,11 +42,13 @@ interface EnhancedTableProps {
     orderBy: string;
     rowCount: number;
     addStatus: boolean;
+    setIsNotSortStatus: (status: boolean) => void;
 }
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, addStatus } = props;
+    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, addStatus, setIsNotSortStatus } = props;
     const createSortHandler = (property: keyof AssetTransactionData) => (event: MouseEvent<unknown>) => {
+        setIsNotSortStatus(false);
         onRequestSort(event, property);
     };
 

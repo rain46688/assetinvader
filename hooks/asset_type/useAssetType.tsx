@@ -149,11 +149,13 @@ export const useAssetType = () => {
 
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
+        setIsNotSortStatus(false);
         setPage(newPage);
     };
 
     // 페이지 관련 함수
     const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+        setIsNotSortStatus(false);
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };

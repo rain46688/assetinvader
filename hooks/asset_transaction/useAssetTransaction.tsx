@@ -36,6 +36,8 @@ export const useAssetTransaction = () => {
     const [addStatus, setAddStatus] = useState(false);
     // 거래 내역 선택 데이터
     const [selectData, setSelectData] = useState<AssetName[]>([]);
+    // 정렬 안함 상태 관련
+    const [isNotSortStatus, setIsNotSortStatus] = useState(true)
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -47,7 +49,7 @@ export const useAssetTransaction = () => {
             const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
             if (res.status === 'success') {
 
-                // 거래 내역 이름 데이터 가져오기
+                // 셀렉트 박스용 거래 내역 이름 데이터 가져오기
                 const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
                 const asset_type_rest_list = asset_type_rest.data;
                 asset_type_rest_list.map((item: any) => {
@@ -157,11 +159,13 @@ export const useAssetTransaction = () => {
 
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
+        setIsNotSortStatus(false);
         setPage(newPage);
     };
 
     // 페이지 관련 함수
     const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+        setIsNotSortStatus(false);
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
@@ -178,13 +182,15 @@ export const useAssetTransaction = () => {
         console.log(" ==== useMemo ==== ");
         let sortedRows: any[] = [];
 
-        // 추가 상태일 때 정렬하지 않음
-        if (addStatus) {
+        // 수정 상태일 때 정렬하지 않음
+        if (isNotSortStatus) {
+            console.log(" === 정렬 안함 상태 === ");
             sortedRows = rows;
         } else {
+            console.log(" === 정렬 가능 상태 === ");
+            setIsNotSortStatus(true);
             sortedRows = stableSort(rows, getComparator(order, orderBy));
         }
-        // 항목 추가시에 맨뒤에 빈 항목이 추가 안되면 주석 해제
 
         const slicedRows = sortedRows.slice(
             page * rowsPerPage,
@@ -202,8 +208,12 @@ export const useAssetTransaction = () => {
             if (item.id === id) {
 
                 // 입력한 값
-                const value = event.target === undefined ? formatDateV2(event.$d) : event.target.value;
-                console.log(value);
+                let value = null;
+                if (event !== null) {
+                    value = event.target === undefined ? formatDateV2(event.$d) : event.target.value;
+                } else {
+                    value = "";
+                }
 
                 // 유효성 검사 타입
                 const fieldDataType = {
@@ -275,6 +285,7 @@ export const useAssetTransaction = () => {
         validation,
         selectData,
         snackBarStatus,
+        setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,
         setSnackMessage,

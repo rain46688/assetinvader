@@ -37,11 +37,12 @@ interface EnhancedTableToolbarProps {
   setSnack: React.Dispatch<React.SetStateAction<boolean>>;
   setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
   setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
+  setIsNotSortStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
-    validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus } = props;
+    validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus, setIsNotSortStatus } = props;
 
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTransactionReducer); // Redux 상태에서 필요한 데이터 읽어오기
@@ -157,11 +158,16 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setSnackMessage("데이터 추가 완료.");
       setSnackBarStatus("success");
       setAddStatus(false);
+      setIsNotSortStatus(false);
+      dispatch(setAssetTransactionList([...list]));
     } else {
       console.log("fail");
       setSnack(true);
       setSnackMessage("데이터 추가 실패.");
       setSnackBarStatus("error");
+      setAddStatus(false);
+      setIsNotSortStatus(false);
+      dispatch(setAssetTransactionList([...list]));
     }
   };
 
@@ -172,6 +178,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setSelected([]);
     setAddStatus(false);
     dispatch(setAssetTransactionList(newList));
+    // 추가 시에 마지막 페이지로 이동
+    const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
+    setPage(movePage);
   };
 
   return (

@@ -50,6 +50,7 @@ export default function AsetTransactionTable() {
         validation,
         selectData,
         snackBarStatus,
+        setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,
         setSnackMessage,
@@ -102,6 +103,7 @@ export default function AsetTransactionTable() {
                 setSnack={setSnack}
                 setSnackMessage={setSnackMessage}
                 setSnackBarStatus={setSnackBarStatus}
+                setIsNotSortStatus={setIsNotSortStatus}
             />
             <TableContainer>
                 <Table
@@ -116,7 +118,9 @@ export default function AsetTransactionTable() {
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
                         rowCount={rows.length}
-                        addStatus={addStatus} />
+                        addStatus={addStatus}
+                        setIsNotSortStatus={setIsNotSortStatus}
+                         />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
