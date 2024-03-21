@@ -75,7 +75,7 @@ export const useAssetTransaction = () => {
                     return;
                 }
 
-                // 유효성 검사 리스트에 저장
+                // 유효성 검사 리스트에 저장 (수정 기능이 없어서 id값을 index로 사용)
                 valList.push({
                     id: index,
                     asset_name: false,
@@ -105,7 +105,10 @@ export const useAssetTransaction = () => {
             // 데이터 저장
             dispatch(setAssetTransactionList(filteredList));
         } else {
-            console.log('error');
+            console.log(' === getList error === ');
+            setSnack(true);
+            setSnackBarStatus("warning");
+            setSnackMessage('데이터가 없거나 불러오는데 실패했습니다.');
         }
     };
 

@@ -93,6 +93,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 선택된 항목 삭제
   const handleDeleteList = async () => {
     console.log('=== handleDeleteList === ');
+
+    console.log(selected);
+
     selected.forEach(async (id) => {
       const result = await sendDelete('assettransaction/delete_assettransaction/' + id);
       if (result.status === 'success') {
@@ -162,7 +165,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setSnackBarStatus("success");
       setAddStatus(false);
       setIsNotSortStatus(false);
-      dispatch(setAssetTransactionList([...list]));
+      // 기존 리스트에 추가된 임시 id값 데이터의 id(0임)를 서버에 추가 후 반환 받은 진짜 id로 변경
+      let newList = [...list];
+      let lastItem = { ...newList[newList.length - 1] }; 
+      lastItem.id = result.data.id; 
+      newList[newList.length - 1] = lastItem; 
+      dispatch(setAssetTransactionList(newList));
     } else {
       console.log("fail");
       setSnack(true);

@@ -59,9 +59,9 @@ export const useAssetType = () => {
             // 데이터 변환
             const newList = list.map((item: AssetTypeData, index: number) => {
 
-                // 유효성 검사 리스트에 저장
+                // 유효성 검사 리스트에 저장 (수정 기능이 있어서 id 값 필요)
                 valList.push({
-                    id: index,
+                    id: item.id,
                     asset_acnt: false,
                     asset_name: false,
                     amount: false,
@@ -85,12 +85,18 @@ export const useAssetType = () => {
                 )
             }
             );
+
+            console.log(valList);
+
             // 유효성 검사 리스트 저장
             setValidationList(valList);
             // 데이터 저장
             dispatch(setAssetTypeList(newList));
         } else {
-            console.log('error');
+            console.log(' === getList error === ');
+            setSnack(true);
+            setSnackBarStatus("warning");
+            setSnackMessage('데이터가 없거나 불러오는데 실패했습니다.');
         }
     };
 
@@ -154,6 +160,7 @@ export const useAssetType = () => {
         setPage(newPage);
         // 페이지 이동시에 정렬 허용
         setIsNotSortStatus(false);
+        console.log(validationList);
     };
 
     // 페이지 관련 함수
@@ -212,8 +219,13 @@ export const useAssetType = () => {
                     earning_rate: "double"
                 }
 
+                debugger;
                 // 유효성 검사
-                const result = validationCheck(value, field, fieldDataType, (validationList[index] as any));
+
+                // 유효성 검사 리스트에서 해당 필드에 매칭되는 데이터를 뽑아옴
+                const fieldData = validationList.find(item => item.id === id);
+
+                const result = validationCheck(value, field, fieldDataType, fieldData);
                 setValidation(result);
 
                 // 이전 데이터 저장
