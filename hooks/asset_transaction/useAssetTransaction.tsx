@@ -20,8 +20,6 @@ export const useAssetTransaction = () => {
     const [page, setPage] = useState(0);
     // 화면에 뿌려지는 기본 데이터 갯수 관련
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    // 이전 데이터 저장
-    const [previousData, setPreviousData] = useState('');
     // 유효성 검사 리스트
     const [validationList, setValidationList] = useState<AssetTransactionValidation[]>([]);
     // 유효성 검사 성공 여부
@@ -36,7 +34,7 @@ export const useAssetTransaction = () => {
     const [addStatus, setAddStatus] = useState(false);
     // 거래 내역 선택 데이터
     const [selectData, setSelectData] = useState<AssetName[]>([]);
-    // 정렬 안함 상태 관련
+    // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
     const [isNotSortStatus, setIsNotSortStatus] = useState(true)
 
     // redux 관련 추가
@@ -57,7 +55,7 @@ export const useAssetTransaction = () => {
         const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
         if (res.status === 'success') {
 
-            // 셀렉트 박스용 거래 내역 이름 데이터 가져오기
+            // 셀렉트 박스 거래 내역 이름 데이터 가져오기
             const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
             const asset_type_rest_list = asset_type_rest.data;
             asset_type_rest_list.map((item: any) => {
@@ -99,7 +97,7 @@ export const useAssetTransaction = () => {
             }
             );
 
-            // asset 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
+            // 외래키로 연결된 asset 값이 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
             const filteredList = newList.filter((item: AssetTransactionData) => item !== undefined);
 
             // 유효성 검사 리스트 저장
@@ -160,15 +158,17 @@ export const useAssetTransaction = () => {
 
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
-        setIsNotSortStatus(false);
         setPage(newPage);
+        // 페이지 이동시에 정렬 허용
+        setIsNotSortStatus(false);
     };
 
     // 페이지 관련 함수
     const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-        setIsNotSortStatus(false);
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+        // 페이지 데이터 갯수 변경시에 정렬 허용
+        setIsNotSortStatus(false);
     };
 
     // 선택된 데이터 확인 함수
@@ -226,8 +226,6 @@ export const useAssetTransaction = () => {
                 const result = validationCheck(value, field, fieldDataType, (validationList[index] as any));
                 setValidation(result);
 
-                // 이전 데이터 저장
-                setPreviousData((item as any)[field]);
                 return {
                     ...item,
                     [field]: value
@@ -240,10 +238,9 @@ export const useAssetTransaction = () => {
         dispatch(setAssetTransactionList(updatedRows));
     };
 
-    // 거래 내역 이름 변경 함수
+    // 셀렉트 박스 거래 내역 이름 변경 함수
     const handleDataAssetNameChange = (event: ChangeEvent<any>, id: number, index: number, field: string, newValue: AssetName) => {
         console.log(" ==== handleDataAssetNameChange ==== ");
-        console.log(newValue);
 
         // 수정된 배열을 설정
         const updatedRows = rows.map(item => {
@@ -286,6 +283,7 @@ export const useAssetTransaction = () => {
         validation,
         selectData,
         snackBarStatus,
+        getList,
         setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,

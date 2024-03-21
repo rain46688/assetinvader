@@ -32,7 +32,7 @@ export const useAssetType = () => {
     const [snackMessage, setSnackMessage] = useState('');
     // 스낵바 상태 관련
     const [snackBarStatus, setSnackBarStatus] = useState("success");
-    // 정렬 안함 상태 관련
+    // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
     const [isNotSortStatus, setIsNotSortStatus] = useState(true);
 
     // redux 관련 추가
@@ -151,15 +151,17 @@ export const useAssetType = () => {
 
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
-        setIsNotSortStatus(false);
         setPage(newPage);
+        // 페이지 이동시에 정렬 허용
+        setIsNotSortStatus(false);
     };
 
     // 페이지 관련 함수
     const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-        setIsNotSortStatus(false);
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+        // 페이지 데이터 갯수 변경시에 정렬 허용
+        setIsNotSortStatus(false);
     };
 
     // 선택된 데이터 확인 함수

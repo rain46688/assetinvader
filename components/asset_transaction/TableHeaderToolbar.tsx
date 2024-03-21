@@ -38,11 +38,12 @@ interface EnhancedTableToolbarProps {
   setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
   setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
   setIsNotSortStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  getList: (id: string) => Promise<void>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
-    validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus, setIsNotSortStatus } = props;
+    validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus, setIsNotSortStatus, getList } = props;
 
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTransactionReducer); // Redux 상태에서 필요한 데이터 읽어오기
@@ -121,6 +122,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setOrder('asc');
     setOrderBy('trns_date');
     setPage(0);
+    // 목록 새로고침
+    getList(sessionStorage.getItem('id') + '');
   };
 
   // 항목 추가 완료

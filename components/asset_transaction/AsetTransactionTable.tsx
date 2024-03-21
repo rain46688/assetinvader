@@ -50,6 +50,7 @@ export default function AsetTransactionTable() {
         validation,
         selectData,
         snackBarStatus,
+        getList,
         setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,
@@ -104,6 +105,7 @@ export default function AsetTransactionTable() {
                 setSnackMessage={setSnackMessage}
                 setSnackBarStatus={setSnackBarStatus}
                 setIsNotSortStatus={setIsNotSortStatus}
+                getList={getList}
             />
             <TableContainer>
                 <Table

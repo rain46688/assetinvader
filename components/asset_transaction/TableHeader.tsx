@@ -48,8 +48,9 @@ interface EnhancedTableProps {
 export function EnhancedTableHead(props: EnhancedTableProps) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, addStatus, setIsNotSortStatus } = props;
     const createSortHandler = (property: keyof AssetTransactionData) => (event: MouseEvent<unknown>) => {
-        setIsNotSortStatus(false);
         onRequestSort(event, property);
+        // 정렬 버튼 클릭시에 정렬 허용
+        setIsNotSortStatus(false);
     };
 
     return (

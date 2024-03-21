@@ -122,6 +122,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setOrder('asc');
     setOrderBy('asset_type');
     setPage(0);
+    // 목록 새로고침
     getList(sessionStorage.getItem('id') + '');
   };
 
