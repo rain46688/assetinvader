@@ -45,70 +45,71 @@ export const useAssetTransaction = () => {
 
     // 데이터 가져오기
     useEffect(() => {
-        const getList = async (id: string) => {
-            const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
-            if (res.status === 'success') {
-
-                // 셀렉트 박스용 거래 내역 이름 데이터 가져오기
-                const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
-                const asset_type_rest_list = asset_type_rest.data;
-                asset_type_rest_list.map((item: any) => {
-                    selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
-                });
-                setSelectData(selectData);
-
-                // 유효성 검사 리스트
-                const valList: AssetTransactionValidation[] = [];
-                // 데이터 저장
-                const list = res.data;
-                // 데이터 변환
-
-                const newList = list.map((item: AssetTransactionData, index: number) => {
-
-                    // asset 값이 없을 경우 건너뜀
-                    if ((item as any).asset == undefined) {
-                        return;
-                    }
-
-                    // 유효성 검사 리스트에 저장
-                    valList.push({
-                        id: index,
-                        asset_name: false,
-                        asset_acnt: false,
-                        trns_type: false,
-                        amount: false,
-                        trns_date: false
-                    });
-
-                    // 타입 변환 필요
-                    return createData(
-                        item.id,
-                        (item as any).asset.asset_name,
-                        (item as any).asset.asset_acnt,
-                        item.trns_type,
-                        item.amount,
-                        formatDateV2(item.trns_date),
-                    )
-                }
-                );
-
-                // asset 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
-                const filteredList = newList.filter((item: AssetTransactionData) => item !== undefined);
-
-                // 유효성 검사 리스트 저장
-                setValidationList(valList);
-                // 데이터 저장
-                dispatch(setAssetTransactionList(filteredList));
-            } else {
-                console.log('error');
-            }
-        };
-
         // 세션 스토리지에 저장된 id값 가져오기
         const id = sessionStorage.getItem('id');
         // id값으로 데이터 가져오기
         getList('' + id);
     }, []);
+
+    // 데이터 가져오기 함수
+    const getList = async (id: string) => {
+        console.log('=== getList === ');
+        const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
+        if (res.status === 'success') {
+
+            // 셀렉트 박스용 거래 내역 이름 데이터 가져오기
+            const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
+            const asset_type_rest_list = asset_type_rest.data;
+            asset_type_rest_list.map((item: any) => {
+                selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
+            });
+            setSelectData(selectData);
+
+            // 유효성 검사 리스트
+            const valList: AssetTransactionValidation[] = [];
+            // 데이터 저장
+            const list = res.data;
+            // 데이터 변환
+
+            const newList = list.map((item: AssetTransactionData, index: number) => {
+                // asset 값이 없을 경우 건너뜀
+                if ((item as any).asset == undefined) {
+                    return;
+                }
+
+                // 유효성 검사 리스트에 저장
+                valList.push({
+                    id: index,
+                    asset_name: false,
+                    asset_acnt: false,
+                    trns_type: false,
+                    amount: false,
+                    trns_date: false
+                });
+
+                // 타입 변환 필요
+                return createData(
+                    item.id,
+                    (item as any).asset.asset_name,
+                    (item as any).asset.asset_acnt,
+                    item.trns_type,
+                    item.amount,
+                    formatDateV2(item.trns_date),
+                )
+            }
+            );
+
+            // asset 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
+            const filteredList = newList.filter((item: AssetTransactionData) => item !== undefined);
+
+            // 유효성 검사 리스트 저장
+            setValidationList(valList);
+            // 데이터 저장
+            dispatch(setAssetTransactionList(filteredList));
+        } else {
+            console.log('error');
+        }
+    };
 
     // 정렬 관련 함수
     const handleRequestSort = (

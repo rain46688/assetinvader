@@ -39,6 +39,7 @@ export default function AssetTypeTable() {
         snack,
         snackMessage,
         snackBarStatus,
+        getList,
         setIsNotSortStatus,
         setSnack,
         setSnackMessage,
@@ -85,6 +86,7 @@ export default function AssetTypeTable() {
                 setSnack={setSnack}
                 setSnackMessage={setSnackMessage}
                 setSnackBarStatus={setSnackBarStatus}
+                getList={getList}
                  />
             <TableContainer>
                 <Table

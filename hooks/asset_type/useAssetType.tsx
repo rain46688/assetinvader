@@ -41,56 +41,58 @@ export const useAssetType = () => {
 
     // 데이터 가져오기
     useEffect(() => {
-        const getList = async (id: string) => {
-            const res = await sendGet('/asset/getlist_asset_type/' + id);
-            if (res.status === 'success') {
-                // 유효성 검사 리스트
-                const valList: AssetTypeValidation[] = [];
-                // 데이터 저장
-                const list = res.data;
-                // 데이터 변환
-                const newList = list.map((item: AssetTypeData, index: number) => {
-
-                    // 유효성 검사 리스트에 저장
-                    valList.push({
-                        id: index,
-                        asset_acnt: false,
-                        asset_name: false,
-                        amount: false,
-                        earning_rate: false
-                    });
-
-                    // 타입 변환 필요
-                    return createData(
-                        item.id,
-                        item.member_id,
-                        item.asset_type,
-                        item.asset_big_class,
-                        item.asset_mid_class,
-                        item.asset_acnt,
-                        item.asset_name,
-                        item.amount,
-                        item.earning_rate,
-                        formatDate(item.reg_date),
-                        formatDate(item.mod_date),
-                        item.use_flag
-                    )
-                }
-                );
-                // 유효성 검사 리스트 저장
-                setValidationList(valList);
-                // 데이터 저장
-                dispatch(setAssetTypeList(newList));
-            } else {
-                console.log('error');
-            }
-        };
-
         // 세션 스토리지에 저장된 id값 가져오기
         const id = sessionStorage.getItem('id');
         // id값으로 데이터 가져오기
         getList('' + id);
     }, []);
+
+    // 데이터 가져오기 함수
+    const getList = async (id: string) => {
+        console.log('=== getList === ');
+        const res = await sendGet('/asset/getlist_asset_type/' + id);
+        if (res.status === 'success') {
+            // 유효성 검사 리스트
+            const valList: AssetTypeValidation[] = [];
+            // 데이터 저장
+            const list = res.data;
+            // 데이터 변환
+            const newList = list.map((item: AssetTypeData, index: number) => {
+
+                // 유효성 검사 리스트에 저장
+                valList.push({
+                    id: index,
+                    asset_acnt: false,
+                    asset_name: false,
+                    amount: false,
+                    earning_rate: false
+                });
+
+                // 타입 변환 필요
+                return createData(
+                    item.id,
+                    item.member_id,
+                    item.asset_type,
+                    item.asset_big_class,
+                    item.asset_mid_class,
+                    item.asset_acnt,
+                    item.asset_name,
+                    item.amount,
+                    item.earning_rate,
+                    formatDate(item.reg_date),
+                    formatDate(item.mod_date),
+                    item.use_flag
+                )
+            }
+            );
+            // 유효성 검사 리스트 저장
+            setValidationList(valList);
+            // 데이터 저장
+            dispatch(setAssetTypeList(newList));
+        } else {
+            console.log('error');
+        }
+    };
 
     // 정렬 관련 함수
     const handleRequestSort = (
@@ -300,6 +302,7 @@ export const useAssetType = () => {
         snack,
         snackMessage,
         snackBarStatus,
+        getList,
         setIsNotSortStatus,
         setSnack,
         setSnackMessage,

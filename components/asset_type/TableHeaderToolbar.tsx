@@ -2,7 +2,7 @@ import * as React from 'react';
 import { sendPost, sendDelete } from '@/utils/fetch';
 import { formatDate } from '@/utils/format';
 import { createData } from '@/redux/asset_type/AssetType';
-import { AssetTypeData } from '@/redux/asset_type/AssetType';
+import { AssetTypeData, AssetTypeValidation } from '@/redux/asset_type/AssetType';
 
 // redux 관련 임포트
 import { setAssetTypeList } from '@/redux/asset_type/assetTypeSlice';
@@ -30,11 +30,12 @@ interface EnhancedTableToolbarProps {
   setSnack: React.Dispatch<React.SetStateAction<boolean>>;
   setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
   setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
+  getList: (id: string) => Promise<void>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
-    setSnack, setSnackMessage, setSnackBarStatus } = props;
+    setSnack, setSnackMessage, setSnackBarStatus, getList } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTypeReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -121,6 +122,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setOrder('asc');
     setOrderBy('asset_type');
     setPage(0);
+    getList(sessionStorage.getItem('id') + '');
   };
 
   return (
