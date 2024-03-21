@@ -23,7 +23,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { AlertColor } from '@mui/material';
+import { AlertColor, Box } from '@mui/material';
 
 // 날짜 관련 임포트
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -176,7 +176,7 @@ export default function AsetTransactionTable() {
                                                 variant="standard"
                                                 value={row.asset_acnt || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
-                                             />
+                                            />
                                         ) : (
                                             <Typography variant="body1" align="center">
                                                 {row.asset_acnt || ''}
@@ -223,7 +223,7 @@ export default function AsetTransactionTable() {
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
                                                         variant="standard"
-                                                        format="YYYY-MM"
+                                                        format="YYYY-MM-DD"
                                                         helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
                                                         onChange={(event: any) => handleDataChange(event, row.id, index, 'trns_date')}
                                                         value={row.trns_date}
@@ -255,15 +255,19 @@ export default function AsetTransactionTable() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            {addStatus ? (
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 3 }} />
+            ) : (
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            )}
         </Paper>
     )
 }

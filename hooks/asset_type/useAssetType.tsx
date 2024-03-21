@@ -32,6 +32,8 @@ export const useAssetType = () => {
     const [snackMessage, setSnackMessage] = useState('');
     // 스낵바 상태 관련
     const [snackBarStatus, setSnackBarStatus] = useState("success");
+    // 정렬 안함 상태 관련
+    const [isNotSortStatus, setIsNotSortStatus] = useState(true);
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -167,7 +169,17 @@ export const useAssetType = () => {
     const visibleRows = useMemo(() => {
         console.log(" ==== useMemo ==== ");
         let sortedRows: any[] = [];
-        sortedRows = stableSort(rows, getComparator(order, orderBy));
+
+        // 수정 상태일 때 정렬하지 않음
+        if (isNotSortStatus) {
+            console.log(" === 정렬 안함 상태 === ");
+            sortedRows = rows;
+        } else {
+            console.log(" === 정렬 가능 상태 === ");
+            setIsNotSortStatus(true);
+            sortedRows = stableSort(rows, getComparator(order, orderBy));
+        }
+
         const slicedRows = sortedRows.slice(
             page * rowsPerPage,
             page * rowsPerPage + rowsPerPage,
@@ -179,6 +191,7 @@ export const useAssetType = () => {
     // 데이터 변경 함수
     const handleDataChange = (event: ChangeEvent<any>, id: number, index: number, field: string) => {
         console.log(" ==== handleChange ==== ");
+
         const updatedRows = rows.map(item => {
             if (item.id === id) {
 
@@ -215,6 +228,9 @@ export const useAssetType = () => {
     const handleDataBlur = async (event: ChangeEvent<any>, id: number, index: number, field: string) => {
         console.log(" ==== handleDataBlur ==== ");
         // 이전 데이터와 현재 데이터가 같다면 return
+
+        console.log(" === previousData === ", previousData);
+        console.log(" === event.target.value === ", event.target.value);
         if (previousData === "") {
             console.log(" === 데이터 동일 === ");
             return;
@@ -230,6 +246,8 @@ export const useAssetType = () => {
             return;
         }
 
+        console.log(" === 데이터 변경 === ");
+
         // list에서 해당 아이디에 매칭되는 데이터를 뽑아옴
         const item = rows.find(item => item.id === id);
         const data = JSON.stringify({
@@ -242,15 +260,19 @@ export const useAssetType = () => {
 
         const result = await sendPut(data, 'asset/update_asset/' + id);
         if (result.status === 'success') {
-            console.log("수정 성공");
+            console.log(" === 수정 성공 === ");
             setSnack(true);
             setSnackMessage("데이터 수정 완료.");
             setSnackBarStatus("success");
+            setIsNotSortStatus(false);
+            dispatch(setAssetTypeList([...rows]));
         } else {
-            console.log("수정 실패");
+            console.log(" === 수정 실패 === ");
             setSnack(true);
             setSnackMessage("데이터 수정 실패.");
             setSnackBarStatus("error");
+            setIsNotSortStatus(false);
+            dispatch(setAssetTypeList([...rows]));
         }
     };
 
@@ -276,6 +298,7 @@ export const useAssetType = () => {
         snack,
         snackMessage,
         snackBarStatus,
+        setIsNotSortStatus,
         setSnack,
         setSnackMessage,
         setSnackBarStatus,

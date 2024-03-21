@@ -30,7 +30,6 @@ export const formatDateV2 = (dateString: string) => {
     return `${year}-${month}-${day}`;
 };
 
-
 /**
  * formatDateV3 함수 : 날짜를 받아서 yyyy-mm 형태로 변환
  * @param dateString : 날짜

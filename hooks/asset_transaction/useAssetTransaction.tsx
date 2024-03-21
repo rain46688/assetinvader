@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet } from "@/utils/fetch";
-import { formatDateV3 } from "@/utils/format";
+import { formatDateV2 } from "@/utils/format";
 import { AssetTransactionData, AssetTransactionValidation, AssetName, createData } from "@/redux/asset_transaction/AssetTransaction";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/app/store';
 
 export const useAssetTransaction = () => {
     // 정렬 ASC / DESC 관련
-    const [order, setOrder] = useState<Order>('desc');
+    const [order, setOrder] = useState<Order>('asc');
     // 정렬 기준 관련
     const [orderBy, setOrderBy] = useState<keyof AssetTransactionData>('trns_date');
     // 데이터 선택 관련
@@ -60,7 +60,13 @@ export const useAssetTransaction = () => {
                 // 데이터 저장
                 const list = res.data;
                 // 데이터 변환
+
                 const newList = list.map((item: AssetTransactionData, index: number) => {
+
+                    // asset 값이 없을 경우 건너뜀
+                    if ((item as any).asset == undefined) {
+                        return;
+                    }
 
                     // 유효성 검사 리스트에 저장
                     valList.push({
@@ -79,14 +85,18 @@ export const useAssetTransaction = () => {
                         (item as any).asset.asset_acnt,
                         item.trns_type,
                         item.amount,
-                        formatDateV3(item.trns_date),
+                        formatDateV2(item.trns_date),
                     )
                 }
                 );
+
+                // asset 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
+                const filteredList = newList.filter((item: AssetTransactionData) => item !== undefined);
+
                 // 유효성 검사 리스트 저장
                 setValidationList(valList);
                 // 데이터 저장
-                dispatch(setAssetTransactionList(newList));
+                dispatch(setAssetTransactionList(filteredList));
             } else {
                 console.log('error');
             }
@@ -192,13 +202,13 @@ export const useAssetTransaction = () => {
             if (item.id === id) {
 
                 // 입력한 값
-                const value = event.target === undefined ? formatDateV3(event.$d) : event.target.value;
+                const value = event.target === undefined ? formatDateV2(event.$d) : event.target.value;
                 console.log(value);
 
                 // 유효성 검사 타입
                 const fieldDataType = {
                     amount: "double2",
-                    trns_date: "date",
+                    trns_date: "date2",
                 }
 
                 // 유효성 검사

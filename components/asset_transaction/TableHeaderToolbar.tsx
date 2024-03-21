@@ -83,7 +83,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     // 추가 시에 마지막 페이지로 이동
     const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
     setPage(movePage);
-    setOrder('desc');
+    setOrder('asc');
     setOrderBy('trns_date');
     dispatch(setAssetTransactionList(newList));
   };
@@ -99,7 +99,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         // 삭제 시에 마지막 페이지로 이동
         const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
         setPage(movePage);
-        setOrder('desc');
+        setOrder('asc');
         setOrderBy('trns_date');
         setSnack(true);
         setSnackMessage("데이터 삭제 완료.");
@@ -117,7 +117,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 목록 새로고침
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
-    setOrder('desc');
+    setOrder('asc');
     setOrderBy('trns_date');
     setPage(0);
   };

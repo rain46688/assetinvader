@@ -39,6 +39,7 @@ export default function AssetTypeTable() {
         snack,
         snackMessage,
         snackBarStatus,
+        setIsNotSortStatus,
         setSnack,
         setSnackMessage,
         setSnackBarStatus,
@@ -97,7 +98,9 @@ export default function AssetTypeTable() {
                         orderBy={orderBy}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={rows.length} />
+                        rowCount={rows.length}
+                        setIsNotSortStatus={setIsNotSortStatus}
+                        />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
