@@ -7,6 +7,7 @@ import layoutReducer from '@/redux/layout/layoutSlice';
 import assetReducer from '@/redux/asset_type/assetTypeSlice';
 import assetClassReducer from '@/redux/asset_class/assetClassSlice';
 import assetTypeReducer from '@/redux/asset_type/assetTypeSlice';
+import assetTransactionReducer from '@/redux/asset_transaction/assetTransactionSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     assetReducer,
     assetClassReducer,
     assetTypeReducer,
+    assetTransactionReducer,
   },
 });
 

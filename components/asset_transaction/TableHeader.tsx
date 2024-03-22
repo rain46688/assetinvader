@@ -1,54 +1,53 @@
 import { ChangeEvent, MouseEvent } from 'react';
 import { visuallyHidden } from '@mui/utils';
-import { Box, Checkbox, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 import { Order } from '@/utils/sort';
-import { AssetTypeData } from "@/redux/asset_type/AssetType";
+import { AssetTransactionData } from "@/redux/asset_transaction/AssetTransaction";
+
+// material-ui 관련 임포트
+import { Box, Checkbox, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 
 interface HeadCell {
-    id: keyof AssetTypeData;
+    id: keyof AssetTransactionData;
     label: string;
 }
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'asset_type',
-        label: '자산 유형',
+        id: 'asset_name',
+        label: '거래내역 이름',
     },
     {
         id: 'asset_acnt',
-        label: '자산 계좌 이름',
+        label: '거래 발생계좌',
     },
     {
-        id: 'asset_name',
-        label: '자산 이름',
+        id: 'trns_type',
+        label: '거래 종류',
     },
     {
         id: 'amount',
-        label: '자산 금액(원)',
+        label: '거래 수량',
     },
     {
-        id: 'earning_rate',
-        label: '연 수익률(%)',
-    },
-    {
-        id: 'reg_date',
-        label: '등록일',
+        id: 'trns_date',
+        label: '거래 발생일',
     },
 ];
 
 interface EnhancedTableProps {
     numSelected: number;
-    onRequestSort: (event: MouseEvent<unknown>, property: keyof AssetTypeData) => void;
+    onRequestSort: (event: MouseEvent<unknown>, property: keyof AssetTransactionData) => void;
     onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
+    addStatus: boolean;
     setIsNotSortStatus: (status: boolean) => void;
-    }
+}
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, setIsNotSortStatus } = props;
-    const createSortHandler = (property: keyof AssetTypeData) => (event: MouseEvent<unknown>) => {
+    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, addStatus, setIsNotSortStatus } = props;
+    const createSortHandler = (property: keyof AssetTransactionData) => (event: MouseEvent<unknown>) => {
         onRequestSort(event, property);
         // 정렬 버튼 클릭시에 정렬 허용
         setIsNotSortStatus(false);
@@ -58,15 +57,20 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
+                    {!addStatus ? (
+                        <Checkbox
+                            color="primary"
+                            indeterminate={numSelected > 0 && numSelected < rowCount}
+                            checked={rowCount > 0 && numSelected === rowCount}
+                            onChange={onSelectAllClick}
+                            inputProps={{
+                                'aria-label': 'select all desserts',
+                            }}
+                        />
+                    ) : (
+                        <></>
+                    )}
+
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell

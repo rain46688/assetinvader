@@ -17,7 +17,11 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+
+// 스낵바 관련 임포트
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { AlertColor } from '@mui/material';
 
 export default function AssetTypeTable() {
 
@@ -34,6 +38,12 @@ export default function AssetTypeTable() {
         validationList,
         snack,
         snackMessage,
+        snackBarStatus,
+        getList,
+        setIsNotSortStatus,
+        setSnack,
+        setSnackMessage,
+        setSnackBarStatus,
         setOrder,
         setOrderBy,
         setPage,
@@ -53,11 +63,17 @@ export default function AssetTypeTable() {
             {/* 스낵바 설정 */}
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                autoHideDuration={5000}
                 open={snack}
-                message={snackMessage}
-                onClose={handleSnackClose}
-            />
+                autoHideDuration={5000}
+                onClose={handleSnackClose}>
+                <Alert
+                    onClose={handleSnackClose}
+                    severity={snackBarStatus as AlertColor}
+                    variant="filled"
+                    sx={{ width: '100%' }}>
+                    {snackMessage}
+                </Alert>
+            </Snackbar>
             {/* 툴바 props */}
             <EnhancedTableToolbar
                 numSelected={selected.length}
@@ -66,7 +82,12 @@ export default function AssetTypeTable() {
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
-                setOrderBy={setOrderBy} />
+                setOrderBy={setOrderBy}
+                setSnack={setSnack}
+                setSnackMessage={setSnackMessage}
+                setSnackBarStatus={setSnackBarStatus}
+                getList={getList}
+                 />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
@@ -79,7 +100,9 @@ export default function AssetTypeTable() {
                         orderBy={orderBy}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={rows.length} />
+                        rowCount={rows.length}
+                        setIsNotSortStatus={setIsNotSortStatus}
+                        />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
@@ -127,8 +150,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index]?.asset_acnt ? "한글 영문 입력" : ''}
-                                            error={validationList[index]?.asset_acnt}
+                                            helperText={(validationList.find(item => item.id === row.id))?.asset_acnt ? "한글 영문 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.asset_acnt}
                                             value={row.asset_acnt || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_acnt')} />
@@ -137,8 +160,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index]?.asset_name ? "한글 영문 입력" : ''}
-                                            error={validationList[index]?.asset_name}
+                                            helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한글 영문 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.asset_name}
                                             value={row.asset_name || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
@@ -147,8 +170,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index]?.amount ? "숫자 입력" : ''}
-                                            error={validationList[index]?.amount}
+                                            helperText={(validationList.find(item => item.id === row.id))?.amount ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.amount}
                                             value={row.amount || 0}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
@@ -157,8 +180,8 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={validationList[index]?.earning_rate ? "소수 2자리 숫자 입력" : ''}
-                                            error={validationList[index]?.earning_rate}
+                                            helperText={(validationList.find(item => item.id === row.id))?.earning_rate ? "소수 2자리 숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.earning_rate}
                                             value={row.earning_rate || 0}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'earning_rate')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'earning_rate')} />
