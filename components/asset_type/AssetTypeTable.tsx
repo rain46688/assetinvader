@@ -141,9 +141,9 @@ export default function AssetTypeTable() {
                                             onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, index, 'asset_type')}
                                             style={{ width: '150px', border: 'none' }}
                                             inputProps={{ 'aria-label': 'Without label' }}>
-                                            <option value={'투자'}>투자</option>
-                                            <option value={'입출식'}>입출식</option>
-                                            <option value={'예적금'}>예적금</option>
+                                            <option value={'현금자산'}>현금자산</option>
+                                            <option value={'원금보장자산'}>원금보장자산</option>
+                                            <option value={'원금비보장자산'}>원금비보장자산</option>
                                         </NativeSelect>
                                     </TableCell>
                                     {/*  */}

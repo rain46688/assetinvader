@@ -47,7 +47,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const data = JSON.stringify({
       "member_id": id,
       "asset_type": "",
-      "asset_big_class": "투자자산",
+      "asset_big_class": "현금자산",
       "asset_mid_class": "",
       "asset_acnt": "",
       "asset_name": "",

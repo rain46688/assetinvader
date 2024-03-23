@@ -65,7 +65,7 @@ export default function AssetClassChart() {
                     variant="h6"
                     id="tableTitle"
                     component="div">
-                    분류별 자산관리
+                    분류별 자산차트
                 </Typography>
                 <Tooltip title="Refresh">
                     <IconButton aria-label="refresh" onClick={handleRefreshClick}>
