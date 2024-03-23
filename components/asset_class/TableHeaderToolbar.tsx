@@ -2,6 +2,7 @@ import * as React from 'react';
 import { sendPost, sendDelete } from '@/utils/fetch';
 import { formatDate } from '@/utils/format';
 import { createData } from '@/redux/asset_class/AssetClass';
+import { AssetClassData } from '@/redux/asset_class/AssetClass';
 
 // redux 관련 임포트
 import { setAssetClassList } from '@/redux/asset_class/assetClassSlice';
@@ -16,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -23,10 +25,17 @@ interface EnhancedTableToolbarProps {
   setSelected: React.Dispatch<React.SetStateAction<readonly number[]>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
+  setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
+  setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetClassData>>;
+  setSnack: React.Dispatch<React.SetStateAction<boolean>>;
+  setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
+  setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
+  getList: (id: string) => Promise<void>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage } = props;
+  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
+    setSnack, setSnackMessage, setSnackBarStatus, getList } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetClassReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -38,7 +47,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const data = JSON.stringify({
       "member_id": id,
       "asset_type": "",
-      "asset_big_class": "",
+      "asset_big_class": "투자자산",
       "asset_mid_class": "",
       "asset_acnt": "",
       "asset_name": "",
@@ -69,17 +78,23 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
       console.log("movePage : ", movePage);
       setPage(movePage);
+      setOrder('asc');
+      setOrderBy('asset_big_class');
+      setSnack(true);
+      setSnackMessage("데이터 추가 완료.");
+      setSnackBarStatus("success");
       dispatch(setAssetClassList(newList));
     } else {
       console.log("fail");
+      setSnack(true);
+      setSnackMessage("데이터 추가 실패.");
+      setSnackBarStatus("error");
     }
   };
 
   // 선택된 항목 삭제
   const handleDeleteList = async () => {
     console.log('=== handleDeleteList === ');
-    console.log("selected : ", selected);
-
     selected.forEach(async (id) => {
       const result = await sendDelete('asset/delete_asset/' + id);
       if (result.status === 'success') {
@@ -89,12 +104,31 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
         console.log("movePage : ", movePage);
         setPage(movePage);
+        setOrder('asc');
+        setOrderBy('asset_big_class');
+        setSnack(true);
+        setSnackMessage("데이터 삭제 완료.");
+        setSnackBarStatus("success");
         dispatch(setAssetClassList(newList));
       } else {
         console.log("fail");
+        setSnack(true);
+        setSnackMessage("데이터 삭제 실패.");
+        setSnackBarStatus("error");
       }
     });
   };
+
+  // 목록 새로고침
+  const handleRefreshList = () => {
+    console.log('=== handleRefreshList === ');
+    setOrder('asc');
+    setOrderBy('asset_big_class');
+    setPage(0);
+    // 목록 새로고침
+    getList(sessionStorage.getItem('id') + '');
+  };
+
 
   return (
     <Toolbar
@@ -121,9 +155,14 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="h6"
           id="tableTitle"
           component="div">
-          AssetClassList
+          분류별 자산관리
         </Typography>
       )}
+      <Tooltip title="Refresh">
+        <IconButton aria-label="refresh" onClick={handleRefreshList}>
+          <RefreshIcon />
+        </IconButton>
+      </Tooltip>
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={handleDeleteList}>

@@ -13,6 +13,16 @@ export interface AssetClassData {
     use_flag: number;
 }
 
+// 유효성 검사 타입 정의
+export interface AssetClassValidation {
+    id: number;
+    asset_mid_class: boolean;
+    asset_acnt: boolean;
+    asset_name: boolean;
+    amount: boolean;
+    earning_rate: boolean;
+}
+
 export function createData(
     id: number,
     member_id: number,

@@ -17,7 +17,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
-import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
+
+// 스낵바 관련 임포트
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { AlertColor } from '@mui/material';
 
 export default function AssetClassTable() {
 
@@ -31,6 +36,17 @@ export default function AssetClassTable() {
         emptyRows,
         page,
         rowsPerPage,
+        validationList,
+        snack,
+        snackMessage,
+        snackBarStatus,
+        getList,
+        setIsNotSortStatus,
+        setSnack,
+        setSnackMessage,
+        setSnackBarStatus,
+        setOrder,
+        setOrderBy,
         setPage,
         isSelected,
         handleSelectAllClick,
@@ -39,18 +55,42 @@ export default function AssetClassTable() {
         handleDataChange,
         handleDataBlur,
         handleChangePage,
-        handleChangeRowsPerPage
+        handleChangeRowsPerPage,
+        handleSnackClose
     } = useAssetClass();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage}/>
+        {/* 스낵바 설정 */}
+        <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={snack}
+            autoHideDuration={5000}
+            onClose={handleSnackClose}>
+            <Alert
+                onClose={handleSnackClose}
+                severity={snackBarStatus as AlertColor}
+                variant="filled"
+                sx={{ width: '100%' }}>
+                {snackMessage}
+            </Alert>
+        </Snackbar>
+            {/* 툴바 props */}
+            <EnhancedTableToolbar 
+            numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage}
+                setOrder={setOrder}
+                setOrderBy={setOrderBy}
+                setSnack={setSnack}
+                setSnackMessage={setSnackMessage}
+                setSnackBarStatus={setSnackBarStatus}
+                getList={getList}/>
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
                     size='small' // 테이블 사이즈 middle / small
                 >
+                {/* 헤더 props */}
                     <EnhancedTableHead
                         numSelected={selected.length}
                         order={order}
@@ -58,6 +98,7 @@ export default function AssetClassTable() {
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
                         rowCount={rows.length}
+                        setIsNotSortStatus={setIsNotSortStatus}
                     />
                     <TableBody>
                         {visibleRows.map((row, index) => {
@@ -75,6 +116,7 @@ export default function AssetClassTable() {
                                     selected={isItemSelected}
                                     sx={{ cursor: 'pointer' }}
                                 >
+                                {/*  */}
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             color="primary"
@@ -84,6 +126,7 @@ export default function AssetClassTable() {
                                             }}
                                         />
                                     </TableCell>
+                                    {/*  */}
                                     <TableCell
                                         component="th"
                                         id={labelId}
@@ -102,25 +145,51 @@ export default function AssetClassTable() {
                                             <option value={'현금자산'}>현금자산</option>
                                         </NativeSelect>
                                     </TableCell>
+                                    {/*  */}
                                     <TableCell align="center">
                                         <AssetMidClassInput row_id={row.id} row_value={row.asset_mid_class || ''}/>
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.asset_acnt || ''}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_acnt')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'asset_acnt')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.asset_acnt ? "한글 영문 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.asset_acnt}
+                                            value={row.asset_acnt || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_acnt')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, 'asset_acnt')} />
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.asset_name || ''}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_name')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'asset_name')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한글 영문 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.asset_name}
+                                            value={row.asset_name || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_name')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, 'asset_name')} />
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.amount || 0}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'amount')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'amount')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.amount ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.amount}
+                                            value={row.amount || 0}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'amount')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, 'amount')} />
                                     </TableCell>
-                                    <TableCell align="center"><Input value={row.earning_rate || 0}
-                                        onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'earning_rate')}
-                                        onBlur={(event) => handleDataBlur(event, row.id, 'earning_rate')} />
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.earning_rate ? "소수 2자리 숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.earning_rate}
+                                            value={row.earning_rate || 0}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'earning_rate')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, 'earning_rate')} />
                                     </TableCell>
+                                    {/*  */}
                                     <TableCell align="center">{row.reg_date}</TableCell>
                                 </TableRow>
                             );
