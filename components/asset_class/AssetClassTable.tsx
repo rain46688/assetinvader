@@ -41,6 +41,7 @@ export default function AssetClassTable() {
         snackMessage,
         snackBarStatus,
         getList,
+        setValidationList,
         setIsNotSortStatus,
         setSnack,
         setSnackMessage,
@@ -77,12 +78,18 @@ export default function AssetClassTable() {
         </Snackbar>
             {/* 툴바 props */}
             <EnhancedTableToolbar 
-            numSelected={selected.length} selected={selected} setSelected={setSelected} setPage={setPage} rowsPerPage={rowsPerPage}
+                numSelected={selected.length} 
+                selected={selected} 
+                setSelected={setSelected} 
+                setPage={setPage} 
+                rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
                 setOrderBy={setOrderBy}
                 setSnack={setSnack}
                 setSnackMessage={setSnackMessage}
                 setSnackBarStatus={setSnackBarStatus}
+                validationList={validationList}
+                setValidationList={setValidationList}
                 getList={getList}/>
             <TableContainer>
                 <Table

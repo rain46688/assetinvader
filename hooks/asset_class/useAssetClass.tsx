@@ -318,6 +318,7 @@ export const useAssetClass = () => {
         snackMessage,
         snackBarStatus,
         getList,
+        setValidationList,
         setIsNotSortStatus,
         setSnack,
         setSnackMessage,

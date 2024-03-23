@@ -3,6 +3,7 @@ import { sendPost, sendDelete } from '@/utils/fetch';
 import { formatDate } from '@/utils/format';
 import { createData } from '@/redux/asset_class/AssetClass';
 import { AssetClassData } from '@/redux/asset_class/AssetClass';
+import { AssetClassValidation } from '@/redux/asset_class/AssetClass';
 
 // redux 관련 임포트
 import { setAssetClassList } from '@/redux/asset_class/assetClassSlice';
@@ -31,11 +32,13 @@ interface EnhancedTableToolbarProps {
   setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
   setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
   getList: (id: string) => Promise<void>;
+  validationList: AssetClassValidation[];
+  setValidationList: React.Dispatch<React.SetStateAction<AssetClassValidation[]>>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
-    setSnack, setSnackMessage, setSnackBarStatus, getList } = props;
+    setSnack, setSnackMessage, setSnackBarStatus, getList, validationList, setValidationList } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetClassReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -74,6 +77,11 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           1
         )
       ];
+      
+      // validationList에 추가
+      const newValList = [...validationList, { id: data.id, asset_mid_class: true, asset_acnt: true, asset_name: true, amount: true, earning_rate: true }];
+      setValidationList(newValList);
+
       // 추가 시에 마지막 페이지로 이동
       const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
       console.log("movePage : ", movePage);
