@@ -220,6 +220,7 @@ export const useAssetType = () => {
                 }
                 // 유효성 검사
 
+                debugger;
                 // 유효성 검사 리스트에서 해당 필드에 매칭되는 데이터를 뽑아옴
                 const fieldData = validationList.find(item => item.id === id);
 
@@ -314,6 +315,7 @@ export const useAssetType = () => {
         snack,
         snackMessage,
         snackBarStatus,
+        setValidationList,
         getList,
         setIsNotSortStatus,
         setSnack,

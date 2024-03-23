@@ -31,11 +31,13 @@ interface EnhancedTableToolbarProps {
   setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
   setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
   getList: (id: string) => Promise<void>;
+  validationList: AssetTypeValidation[];
+  setValidationList: React.Dispatch<React.SetStateAction<AssetTypeValidation[]>>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
-    setSnack, setSnackMessage, setSnackBarStatus, getList } = props;
+    setSnack, setSnackMessage, setSnackBarStatus, getList, validationList, setValidationList } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetTypeReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -73,6 +75,11 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           1
         )
       ];
+
+      // validationList에 추가
+      const newValList = [...validationList, { id: data.id, asset_acnt: true, asset_name: true, amount: true, earning_rate: true }];
+      setValidationList(newValList);
+
       // 추가 시에 마지막 페이지로 이동
       const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
       setPage(movePage);
