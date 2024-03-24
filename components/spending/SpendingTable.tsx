@@ -180,7 +180,7 @@ export default function SpendingTable() {
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 variant="standard"
-                                                helperText={validationList[index]?.spnd_type ? "한글 영문 입력" : ''}
+                                                helperText={validationList[index]?.spnd_type ? "한영특 숫자 입력" : ''}
                                                 error={validationList[index]?.spnd_type}
                                                 value={row.spnd_type || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'spnd_type')}
@@ -196,7 +196,7 @@ export default function SpendingTable() {
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 variant="standard"
-                                                helperText={validationList[index]?.description ? "한글 영문 입력" : ''}
+                                                helperText={validationList[index]?.description ? "한영특 숫자 입력" : ''}
                                                 error={validationList[index]?.description}
                                                 value={row.description || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'description')}
