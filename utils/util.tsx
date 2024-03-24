@@ -60,7 +60,6 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
     console.log(" ==== validationCheck ==== ");
     // 유효성 검사 타입
     let result = false;
-
     switch (fieldDataType[field]) {
         // 한글, 영문, 숫자, 공백, 일부 특수문자만 입력
         case "string":

@@ -154,7 +154,7 @@ export default function AssetClassTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        <AssetMidClassInput row_id={row.id} row_value={row.asset_mid_class || ''} validationList={validationList}/>
+                                        <AssetMidClassInput row_id={row.id} row_value={row.asset_mid_class || ''}/>
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
