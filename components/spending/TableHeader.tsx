@@ -1,13 +1,13 @@
 import { ChangeEvent, MouseEvent } from 'react';
 import { visuallyHidden } from '@mui/utils';
 import { Order } from '@/utils/sort';
-import { AssetTransactionData } from "@/redux/asset_transaction/AssetTransaction";
+import { SpendingData } from "@/redux/spending/Spending";
 
 // material-ui 관련 임포트
 import { Box, Checkbox, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 
 interface HeadCell {
-    id: keyof AssetTransactionData;
+    id: keyof SpendingData;
     label: string;
 }
 
@@ -36,7 +36,7 @@ const headCells: readonly HeadCell[] = [
 
 interface EnhancedTableProps {
     numSelected: number;
-    onRequestSort: (event: MouseEvent<unknown>, property: keyof AssetTransactionData) => void;
+    onRequestSort: (event: MouseEvent<unknown>, property: keyof SpendingData) => void;
     onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
@@ -47,7 +47,7 @@ interface EnhancedTableProps {
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, addStatus, setIsNotSortStatus } = props;
-    const createSortHandler = (property: keyof AssetTransactionData) => (event: MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof SpendingData) => (event: MouseEvent<unknown>) => {
         onRequestSort(event, property);
         // 정렬 버튼 클릭시에 정렬 허용
         setIsNotSortStatus(false);

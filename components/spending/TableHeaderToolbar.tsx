@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { sendPost, sendDelete } from '@/utils/fetch';
-import { createData } from '@/redux/asset_transaction/AssetTransaction';
-import { AssetTransactionData } from '@/redux/asset_transaction/AssetTransaction';
-import { AssetTransactionValidation } from '@/redux/asset_transaction/AssetTransaction';
+import { createData } from '@/redux/spending/Spending';
+import { SpendingData } from '@/redux/spending/Spending';
+import { SpendingValidation } from '@/redux/spending/Spending';
 
 // redux 관련 임포트
-import { setAssetTransactionList } from '@/redux/asset_transaction/assetTransactionSlice';
+import { setSpendingList } from '@/redux/spending/spendingSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
 
@@ -28,9 +28,9 @@ interface EnhancedTableToolbarProps {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
-  setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetTransactionData>>;
-  validationList: AssetTransactionValidation[];
-  setValidationList: React.Dispatch<React.SetStateAction<AssetTransactionValidation[]>>;
+  setOrderBy: React.Dispatch<React.SetStateAction<keyof SpendingData>>;
+  validationList: SpendingValidation[];
+  setValidationList: React.Dispatch<React.SetStateAction<SpendingValidation[]>>;
   addStatus: boolean;
   setAddStatus: React.Dispatch<React.SetStateAction<boolean>>;
   validation: boolean;
@@ -46,7 +46,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus, setIsNotSortStatus, getList } = props;
 
   const dispatch = useAppDispatch();
-  const list = useAppSelector(state => state.assetTransactionReducer); // Redux 상태에서 필요한 데이터 읽어오기
+  const list = useAppSelector(state => state.spendingReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
   // 항목 추가
   const handleAddList = async () => {
@@ -87,7 +87,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setPage(movePage);
     setOrder('asc');
     setOrderBy('trns_date');
-    dispatch(setAssetTransactionList(newList));
+    dispatch(setSpendingList(newList));
   };
 
   // 선택된 항목 삭제
@@ -109,7 +109,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         setSnack(true);
         setSnackMessage("데이터 삭제 완료.");
         setSnackBarStatus("success");
-        dispatch(setAssetTransactionList(newList));
+        dispatch(setSpendingList(newList));
       } else {
         setSnack(true);
         setSnackMessage("데이터 삭제 실패.");
@@ -170,7 +170,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       let lastItem = { ...newList[newList.length - 1] }; 
       lastItem.id = result.data.id; 
       newList[newList.length - 1] = lastItem; 
-      dispatch(setAssetTransactionList(newList));
+      dispatch(setSpendingList(newList));
     } else {
       console.log("fail");
       setSnack(true);
@@ -178,7 +178,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setSnackBarStatus("error");
       setAddStatus(false);
       setIsNotSortStatus(false);
-      dispatch(setAssetTransactionList([...list]));
+      dispatch(setSpendingList([...list]));
     }
   };
 
@@ -188,7 +188,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const newList = list.filter((item) => item.id !== 0);
     setSelected([]);
     setAddStatus(false);
-    dispatch(setAssetTransactionList(newList));
+    dispatch(setSpendingList(newList));
     // 추가 시에 마지막 페이지로 이동
     const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
     setPage(movePage);

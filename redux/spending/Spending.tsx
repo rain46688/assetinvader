@@ -1,6 +1,6 @@
 
 // 타입 정의
-export interface AssetTransactionData {
+export interface SpendingData {
     id: number;
     asset_name: string;
     asset_acnt: string;
@@ -10,7 +10,7 @@ export interface AssetTransactionData {
 }
 
 // 유효성 검사 타입 정의
-export interface AssetTransactionValidation {
+export interface SpendingValidation {
     id: number;
     asset_name: boolean;
     asset_acnt: boolean;
@@ -34,7 +34,7 @@ export function createData(
     trns_type: string,
     amount: number,
     trns_date: string,
-): AssetTransactionData {
+): SpendingData {
     return {
         id,
         asset_name,

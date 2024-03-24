@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from 'react';
-import { useAssetTransaction } from '@/hooks/asset_transaction/useAssetTransaction';
+import { useSpending } from '@/hooks/spending/useSpending';
 import { ChangeEvent } from 'react';
-import { EnhancedTableHead } from "@/components/asset_transaction/TableHeader";
-import { EnhancedTableToolbar } from "@/components/asset_transaction/TableHeaderToolbar";
+import { EnhancedTableHead } from "@/components/spending/TableHeader";
+import { EnhancedTableToolbar } from "@/components/spending/TableHeaderToolbar";
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -69,7 +69,7 @@ export default function SpendingTable() {
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
-    } = useAssetTransaction();
+    } = useSpending();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>

@@ -1,19 +1,19 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet } from "@/utils/fetch";
 import { formatDateV2 } from "@/utils/format";
-import { AssetTransactionData, AssetTransactionValidation, AssetName, createData } from "@/redux/asset_transaction/AssetTransaction";
+import { SpendingData, SpendingValidation, AssetName, createData } from "@/redux/spending/Spending";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
 
 // redux 관련 임포트
-import { setAssetTransactionList } from '@/redux/asset_transaction/assetTransactionSlice';
+import { setSpendingList } from '@/redux/spending/spendingSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
-export const useAssetTransaction = () => {
+export const useSpending = () => {
     // 정렬 ASC / DESC 관련
     const [order, setOrder] = useState<Order>('asc');
     // 정렬 기준 관련
-    const [orderBy, setOrderBy] = useState<keyof AssetTransactionData>('trns_date');
+    const [orderBy, setOrderBy] = useState<keyof SpendingData>('trns_date');
     // 데이터 선택 관련
     const [selected, setSelected] = useState<readonly number[]>([]);
     // 페이지 관련
@@ -21,7 +21,7 @@ export const useAssetTransaction = () => {
     // 화면에 뿌려지는 기본 데이터 갯수 관련
     const [rowsPerPage, setRowsPerPage] = useState(5);
     // 유효성 검사 리스트
-    const [validationList, setValidationList] = useState<AssetTransactionValidation[]>([]);
+    const [validationList, setValidationList] = useState<SpendingValidation[]>([]);
     // 유효성 검사 성공 여부
     const [validation, setValidation] = useState(false);
     // 스낵바 관련
@@ -39,7 +39,7 @@ export const useAssetTransaction = () => {
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
-    const rows = useAppSelector(state => state.assetTransactionReducer);
+    const rows = useAppSelector(state => state.spendingReducer);
 
     // 데이터 가져오기
     useEffect(() => {
@@ -64,12 +64,12 @@ export const useAssetTransaction = () => {
             setSelectData(selectData);
 
             // 유효성 검사 리스트
-            const valList: AssetTransactionValidation[] = [];
+            const valList: SpendingValidation[] = [];
             // 데이터 저장
             const list = res.data;
             // 데이터 변환
 
-            const newList = list.map((item: AssetTransactionData, index: number) => {
+            const newList = list.map((item: SpendingData, index: number) => {
                 // asset 값이 없을 경우 건너뜀
                 if ((item as any).asset == undefined) {
                     return;
@@ -98,12 +98,12 @@ export const useAssetTransaction = () => {
             );
 
             // 외래키로 연결된 asset 값이 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
-            const filteredList = newList.filter((item: AssetTransactionData) => item !== undefined);
+            const filteredList = newList.filter((item: SpendingData) => item !== undefined);
 
             // 유효성 검사 리스트 저장
             setValidationList(valList);
             // 데이터 저장
-            dispatch(setAssetTransactionList(filteredList));
+            dispatch(setSpendingList(filteredList));
         } else {
             console.log(' === getList error === ');
             setSnack(true);
@@ -115,7 +115,7 @@ export const useAssetTransaction = () => {
     // 정렬 관련 함수
     const handleRequestSort = (
         event: MouseEvent<unknown>,
-        property: keyof AssetTransactionData,
+        property: keyof SpendingData,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -238,7 +238,7 @@ export const useAssetTransaction = () => {
         });
 
         // 수정된 배열을 설정
-        dispatch(setAssetTransactionList(updatedRows));
+        dispatch(setSpendingList(updatedRows));
     };
 
     // 셀렉트 박스 거래 내역 이름 변경 함수
@@ -258,7 +258,7 @@ export const useAssetTransaction = () => {
             }
             return item;
         });
-        dispatch(setAssetTransactionList(updatedRows));
+        dispatch(setSpendingList(updatedRows));
     };
 
     // 스낵바 닫기 함수

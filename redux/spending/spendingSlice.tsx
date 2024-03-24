@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AssetTransactionData } from '@/redux/asset_transaction/AssetTransaction';
+import { SpendingData } from '@/redux/spending/Spending';
 
 // 초기 상태 정의
-const initialState: AssetTransactionData[] = [];
+const initialState: SpendingData[] = [];
 
-const assetTransactionSlice = createSlice({
-    name: 'asset_transaction',
+const SpendingSlice = createSlice({
+    name: 'spending',
     initialState: initialState,
     reducers: {
         // setAsset 액션 생성 함수
-        setAssetTransactionList: (state, action: PayloadAction<AssetTransactionData[]>) => {
-            const list: AssetTransactionData[] = [];
+        setSpendingList: (state, action: PayloadAction<SpendingData[]>) => {
+            const list: SpendingData[] = [];
             action.payload.forEach((item) => {
                 list.push(item);
             });
@@ -21,5 +21,5 @@ const assetTransactionSlice = createSlice({
 });
 
 // 액션 및 리듀서 내보내기
-export const { setAssetTransactionList } = assetTransactionSlice.actions;
-export default assetTransactionSlice.reducer;
+export const { setSpendingList } = SpendingSlice.actions;
+export default SpendingSlice.reducer;
