@@ -13,24 +13,20 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'asset_name',
-        label: '거래내역 이름',
+        id: 'spnd_date',
+        label: '지출 발생월',
     },
     {
-        id: 'asset_acnt',
-        label: '거래 발생계좌',
+        id: 'spnd_type',
+        label: '지출 유형',
     },
     {
-        id: 'trns_type',
-        label: '거래 종류',
+        id: 'description',
+        label: '지출 설명',
     },
     {
         id: 'amount',
-        label: '거래 수량',
-    },
-    {
-        id: 'trns_date',
-        label: '거래 발생일',
+        label: '지출 금액',
     },
 ];
 

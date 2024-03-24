@@ -63,20 +63,18 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         0,
         "",
         "",
-        "매수",
-        0,
-        ""
+        "",
+        0
       )
     ];
 
     // 유효성 검사 리스트에 추가
     validationList.push({
       id: list.length,
-      asset_name: true,
-      asset_acnt: true,
-      trns_type: true,
+      spnd_date: true,
+      spnd_type: true,
+      description: true,
       amount: true,
-      trns_date: true
     });
 
     // 유효성 검사 리스트 업데이트
@@ -85,8 +83,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     // 추가 시에 마지막 페이지로 이동
     const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
     setPage(movePage);
-    setOrder('asc');
-    setOrderBy('trns_date');
+    setOrder('desc');
+    setOrderBy('spnd_date');
     dispatch(setSpendingList(newList));
   };
 
@@ -104,8 +102,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         // 삭제 시에 마지막 페이지로 이동
         const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
         setPage(movePage);
-        setOrder('asc');
-        setOrderBy('trns_date');
+        setOrder('desc');
+        setOrderBy('spnd_date');
         setSnack(true);
         setSnackMessage("데이터 삭제 완료.");
         setSnackBarStatus("success");
@@ -122,8 +120,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 목록 새로고침
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
-    setOrder('asc');
-    setOrderBy('trns_date');
+    setOrder('desc');
+    setOrderBy('spnd_date');
     setPage(0);
     // 목록 새로고침
     getList(sessionStorage.getItem('id') + '');
@@ -145,17 +143,17 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     }
 
     // 아무것도 없는 경우에는 맨위에 보여지는 매수 값으로 설정
-    if (new_data.trns_type === "") {
-      new_data.trns_type = "매수";
-    }
+    // if (new_data.trns_type === "") {
+    //   new_data.trns_type = "매수";
+    // }
 
     // 서버에 데이터 추가
     const data = JSON.stringify({
-      "asset_id": (new_data as any).asset_id,
-      "trns_type": new_data.trns_type,
-      "amount": new_data.amount,
-      "cash_amount": 0,
-      "trns_date": new_data.trns_date
+      // "asset_id": (new_data as any).asset_id,
+      // "trns_type": new_data.trns_type,
+      // "amount": new_data.amount,
+      // "cash_amount": 0,
+      // "trns_date": new_data.trns_date
     });
 
     const result = await sendPost(data, 'assettransaction/add_assettransaction');
@@ -219,7 +217,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="h6"
           id="tableTitle"
           component="div">
-          자산거래 기록
+          지출내역 기록
         </Typography>
       )}
 

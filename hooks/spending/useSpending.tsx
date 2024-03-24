@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet } from "@/utils/fetch";
 import { formatDateV2 } from "@/utils/format";
-import { SpendingData, SpendingValidation, AssetName, createData } from "@/redux/spending/Spending";
+import { SpendingData, SpendingValidation, createData } from "@/redux/spending/Spending";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
 
@@ -11,9 +11,9 @@ import { useAppDispatch, useAppSelector } from '@/app/store';
 
 export const useSpending = () => {
     // 정렬 ASC / DESC 관련
-    const [order, setOrder] = useState<Order>('asc');
+    const [order, setOrder] = useState<Order>('desc');
     // 정렬 기준 관련
-    const [orderBy, setOrderBy] = useState<keyof SpendingData>('trns_date');
+    const [orderBy, setOrderBy] = useState<keyof SpendingData>('spnd_date');
     // 데이터 선택 관련
     const [selected, setSelected] = useState<readonly number[]>([]);
     // 페이지 관련
@@ -32,8 +32,6 @@ export const useSpending = () => {
     const [snackBarStatus, setSnackBarStatus] = useState("success");
     // 데이터 추가 상태 관련
     const [addStatus, setAddStatus] = useState(false);
-    // 거래 내역 선택 데이터
-    const [selectData, setSelectData] = useState<AssetName[]>([]);
     // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
     const [isNotSortStatus, setIsNotSortStatus] = useState(true)
 
@@ -52,16 +50,8 @@ export const useSpending = () => {
     // 데이터 가져오기 함수
     const getList = async (id: string) => {
         console.log('=== getList === ');
-        const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
+        const res = await sendGet('/spending/getlist_spending/' + id);
         if (res.status === 'success') {
-
-            // 셀렉트 박스 거래 내역 이름 데이터 가져오기
-            const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
-            const asset_type_rest_list = asset_type_rest.data;
-            asset_type_rest_list.map((item: any) => {
-                selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
-            });
-            setSelectData(selectData);
 
             // 유효성 검사 리스트
             const valList: SpendingValidation[] = [];
@@ -70,40 +60,31 @@ export const useSpending = () => {
             // 데이터 변환
 
             const newList = list.map((item: SpendingData, index: number) => {
-                // asset 값이 없을 경우 건너뜀
-                if ((item as any).asset == undefined) {
-                    return;
-                }
 
                 // 유효성 검사 리스트에 저장 (수정 기능이 없어서 id값을 index로 사용)
                 valList.push({
                     id: index,
-                    asset_name: false,
-                    asset_acnt: false,
-                    trns_type: false,
+                    spnd_date: false,
+                    spnd_type: false,
+                    description: false,
                     amount: false,
-                    trns_date: false
                 });
 
                 // 타입 변환 필요
                 return createData(
                     item.id,
-                    (item as any).asset.asset_name,
-                    (item as any).asset.asset_acnt,
-                    item.trns_type,
+                    formatDateV2(item.spnd_date),
+                    item.spnd_type,
+                    item.description,
                     item.amount,
-                    formatDateV2(item.trns_date),
                 )
             }
             );
 
-            // 외래키로 연결된 asset 값이 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
-            const filteredList = newList.filter((item: SpendingData) => item !== undefined);
-
             // 유효성 검사 리스트 저장
             setValidationList(valList);
             // 데이터 저장
-            dispatch(setSpendingList(filteredList));
+            dispatch(setSpendingList(newList));
         } else {
             console.log(' === getList error === ');
             setSnack(true);
@@ -241,26 +222,6 @@ export const useSpending = () => {
         dispatch(setSpendingList(updatedRows));
     };
 
-    // 셀렉트 박스 거래 내역 이름 변경 함수
-    const handleDataAssetNameChange = (event: ChangeEvent<any>, id: number, index: number, field: string, newValue: AssetName) => {
-        console.log(" ==== handleDataAssetNameChange ==== ");
-
-        // 수정된 배열을 설정
-        const updatedRows = rows.map(item => {
-            if (item.id === id) {
-                console.log(item);
-                return {
-                    ...item,
-                    asset_name: newValue.label,
-                    asset_acnt: newValue.asset_acnt,
-                    asset_id: newValue.id
-                };
-            }
-            return item;
-        });
-        dispatch(setSpendingList(updatedRows));
-    };
-
     // 스낵바 닫기 함수
     const handleSnackClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -284,14 +245,12 @@ export const useSpending = () => {
         snackMessage,
         addStatus,
         validation,
-        selectData,
         snackBarStatus,
         getList,
         setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,
         setSnackMessage,
-        handleDataAssetNameChange,
         setAddStatus,
         setValidationList,
         setOrder,

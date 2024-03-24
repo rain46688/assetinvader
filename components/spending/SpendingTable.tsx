@@ -48,14 +48,12 @@ export default function SpendingTable() {
         snackMessage,
         addStatus,
         validation,
-        selectData,
         snackBarStatus,
         getList,
         setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,
         setSnackMessage,
-        handleDataAssetNameChange,
         setAddStatus,
         setValidationList,
         setOrder,
@@ -122,7 +120,7 @@ export default function SpendingTable() {
                         rowCount={rows.length}
                         addStatus={addStatus}
                         setIsNotSortStatus={setIsNotSortStatus}
-                         />
+                    />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
@@ -160,17 +158,20 @@ export default function SpendingTable() {
                                         padding="none"
                                         align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={selectData}
-                                                getOptionKey={(option) => option.id}
-                                                onChange={(event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', newValue || { id: 0, label: '', asset_acnt: '' })}
-                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params} />}
-                                            />
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DemoContainer components={['DatePicker', 'DatePicker']}>
+                                                    <DateField
+                                                        variant="standard"
+                                                        format="YYYY-MM"
+                                                        helperText={validationList[index]?.spnd_date ? "날짜 선택 필요" : ''}
+                                                        onChange={(event: any) => handleDataChange(event, row.id, index, 'spnd_date')}
+                                                        value={row.spnd_date}
+                                                    />
+                                                </DemoContainer>
+                                            </LocalizationProvider>
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.asset_name || ''}
+                                                {row.spnd_date || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
@@ -178,31 +179,31 @@ export default function SpendingTable() {
                                     <TableCell align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
-                                                disabled={true}
                                                 variant="standard"
-                                                value={row.asset_acnt || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
+                                                helperText={validationList[index]?.spnd_type ? "한글 영문 입력" : ''}
+                                                error={validationList[index]?.spnd_type}
+                                                value={row.spnd_type || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'spnd_type')}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.asset_acnt || ''}
+                                                {row.spnd_type || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <NativeSelect
-                                                value={row.trns_type}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
-                                                style={{ width: '150px', border: 'none' }}
-                                                inputProps={{ 'aria-label': 'Without label' }}>
-                                                <option value={'매수'}>매수</option>
-                                                <option value={'매도'}>매도</option>
-                                            </NativeSelect>
+                                            <TextField
+                                                variant="standard"
+                                                helperText={validationList[index]?.description ? "한글 영문 입력" : ''}
+                                                error={validationList[index]?.description}
+                                                value={row.description || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'description')}
+                                            />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.trns_type || ''}
+                                                {row.description || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
@@ -221,30 +222,6 @@ export default function SpendingTable() {
                                                 {row.amount || ''}
                                             </Typography>
                                         )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DemoContainer components={['DatePicker', 'DatePicker']}>
-                                                    <DateField
-                                                        variant="standard"
-                                                        format="YYYY-MM-DD"
-                                                        helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
-                                                        onChange={(event: any) => handleDataChange(event, row.id, index, 'trns_date')}
-                                                        value={row.trns_date}
-                                                    />
-                                                </DemoContainer>
-                                            </LocalizationProvider>
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.trns_date || ''}
-                                            </Typography>
-                                        )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {row.reg_date}
                                     </TableCell>
                                     {/*  */}
                                 </TableRow>
