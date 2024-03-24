@@ -153,7 +153,7 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={(validationList.find(item => item.id === row.id))?.asset_acnt ? "한글 영문 입력" : ''}
+                                            helperText={(validationList.find(item => item.id === row.id))?.asset_acnt ? "한영특 숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.asset_acnt}
                                             value={row.asset_acnt || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
@@ -163,7 +163,7 @@ export default function AssetTypeTable() {
                                     <TableCell align="center">
                                         <TextField
                                             variant="standard"
-                                            helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한글 영문 입력" : ''}
+                                            helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한영특 숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.asset_name}
                                             value={row.asset_name || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
