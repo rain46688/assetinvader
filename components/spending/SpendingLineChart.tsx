@@ -40,7 +40,6 @@ export default function SpendingLineChart() {
                 const monthIndex = parseInt(item.spnd_date.split('-')[1]) - 1; // 월별 인덱스 계산
                 groupedData[item.spnd_type][monthIndex] += item.amount; // 해당 월에 amount 누적
             });
-
             // 차트 데이터 생성
             const chartData = [];
             for (const spnd_type in groupedData) {
@@ -52,7 +51,6 @@ export default function SpendingLineChart() {
                     });
                 }
             }
-
             // 데이터 저장
             setChartData(chartData);
         } else {
