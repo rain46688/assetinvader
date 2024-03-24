@@ -95,7 +95,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     console.log(selected);
 
     selected.forEach(async (id) => {
-      const result = await sendDelete('assettransaction/delete_assettransaction/' + id);
+      const result = await sendDelete('spending/delete_spending/' + id);
       if (result.status === 'success') {
         const newList = list.filter((item) => !selected.includes(item.id));
         setSelected([]);
@@ -142,21 +142,16 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       return;
     }
 
-    // 아무것도 없는 경우에는 맨위에 보여지는 매수 값으로 설정
-    // if (new_data.trns_type === "") {
-    //   new_data.trns_type = "매수";
-    // }
-
     // 서버에 데이터 추가
     const data = JSON.stringify({
-      // "asset_id": (new_data as any).asset_id,
-      // "trns_type": new_data.trns_type,
-      // "amount": new_data.amount,
-      // "cash_amount": 0,
-      // "trns_date": new_data.trns_date
+      "member_id": sessionStorage.getItem('id'),
+      "spnd_date": new_data.spnd_date,
+      "spnd_type": new_data.spnd_type,
+      "description": new_data.description,
+      "amount": new_data.amount
     });
 
-    const result = await sendPost(data, 'assettransaction/add_assettransaction');
+    const result = await sendPost(data, 'spending/add_spending');
     if (result.status === 'success') {
       setSnack(true);
       setSnackMessage("데이터 추가 완료.");

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet } from "@/utils/fetch";
-import { formatDateV2 } from "@/utils/format";
+import { formatDate, formatDateV2, formatDateV3 } from "@/utils/format";
 import { SpendingData, SpendingValidation, createData } from "@/redux/spending/Spending";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
@@ -73,7 +73,7 @@ export const useSpending = () => {
                 // 타입 변환 필요
                 return createData(
                     item.id,
-                    formatDateV2(item.spnd_date),
+                    formatDateV3(item.spnd_date),
                     item.spnd_type,
                     item.description,
                     item.amount,
@@ -195,15 +195,17 @@ export const useSpending = () => {
                 // 입력한 값
                 let value = null;
                 if (event !== null) {
-                    value = event.target === undefined ? formatDateV2(event.$d) : event.target.value;
+                    value = event.target === undefined ? formatDateV3(event.$d) : event.target.value;
                 } else {
                     value = "";
                 }
 
                 // 유효성 검사 타입
                 const fieldDataType = {
-                    amount: "double2",
-                    trns_date: "date2",
+                    spnd_date: "date",
+                    spnd_type: "string",
+                    description: "string",
+                    amount: "number",
                 }
 
                 // 유효성 검사
