@@ -13,6 +13,13 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import dayjs, { Dayjs } from 'dayjs';
+
 export default function SpendingPieChart() {
 
     // 데이터 저장
@@ -20,24 +27,38 @@ export default function SpendingPieChart() {
 
     useEffect(() => {
         console.log(" === SpendingPieChart === ");
-        CreateChart();
+        const today = new Date();
+        const year = today.getFullYear().toString();
+        const month = (today.getMonth() + 1).toString();
+        CreateChart(year, month);
+        CreateChart('2024', '11');
     }, []);
 
     // 차트 생성 함수
-    const CreateChart = async () => {
+    const CreateChart = async (year: string, month: string) => {
         const id = sessionStorage.getItem('id');
-        const res = await sendGet('/spending/getlist_spending/' + id);
+        const res = await sendGet(`/spending/getlist_spending/${id}`);
         if (res.status === 'success') {
             // 데이터 저장
             const list = res.data;
+
+            debugger;
+            // 년도와 월에 맞는 데이터만 필터링
+            const filteredList = list.filter((item: { spnd_date: string }) => {
+                const [itemYear, itemMonth] = item.spnd_date.split('-');
+                return itemYear === year && itemMonth === month;
+            });
+
             // 데이터 그룹핑
-            const groupedData = list.reduce((acc: { [key: string]: number }, current: { spnd_type: string, amount: number }) => {
+            const groupedData = filteredList.reduce((acc: { [key: string]: number }, current: { spnd_type: string, amount: number }) => {
                 if (!acc[current.spnd_type]) {
                     acc[current.spnd_type] = 0;
                 }
                 acc[current.spnd_type] += current.amount;
                 return acc;
             }, {});
+
+            console.log(groupedData);
 
             // 형식에 맞게 변환된 데이터
             const data = Object.entries(groupedData).map(([label, value], id) => ({ id, value, label }));
@@ -50,7 +71,16 @@ export default function SpendingPieChart() {
 
     // 새로고침 버튼 클릭 이벤트
     const handleRefreshClick = () => {
-        CreateChart();
+        const today = new Date();
+        const year = today.getFullYear().toString();
+        const month = (today.getMonth() + 1).toString();
+        CreateChart(year, month);
+    };
+
+    // 날짜 선택 이벤트
+    const handleDateAccept = (date: any) => {
+        console.log(" === handleDateAccept === ");
+        CreateChart(date.$y + '', date.$M + 1 + '')
     };
 
     return (
@@ -67,6 +97,16 @@ export default function SpendingPieChart() {
                     component="div">
                     지출내역 기록 파이 차트
                 </Typography>
+
+                {/*  */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DatePicker']} sx={{ width: '26vh' }}>
+                        <MobileDatePicker label="날짜 선택" format="YYYY-MM" sx={{ width: '26vh' }} views={['month', 'year']}
+                            onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+                        />
+                    </DemoContainer>
+                </LocalizationProvider>
+
                 <Tooltip title="Refresh">
                     <IconButton aria-label="refresh" onClick={handleRefreshClick}>
                         <RefreshIcon />

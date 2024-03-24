@@ -37,7 +37,6 @@ export default function SpendingLineChart() {
             list.forEach((item: { spnd_date: string, amount: number }) => {
                 const year = item.spnd_date.slice(0, 4);
                 const month = parseInt(item.spnd_date.slice(5, 7), 10);
-                debugger;
                 if (!groupedData[year]) {
                     groupedData[year] = new Array(12).fill(0);
                 }
