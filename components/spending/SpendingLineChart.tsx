@@ -12,14 +12,15 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
+import { LineChart } from '@mui/x-charts/LineChart';
 
-export default function SpendingChart() {
+export default function SpendingLineChart() {
 
     // 데이터 저장
     const [chartData, setChartData] = useState<any[]>([]);
 
     useEffect(() => {
-        console.log(" === SpendingChart === ");
+        console.log(" === SpendingLineChart === ");
         CreateChart();
     }, []);
 
@@ -31,18 +32,29 @@ export default function SpendingChart() {
             // 데이터 저장
             const list = res.data;
             // 데이터 그룹핑
-            const groupedData = list.reduce((acc: { [key: string]: number }, current: { spnd_type: string, amount: number }) => {
-                if (!acc[current.spnd_type]) {
-                    acc[current.spnd_type] = 0;
+            const groupedData: { [key: string]: number[] } = {};
+            list.forEach((item: { spnd_type: string, spnd_date: string, amount: number }) => {
+                if (!groupedData[item.spnd_type]) {
+                    groupedData[item.spnd_type] = Array(12).fill(0); // 12개 월에 대한 초기값 설정
                 }
-                acc[current.spnd_type] += current.amount;
-                return acc;
-            }, {});
+                const monthIndex = parseInt(item.spnd_date.split('-')[1]) - 1; // 월별 인덱스 계산
+                groupedData[item.spnd_type][monthIndex] += item.amount; // 해당 월에 amount 누적
+            });
 
-            // 형식에 맞게 변환된 데이터
-            const data = Object.entries(groupedData).map(([label, value], id) => ({ id, value, label }));
+            // 차트 데이터 생성
+            const chartData = [];
+            for (const spnd_type in groupedData) {
+                if (groupedData.hasOwnProperty(spnd_type)) {
+                    chartData.push({
+                        curve: "linear",
+                        label: spnd_type,
+                        data: groupedData[spnd_type]
+                    });
+                }
+            }
+
             // 데이터 저장
-            setChartData(data);
+            setChartData(chartData);
         } else {
             console.log('error');
         }
@@ -65,7 +77,7 @@ export default function SpendingChart() {
                     variant="h6"
                     id="tableTitle"
                     component="div">
-                    지출내역 기록 차트
+                    지출내역 기록 라인 차트
                 </Typography>
                 <Tooltip title="Refresh">
                     <IconButton aria-label="refresh" onClick={handleRefreshClick}>
@@ -74,18 +86,12 @@ export default function SpendingChart() {
                 </Tooltip>
             </Toolbar>
             {chartData.length > 0 ? (
-                <PieChart series={[
-                    {
-                        data: chartData,
-                        innerRadius: 30,
-                        outerRadius: 100,
-                        paddingAngle: 2,
-                        cornerRadius: 5,
-                        cy: 100,
-                        highlightScope: { faded: 'global', highlighted: 'item' },
-                        faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-                    },
-                ]} height={220} />
+                <LineChart
+                    xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }]}
+                    series={chartData}
+                    height={220}
+                    margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
+                />
             ) : (
                 <Box sx={{
                     display: 'flex',
