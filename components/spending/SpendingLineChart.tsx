@@ -31,26 +31,62 @@ export default function SpendingLineChart() {
         if (res.status === 'success') {
             // 데이터 저장
             const list = res.data;
-            // 데이터 그룹핑
+
+            // A 그래프 데이터 생성
             const groupedData: { [key: string]: number[] } = {};
-            list.forEach((item: { spnd_type: string, spnd_date: string, amount: number }) => {
-                if (!groupedData[item.spnd_type]) {
-                    groupedData[item.spnd_type] = Array(12).fill(0); // 12개 월에 대한 초기값 설정
+            list.forEach((item: { spnd_date: string, amount: number }) => {
+                const year = item.spnd_date.slice(0, 4);
+                const month = parseInt(item.spnd_date.slice(5, 7), 10);
+                debugger;
+                if (!groupedData[year]) {
+                    groupedData[year] = new Array(12).fill(0);
                 }
-                const monthIndex = parseInt(item.spnd_date.split('-')[1]) - 1; // 월별 인덱스 계산
-                groupedData[item.spnd_type][monthIndex] += item.amount; // 해당 월에 amount 누적
+                groupedData[year][month - 1] += item.amount;
             });
+
+            // B 그래프 데이터 생성
+            const bGraphData: number[] = new Array(12).fill(0);
+            // 24년 12월 데이터를 채울 배열
+            for (let i = 0; i < 12; i++) {
+                let total = 0;
+                let count = 0;
+                for (let j = 0; j < 12; j++) {
+                    const date = new Date();
+                    date.setMonth((i) - j);
+                    const year = date.getFullYear().toString();
+                    const month = date.getMonth();
+                    if (groupedData[year] && groupedData[year][month] !== 0) {
+                        total += groupedData[year][month];
+                        count++;
+                    }
+                }
+                bGraphData[i] = count > 0 ? total / count : 0;
+            }
+
             // 차트 데이터 생성
             const chartData = [];
-            for (const spnd_type in groupedData) {
-                if (groupedData.hasOwnProperty(spnd_type)) {
-                    chartData.push({
-                        curve: "linear",
-                        label: spnd_type,
-                        data: groupedData[spnd_type]
-                    });
-                }
-            }
+
+            // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용
+            const today = new Date();
+            const thisYear = today.getFullYear().toString();
+            const aGraphData = groupedData[thisYear];
+            chartData.push({
+                curve: "linear",
+                id: '0',
+                data: aGraphData,
+                label: '월별 지출금액',
+            });
+            console.log("AGraphData : ", aGraphData);
+
+            // chartData에 B 그래프 데이터 추가
+            chartData.push({
+                curve: "linear",
+                id: '1',
+                data: bGraphData,
+                label: '월별 지출금액(12MA)',
+            });
+            console.log("BGraphData : ", bGraphData);
+
             // 데이터 저장
             setChartData(chartData);
         } else {
