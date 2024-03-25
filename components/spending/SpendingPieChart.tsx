@@ -24,14 +24,12 @@ export default function SpendingPieChart() {
 
     // 데이터 저장
     const [chartData, setChartData] = useState<any[]>([]);
+    const [year, setYear] = useState<string>(new Date().getFullYear().toString());
+    const [month, setMonth] = useState<string>((new Date().getMonth() + 1).toString());
 
     useEffect(() => {
         console.log(" === SpendingPieChart === ");
-        const today = new Date();
-        const year = today.getFullYear().toString();
-        const month = (today.getMonth() + 1).toString();
         CreateChart(year, month);
-        CreateChart('2024', '11');
     }, []);
 
     // 차트 생성 함수
@@ -42,12 +40,13 @@ export default function SpendingPieChart() {
             // 데이터 저장
             const list = res.data;
 
-            debugger;
             // 년도와 월에 맞는 데이터만 필터링
             const filteredList = list.filter((item: { spnd_date: string }) => {
                 const [itemYear, itemMonth] = item.spnd_date.split('-');
-                return itemYear === year && itemMonth === month;
+                return itemYear === year && (itemMonth === month || itemMonth === '0' + month);
             });
+
+            console.log("filteredList : ", filteredList);
 
             // 데이터 그룹핑
             const groupedData = filteredList.reduce((acc: { [key: string]: number }, current: { spnd_type: string, amount: number }) => {
@@ -58,11 +57,11 @@ export default function SpendingPieChart() {
                 return acc;
             }, {});
 
-            console.log(groupedData);
-
             // 형식에 맞게 변환된 데이터
             const data = Object.entries(groupedData).map(([label, value], id) => ({ id, value, label }));
             // 데이터 저장
+            setYear(year);
+            setMonth(month);
             setChartData(data);
         } else {
             console.log('error');
@@ -71,9 +70,8 @@ export default function SpendingPieChart() {
 
     // 새로고침 버튼 클릭 이벤트
     const handleRefreshClick = () => {
-        const today = new Date();
-        const year = today.getFullYear().toString();
-        const month = (today.getMonth() + 1).toString();
+        const year = new Date().getFullYear().toString();
+        const month = (new Date().getMonth() + 1).toString();
         CreateChart(year, month);
     };
 
@@ -97,21 +95,21 @@ export default function SpendingPieChart() {
                     component="div">
                     지출내역 기록 파이 차트
                 </Typography>
-
                 {/*  */}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']} sx={{ width: '26vh' }}>
-                        <MobileDatePicker label="날짜 선택" format="YYYY-MM" sx={{ width: '26vh' }} views={['month', 'year']}
-                            onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+                    <DemoContainer components={['DatePicker']} sx={{ width: '33%' }}>
+                        <MobileDatePicker format="YYYY-MM" sx={{ width: '50%' }} views={['month', 'year']}
+                            onAccept={(date) => { handleDateAccept(date) }} value={dayjs((year) + '-' + (month))}
                         />
                     </DemoContainer>
                 </LocalizationProvider>
-
+                {/*  */}
                 <Tooltip title="Refresh">
                     <IconButton aria-label="refresh" onClick={handleRefreshClick}>
                         <RefreshIcon />
                     </IconButton>
                 </Tooltip>
+                {/*  */}
             </Toolbar>
             {chartData.length > 0 ? (
                 <PieChart series={[
