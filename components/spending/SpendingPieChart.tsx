@@ -45,8 +45,6 @@ export default function SpendingPieChart() {
                 return itemYear === year && (itemMonth === month || itemMonth === '0' + month);
             });
 
-            console.log("filteredList : ", filteredList);
-
             // 데이터 그룹핑
             const groupedData = filteredList.reduce((acc: { [key: string]: number }, current: { spnd_type: string, amount: number }) => {
                 if (!acc[current.spnd_type]) {
