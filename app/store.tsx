@@ -8,6 +8,7 @@ import assetReducer from '@/redux/asset_type/assetTypeSlice';
 import assetClassReducer from '@/redux/asset_class/assetClassSlice';
 import assetTypeReducer from '@/redux/asset_type/assetTypeSlice';
 import assetTransactionReducer from '@/redux/asset_transaction/assetTransactionSlice';
+import spendingReducer from '@/redux/spending/spendingSlice';
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     assetClassReducer,
     assetTypeReducer,
     assetTransactionReducer,
+    spendingReducer,
   },
 });
 

@@ -1,29 +1,27 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
-import { sendGet, sendPut } from "@/utils/fetch";
-import { formatDate } from "@/utils/format";
-import { AssetTypeData, AssetTypeValidation, createData } from "@/redux/asset_type/AssetType";
+import { sendGet } from "@/utils/fetch";
+import { formatDate, formatDateV2, formatDateV3 } from "@/utils/format";
+import { SpendingData, SpendingValidation, createData } from "@/redux/spending/Spending";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
 
 // redux 관련 임포트
-import { setAssetTypeList } from '@/redux/asset_type/assetTypeSlice';
+import { setSpendingList } from '@/redux/spending/spendingSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
-export const useAssetType = () => {
+export const useSpending = () => {
     // 정렬 ASC / DESC 관련
-    const [order, setOrder] = useState<Order>('asc');
+    const [order, setOrder] = useState<Order>('desc');
     // 정렬 기준 관련
-    const [orderBy, setOrderBy] = useState<keyof AssetTypeData>('asset_type');
+    const [orderBy, setOrderBy] = useState<keyof SpendingData>('spnd_date');
     // 데이터 선택 관련
     const [selected, setSelected] = useState<readonly number[]>([]);
     // 페이지 관련
     const [page, setPage] = useState(0);
     // 화면에 뿌려지는 기본 데이터 갯수 관련
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    // 이전 데이터 저장
-    const [previousData, setPreviousData] = useState('');
     // 유효성 검사 리스트
-    const [validationList, setValidationList] = useState<AssetTypeValidation[]>([]);
+    const [validationList, setValidationList] = useState<SpendingValidation[]>([]);
     // 유효성 검사 성공 여부
     const [validation, setValidation] = useState(false);
     // 스낵바 관련
@@ -32,12 +30,14 @@ export const useAssetType = () => {
     const [snackMessage, setSnackMessage] = useState('');
     // 스낵바 상태 관련
     const [snackBarStatus, setSnackBarStatus] = useState("success");
+    // 데이터 추가 상태 관련
+    const [addStatus, setAddStatus] = useState(false);
     // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
-    const [isNotSortStatus, setIsNotSortStatus] = useState(true);
+    const [isNotSortStatus, setIsNotSortStatus] = useState(true)
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
-    const rows = useAppSelector(state => state.assetTypeReducer);
+    const rows = useAppSelector(state => state.spendingReducer);
 
     // 데이터 가져오기
     useEffect(() => {
@@ -50,48 +50,41 @@ export const useAssetType = () => {
     // 데이터 가져오기 함수
     const getList = async (id: string) => {
         console.log('=== getList === ');
-        const res = await sendGet('/asset/getlist_asset_type/' + id);
+        const res = await sendGet('/spending/getlist_spending/' + id);
         if (res.status === 'success') {
+
             // 유효성 검사 리스트
-            const valList: AssetTypeValidation[] = [];
+            const valList: SpendingValidation[] = [];
             // 데이터 저장
             const list = res.data;
             // 데이터 변환
-            const newList = list.map((item: AssetTypeData, index: number) => {
 
-                // 유효성 검사 리스트에 저장 (수정 기능이 있어서 id 값 필요)
+            const newList = list.map((item: SpendingData, index: number) => {
+
+                // 유효성 검사 리스트에 저장 (수정 기능이 없어서 id값을 index로 사용)
                 valList.push({
-                    id: item.id,
-                    asset_acnt: false,
-                    asset_name: false,
+                    id: index,
+                    spnd_date: false,
+                    spnd_type: false,
+                    description: false,
                     amount: false,
-                    earning_rate: false
                 });
 
                 // 타입 변환 필요
                 return createData(
                     item.id,
-                    item.member_id,
-                    item.asset_type,
-                    item.asset_big_class,
-                    item.asset_mid_class,
-                    item.asset_acnt,
-                    item.asset_name,
+                    formatDateV3(item.spnd_date),
+                    item.spnd_type,
+                    item.description,
                     item.amount,
-                    item.earning_rate,
-                    formatDate(item.reg_date),
-                    formatDate(item.mod_date),
-                    item.use_flag
                 )
             }
             );
 
-            console.log(valList);
-
             // 유효성 검사 리스트 저장
             setValidationList(valList);
             // 데이터 저장
-            dispatch(setAssetTypeList(newList));
+            dispatch(setSpendingList(newList));
         } else {
             console.log(' === getList error === ');
             setSnack(true);
@@ -103,7 +96,7 @@ export const useAssetType = () => {
     // 정렬 관련 함수
     const handleRequestSort = (
         event: MouseEvent<unknown>,
-        property: keyof AssetTypeData,
+        property: keyof SpendingData,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -126,14 +119,6 @@ export const useAssetType = () => {
 
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
-            if (orderBy !== 'asset_type' || order !== 'asc') {
-                console.log(" === 수정시 정렬 초기화 === ");
-                setSnack(true);
-                setSnackBarStatus("info");
-                setSnackMessage('수정 작업시 정렬이 초기화 됩니다.');
-                setOrder('asc');
-                setOrderBy('asset_type');
-            }
             return;
         }
 
@@ -160,7 +145,6 @@ export const useAssetType = () => {
         setPage(newPage);
         // 페이지 이동시에 정렬 허용
         setIsNotSortStatus(false);
-        console.log(validationList);
     };
 
     // 페이지 관련 함수
@@ -202,94 +186,42 @@ export const useAssetType = () => {
     }, [order, orderBy, page, rowsPerPage, rows]);
 
     // 데이터 변경 함수
-    const handleDataChange = (event: ChangeEvent<any>, id: number, index: number, field: string) => {
+    const handleDataChange = (event: any, id: number, index: number, field: string) => {
         console.log(" ==== handleChange ==== ");
 
         const updatedRows = rows.map(item => {
             if (item.id === id) {
 
                 // 입력한 값
-                const value = event.target.value;
+                let value = null;
+                if (event !== null) {
+                    value = event.target === undefined ? formatDateV3(event.$d) : event.target.value;
+                } else {
+                    value = "";
+                }
 
                 // 유효성 검사 타입
                 const fieldDataType = {
-                    asset_acnt: "string",
-                    asset_name: "string",
+                    spnd_date: "date",
+                    spnd_type: "string",
+                    description: "string",
                     amount: "number",
-                    earning_rate: "double"
                 }
+
                 // 유효성 검사
-
-                // 유효성 검사 리스트에서 해당 필드에 매칭되는 데이터를 뽑아옴
-                const fieldData = validationList.find(item => item.id === id);
-
-                const result = validationCheck(value, field, fieldDataType, fieldData);
+                const result = validationCheck(value, field, fieldDataType, (validationList[index] as any));
                 setValidation(result);
 
-                // 이전 데이터 저장
-                setPreviousData((item as any)[field]);
                 return {
                     ...item,
-                    [field]: event.target.value
+                    [field]: value
                 };
             }
             return item;
         });
 
         // 수정된 배열을 설정
-        dispatch(setAssetTypeList(updatedRows));
-    };
-
-    // 데이터 변경 함수
-    const handleDataBlur = async (event: ChangeEvent<any>, id: number, index: number, field: string) => {
-        console.log(" ==== handleDataBlur ==== ");
-        // 이전 데이터와 현재 데이터가 같다면 return
-
-        console.log(" === previousData === ", previousData);
-        console.log(" === event.target.value === ", event.target.value);
-        if (previousData === "") {
-            console.log(" === 데이터 동일 === ");
-            return;
-        }
-
-        // 유효성 검사
-        if (validation == false) {
-            // 유효성 검사 실패시 return
-            console.log(" === 유효성 검사 실패 === ");
-            setSnack(true);
-            setSnackMessage("데이터 유효성 검사 실패.");
-            setSnackBarStatus("warning");
-            return;
-        }
-
-        console.log(" === 데이터 변경 === ");
-
-        // list에서 해당 아이디에 매칭되는 데이터를 뽑아옴
-        const item = rows.find(item => item.id === id);
-        const data = JSON.stringify({
-            "asset_type": item?.asset_type,
-            "asset_name": item?.asset_name,
-            "amount": item?.amount,
-            "asset_acnt": item?.asset_acnt,
-            "earning_rate": item?.earning_rate
-        });
-
-        const result = await sendPut(data, 'asset/update_asset/' + id);
-        if (result.status === 'success') {
-            console.log(" === 수정 성공 === ");
-            setSnack(true);
-            setSnackMessage("데이터 수정 완료.");
-            setSnackBarStatus("success");
-            setIsNotSortStatus(false);
-            dispatch(setAssetTypeList([...rows]));
-        } else {
-            console.log(" === 수정 실패 === ");
-            setSnack(true);
-            setSnackMessage("데이터 수정 실패.");
-            setSnackBarStatus("error");
-            setIsNotSortStatus(false);
-            dispatch(setAssetTypeList([...rows]));
-        }
+        dispatch(setSpendingList(updatedRows));
     };
 
     // 스낵바 닫기 함수
@@ -313,13 +245,16 @@ export const useAssetType = () => {
         validationList,
         snack,
         snackMessage,
+        addStatus,
+        validation,
         snackBarStatus,
-        setValidationList,
         getList,
         setIsNotSortStatus,
+        setSnackBarStatus,
         setSnack,
         setSnackMessage,
-        setSnackBarStatus,
+        setAddStatus,
+        setValidationList,
         setOrder,
         setOrderBy,
         setPage,
@@ -328,7 +263,6 @@ export const useAssetType = () => {
         handleRequestSort,
         handleClick,
         handleDataChange,
-        handleDataBlur,
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
