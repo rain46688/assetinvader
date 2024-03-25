@@ -265,7 +265,7 @@ export default function AsetTransactionTable() {
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 3 }} />
             ) : (
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[15, 20, 25]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}

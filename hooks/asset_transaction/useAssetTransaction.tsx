@@ -19,7 +19,7 @@ export const useAssetTransaction = () => {
     // 페이지 관련
     const [page, setPage] = useState(0);
     // 화면에 뿌려지는 기본 데이터 갯수 관련
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(15);
     // 유효성 검사 리스트
     const [validationList, setValidationList] = useState<AssetTransactionValidation[]>([]);
     // 유효성 검사 성공 여부
