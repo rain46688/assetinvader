@@ -1,7 +1,6 @@
 import * as React from "react";
 import { sendGet } from "@/utils/fetch";
 import { AssetClassData } from "@/redux/asset_class/AssetClass";
-import { useAssetClass } from "@/hooks/asset_class/useAssetClass";
 import { mid_class_name } from "@/redux/asset_class/AssetMidClass";
 
 function sleep(duration: number): Promise<void> {
@@ -14,7 +13,6 @@ function sleep(duration: number): Promise<void> {
 
 export const useAssetMidClass = (row_value: string) => {
   // custom hook 사용
-  const { handleDataChange, handleDataBlur } = useAssetClass();
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<readonly mid_class_name[]>([]);
   const loading = open && options.length === 0;
@@ -80,8 +78,6 @@ export const useAssetMidClass = (row_value: string) => {
     open,
     setOpen,
     options,
-    loading,
-    handleDataChange,
-    handleDataBlur,
+    loading
   };
 };

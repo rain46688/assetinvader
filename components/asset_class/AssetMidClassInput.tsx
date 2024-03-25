@@ -4,26 +4,29 @@ import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ChangeEvent } from "react";
 import { useAssetMidClass } from "@/hooks/asset_class/useAssetMidClass";
+import { useAssetClass } from "@/hooks/asset_class/useAssetClass";
 import { mid_class_name } from "@/redux/asset_class/AssetMidClass";
-import { AssetClassValidation } from "@/redux/asset_class/AssetClass";
+
 
 interface AssetMidClassProps {
   row_id: number;
   row_value: string;
-  validationList: AssetClassValidation[];
 }
 
 const filter = createFilterOptions<mid_class_name>();
 
 export default function AssetMidClass(props: AssetMidClassProps) {
-  const { row_id, row_value, validationList } = props;
+  const { row_id, row_value } = props;
+  const { 
+    validationList, 
+    handleDataChange, 
+    handleDataBlur 
+  } = useAssetClass();
   const {
     value, setValue,
     open, setOpen,
     options,
-    loading,
-    handleDataChange,
-    handleDataBlur
+    loading
   } = useAssetMidClass(row_value);
 
   return (
@@ -83,8 +86,8 @@ export default function AssetMidClass(props: AssetMidClassProps) {
       renderInput={(params) => (
         <TextField
           variant="standard"
-          helperText={(validationList.find(item => item.id === row_id))?.asset_acnt ? "한글 영문 입력" : ''}
-          error={(validationList.find(item => item.id === row_id))?.asset_acnt}
+          helperText={(validationList.find(item => item.id === row_id))?.asset_mid_class ? "한글 영문 입력" : ''}
+          error={(validationList.find(item => item.id === row_id))?.asset_mid_class}
           {...params}
           InputProps={{
             ...params.InputProps,
