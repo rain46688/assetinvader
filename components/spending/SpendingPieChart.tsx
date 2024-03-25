@@ -16,9 +16,8 @@ import Toolbar from '@mui/material/Toolbar';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 export default function SpendingPieChart() {
 
@@ -98,9 +97,22 @@ export default function SpendingPieChart() {
                 {/*  */}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']} sx={{ width: '33%' }}>
-                        <MobileDatePicker format="YYYY-MM" sx={{ width: '50%' }} views={['month', 'year']}
-                            onAccept={(date) => { handleDateAccept(date) }} value={dayjs((year) + '-' + (month))}
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div style={{ marginRight: '10vh' }}>
+                            </div>
+                            <MobileDatePicker
+                                format="YYYY-MM"
+                                sx={{
+                                    '& .MuiInputBase-root': {
+                                        width: '100%',
+                                        fontSize: '15px',
+                                    }
+                                }}
+                                views={['month', 'year']}
+                                onAccept={(date) => { handleDateAccept(date) }}
+                                value={dayjs((year) + '-' + (month))}
+                            />
+                        </div>
                     </DemoContainer>
                 </LocalizationProvider>
                 {/*  */}
