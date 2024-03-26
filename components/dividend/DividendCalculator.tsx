@@ -58,7 +58,7 @@ export default function DividendCalculator() {
         >
           <Typography
             sx={{ flex: "1 1 100%" }}
-            variant="h4"
+            variant="h6"
             id="tableTitle"
             component="div"
           >
@@ -68,86 +68,74 @@ export default function DividendCalculator() {
 
         <Grid
           container
-          sx={{
-            pl: { sm: 15 },
-            pr: { sm: 15 },
-            pb: { sm: 3 },
-          }}
+          sx={
+            {
+              // pl: { sm: 15 },
+              // pr: { sm: 15 },
+              // pb: { sm: 3 },
+            }
+          }
           alignItems="center"
           alignSelf="center"
         >
-          <FormGrid item xs={12} md={4}>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              alignSelf="center"
-              spacing={1}
-              useFlexGap
-              sx={{ width: { xs: "100%", sm: "auto" } }}
+          <FormGrid item xs={12} md={1}></FormGrid>
+          <FormGrid item xs={12} md={2}>
+            <Typography
+              sx={{ width: { xs: "100%" } }}
+              variant="body1"
+              id="tableTitle"
+              component="div"
+              textAlign="center"
             >
-              <Typography
-                sx={{ width: { xs: "100%" } }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
-                textAlign="center"
-              >
-                자산이름
-              </Typography>
-              <NativeSelect
-                value=""
-                // value={row.asset_big_class || ""}
-                // onChange={(event: ChangeEvent<any>) =>
-                //   handleDataChange(event, row.id, "asset_big_class")
-                // }
-                // onBlur={(event: ChangeEvent<any>) =>
-                //   handleDataBlur(event, row.id, "asset_big_class")
-                // }
-                style={{ width: "150px", border: "none" }}
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                <option value={"투자자산"}>투자자산</option>
-                <option value={"배당자산"}>배당자산</option>
-                <option value={"안전자산"}>안전자산</option>
-                <option value={"현금자산"}>현금자산</option>
-              </NativeSelect>
-            </Stack>
+              자산이름
+            </Typography>
           </FormGrid>
-          <FormGrid item xs={12} md={6}>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              alignSelf="center"
-              spacing={1}
-              useFlexGap
-              sx={{ width: { xs: "100%", sm: "auto" } }}
+          <FormGrid item xs={12} md={2}>
+            <NativeSelect
+              value=""
+              // value={row.asset_big_class || ""}
+              // onChange={(event: ChangeEvent<any>) =>
+              //   handleDataChange(event, row.id, "asset_big_class")
+              // }
+              // onBlur={(event: ChangeEvent<any>) =>
+              //   handleDataBlur(event, row.id, "asset_big_class")
+              // }
+              style={{ width: "100%" }}
+              inputProps={{ "aria-label": "Without label" }}
             >
-              <Typography
-                sx={{ width: "150px" }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
-                alignSelf="center"
-                textAlign="center"
-              >
-                배당락일
-              </Typography>
-              {/*  */}
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer
-                  components={["DatePicker"]}
-                  sx={{ width: { xs: "100%" } }}
-                >
-                  <MobileDatePicker
-                    label="날짜 선택"
-                    format="YYYY-MM"
-                    sx={{ width: { xs: "100%" } }}
-                    views={["month", "year"]}
-                    // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
-                  />
-                </DemoContainer>
-              </LocalizationProvider>
-            </Stack>
+              <option value={"투자자산"}>투자자산</option>
+              <option value={"배당자산"}>배당자산</option>
+              <option value={"안전자산"}>안전자산</option>
+              <option value={"현금자산"}>현금자산</option>
+            </NativeSelect>
           </FormGrid>
-          <FormGrid item xs={12} md={2} alignItems="center">
+          <FormGrid item xs={12} md={2}>
+            <Typography
+              sx={{ width: "100%" }}
+              variant="body1"
+              id="tableTitle"
+              component="div"
+              alignSelf="center"
+              textAlign="center"
+            >
+              배당락일
+            </Typography>
+            {/*  */}
+          </FormGrid>
+          <FormGrid item xs={12} md={2.5}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]} sx={{ width: "33%s" }}>
+                <MobileDatePicker
+                  label="날짜 선택"
+                  format="YYYY-MM"
+                  sx={{ width: "33%" }}
+                  views={["month", "year"]}
+                  // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </FormGrid>
+          <FormGrid item xs={12} md={1.5}>
             <Button
               sx={{ width: { xs: "100%" } }}
               variant="contained"
@@ -156,187 +144,173 @@ export default function DividendCalculator() {
               검색
             </Button>
           </FormGrid>
+          <FormGrid item xs={12} md={1}></FormGrid>
         </Grid>
       </Paper>
-      <br/>
+      <br />
       <Paper sx={{ width: "100%", mb: 2 }}>
         <Grid
           container
-          sx={{
-            pl: { sm: 15 },
-            pr: { sm: 15 },
-            pb: { sm: 3 },
-          }}
+          sx={
+            {
+              // pl: { sm: 15 },
+              // pr: { sm: 15 },
+              // pb: { sm: 3 },
+            }
+          }
           spacing={2}
           alignItems="center"
           alignSelf="center"
         >
-            
-        {/* 1행 */}
-          <FormGrid item xs={12} md={5}>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              alignSelf="center"
-              spacing={1}
-              useFlexGap
-              sx={{ width: { xs: "100%", sm: "auto" } }}
+          {/* 1행 */}
+          <FormGrid item xs={12} md={1}></FormGrid>
+          <FormGrid item xs={12} md={2}>
+            <Typography
+              sx={{ width: { xs: "100%" } }}
+              variant="body1"
+              id="tableTitle"
+              component="div"
+              textAlign="center"
             >
-              <Typography
-                sx={{ width: { xs: "100%" } }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
-                textAlign="center"
-              >
-                자산수량(주)
-              </Typography>
-              <TextField
-                variant="standard"
-                value={0}
-                // helperText={
-                //   validationList.find((item) => item.id === row.id)?.amount
-                //     ? "숫자 입력"
-                //     : ""
-                // }
-                // error={
-                //   validationList.find((item) => item.id === row.id)?.amount
-                // }
-                // value={row.amount || 0}
-                // onChange={(event: ChangeEvent<any>) =>
-                //   handleDataChange(event, row.id, "amount")
-                // }
-                // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
-              />
-            </Stack>
+              자산수량(주)
+            </Typography>
           </FormGrid>
-          <FormGrid item xs={12} md={5}>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
+          <FormGrid item xs={12} md={2}>
+            <TextField
+              variant="standard"
+              value={0}
+              // helperText={
+              //   validationList.find((item) => item.id === row.id)?.amount
+              //     ? "숫자 입력"
+              //     : ""
+              // }
+              // error={
+              //   validationList.find((item) => item.id === row.id)?.amount
+              // }
+              // value={row.amount || 0}
+              // onChange={(event: ChangeEvent<any>) =>
+              //   handleDataChange(event, row.id, "amount")
+              // }
+              // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+            />
+          </FormGrid>
+          <FormGrid item xs={12} md={2}>
+            <Typography
+              sx={{ width: { xs: "100%" } }}
+              variant="body1"
+              id="tableTitle"
+              component="div"
               alignSelf="center"
-              spacing={1}
-              useFlexGap
-              sx={{ width: { xs: "100%", sm: "auto" } }}
+              textAlign="center"
             >
-              <Typography
-                sx={{ width: { xs: "100%" } }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
-                alignSelf="center"
-                textAlign="center"
-              >
-                주당 확정배당금(원)
-              </Typography>
-              <TextField
-                variant="standard"
-                value={0}
-                // helperText={
-                //   validationList.find((item) => item.id === row.id)?.amount
-                //     ? "숫자 입력"
-                //     : ""
-                // }
-                // error={
-                //   validationList.find((item) => item.id === row.id)?.amount
-                // }
-                // value={row.amount || 0}
-                // onChange={(event: ChangeEvent<any>) =>
-                //   handleDataChange(event, row.id, "amount")
-                // }
-                // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
-              />
-            </Stack>
+              주당 확정배당금(원)
+            </Typography>
           </FormGrid>
-          <FormGrid item xs={12} md={2} alignItems="center">
+          <FormGrid item xs={12} md={2}>
+            <TextField
+              variant="standard"
+              value={0}
+              // helperText={
+              //   validationList.find((item) => item.id === row.id)?.amount
+              //     ? "숫자 입력"
+              //     : ""
+              // }
+              // error={
+              //   validationList.find((item) => item.id === row.id)?.amount
+              // }
+              // value={row.amount || 0}
+              // onChange={(event: ChangeEvent<any>) =>
+              //   handleDataChange(event, row.id, "amount")
+              // }
+              // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+            />
+          </FormGrid>
+          <FormGrid item xs={12} md={0.5}></FormGrid>
+          <FormGrid item xs={12} md={1.5}>
             <Button
               sx={{ width: { xs: "100%" } }}
               variant="contained"
               color="primary"
             >
-              확정배당금 저장
+              저장
             </Button>
           </FormGrid>
-        {/* 2행 */}
-          <FormGrid item xs={12} md={5}>
+          <FormGrid item xs={12} md={1}></FormGrid>
+          {/* 2행 */}
+          <FormGrid item xs={12} md={1}></FormGrid>
+          <FormGrid item xs={12} md={2}>
           </FormGrid>
-          <FormGrid item xs={12} md={5}>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
+          <FormGrid item xs={12} md={2}>
+          </FormGrid>
+          <FormGrid item xs={12} md={2}>
+            <Typography
+              sx={{ width: { xs: "100%" } }}
+              variant="body1"
+              id="tableTitle"
+              component="div"
               alignSelf="center"
-              spacing={1}
-              useFlexGap
-              sx={{ width: { xs: "100%", sm: "auto" } }}
+              textAlign="center"
             >
-              <Typography
-                sx={{ width: { xs: "100%" } }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
-                alignSelf="center"
-                textAlign="center"
-              >
-                총 배당금(원)
-              </Typography>
-              <TextField
-                variant="standard"
-                value={0}
-                // helperText={
-                //   validationList.find((item) => item.id === row.id)?.amount
-                //     ? "숫자 입력"
-                //     : ""
-                // }
-                // error={
-                //   validationList.find((item) => item.id === row.id)?.amount
-                // }
-                // value={row.amount || 0}
-                // onChange={(event: ChangeEvent<any>) =>
-                //   handleDataChange(event, row.id, "amount")
-                // }
-                // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
-              />
-            </Stack>
+              확정 배당금(원)
+            </Typography>
           </FormGrid>
-          <FormGrid item xs={12} md={2} alignItems="center">
+          <FormGrid item xs={12} md={2}>
+            <TextField
+              variant="standard"
+              value={0}
+              // helperText={
+              //   validationList.find((item) => item.id === row.id)?.amount
+              //     ? "숫자 입력"
+              //     : ""
+              // }
+              // error={
+              //   validationList.find((item) => item.id === row.id)?.amount
+              // }
+              // value={row.amount || 0}
+              // onChange={(event: ChangeEvent<any>) =>
+              //   handleDataChange(event, row.id, "amount")
+              // }
+              // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+            />
           </FormGrid>
+          <FormGrid item xs={12} md={2}>
+          </FormGrid>
+          <FormGrid item xs={12} md={1}></FormGrid>
           {/* 3행 */}
-          <FormGrid item xs={12} md={4}>
+          <FormGrid item xs={12} md={1}></FormGrid>
+          <FormGrid item xs={12} md={2}>
           </FormGrid>
-          <FormGrid item xs={12} md={6}>
-          <Stack
-              direction={{ xs: "column", sm: "row" }}
+          <FormGrid item xs={12} md={2}>
+          </FormGrid>
+          <FormGrid item xs={12} md={2}>
+            <Typography
+              sx={{ width: "100%" }}
+              variant="body1"
+              id="tableTitle"
+              component="div"
               alignSelf="center"
-              spacing={1}
-              useFlexGap
-              sx={{ width: { xs: "100%", sm: "auto" } }}
+              textAlign="center"
             >
-              <Typography
-                sx={{ width: "150px" }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
-                alignSelf="center"
-                textAlign="center"
-              >
-                배당금 지급일
-              </Typography>
-              {/*  */}
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer
-                  components={["DatePicker"]}
-                  sx={{ width: { xs: "100%" } }}
-                >
-                  <MobileDatePicker
-                    label="날짜 선택"
-                    format="YYYY-MM"
-                    sx={{ width: { xs: "100%" } }}
-                    views={["month", "year"]}
-                    // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
-                  />
-                </DemoContainer>
-              </LocalizationProvider>
-            </Stack>
+              배당금 지급일
+            </Typography>
+            {/*  */}
           </FormGrid>
-          <FormGrid item xs={12} md={2} alignItems="center">
+          <FormGrid item xs={12} md={2.5}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]} sx={{ width: "33%s" }}>
+                <MobileDatePicker
+                  label="날짜 선택"
+                  format="YYYY-MM"
+                  sx={{ width: "33%" }}
+                  views={["month", "year"]}
+                  // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
           </FormGrid>
+          <FormGrid item xs={12} md={1.5}>
+          </FormGrid>
+          <FormGrid item xs={12} md={1}></FormGrid>
         </Grid>
       </Paper>
     </>
