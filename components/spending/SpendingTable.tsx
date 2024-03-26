@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from 'react';
-import { useAssetTransaction } from '@/hooks/asset_transaction/useAssetTransaction';
+import { useSpending } from '@/hooks/spending/useSpending';
 import { ChangeEvent } from 'react';
-import { EnhancedTableHead } from "@/components/asset_transaction/TableHeader";
-import { EnhancedTableToolbar } from "@/components/asset_transaction/TableHeaderToolbar";
+import { EnhancedTableHead } from "@/components/spending/TableHeader";
+import { EnhancedTableToolbar } from "@/components/spending/TableHeaderToolbar";
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -15,10 +15,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Autocomplete from '@mui/material/Autocomplete';
 
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
@@ -31,7 +29,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 
-export default function AsetTransactionTable() {
+export default function SpendingTable() {
 
     // custom hook 사용
     const {
@@ -48,14 +46,12 @@ export default function AsetTransactionTable() {
         snackMessage,
         addStatus,
         validation,
-        selectData,
         snackBarStatus,
         getList,
         setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,
         setSnackMessage,
-        handleDataAssetNameChange,
         setAddStatus,
         setValidationList,
         setOrder,
@@ -69,7 +65,7 @@ export default function AsetTransactionTable() {
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
-    } = useAssetTransaction();
+    } = useSpending();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -122,7 +118,7 @@ export default function AsetTransactionTable() {
                         rowCount={rows.length}
                         addStatus={addStatus}
                         setIsNotSortStatus={setIsNotSortStatus}
-                         />
+                    />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
@@ -160,17 +156,20 @@ export default function AsetTransactionTable() {
                                         padding="none"
                                         align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={selectData}
-                                                getOptionKey={(option) => option.id}
-                                                onChange={(event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', newValue || { id: 0, label: '', asset_acnt: '' })}
-                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params} />}
-                                            />
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DemoContainer components={['DatePicker', 'DatePicker']}>
+                                                    <DateField
+                                                        variant="standard"
+                                                        format="YYYY-MM"
+                                                        helperText={validationList[index]?.spnd_date ? "날짜 선택 필요" : ''}
+                                                        onChange={(event: any) => handleDataChange(event, row.id, index, 'spnd_date')}
+                                                        value={row.spnd_date}
+                                                    />
+                                                </DemoContainer>
+                                            </LocalizationProvider>
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.asset_name || ''}
+                                                {row.spnd_date || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
@@ -178,31 +177,31 @@ export default function AsetTransactionTable() {
                                     <TableCell align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
-                                                disabled={true}
                                                 variant="standard"
-                                                value={row.asset_acnt || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
+                                                helperText={validationList[index]?.spnd_type ? "한영특 숫자 입력" : ''}
+                                                error={validationList[index]?.spnd_type}
+                                                value={row.spnd_type || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'spnd_type')}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.asset_acnt || ''}
+                                                {row.spnd_type || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <NativeSelect
-                                                value={row.trns_type}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
-                                                style={{ width: '150px', border: 'none' }}
-                                                inputProps={{ 'aria-label': 'Without label' }}>
-                                                <option value={'매수'}>매수</option>
-                                                <option value={'매도'}>매도</option>
-                                            </NativeSelect>
+                                            <TextField
+                                                variant="standard"
+                                                helperText={validationList[index]?.description ? "한영특 숫자 입력" : ''}
+                                                error={validationList[index]?.description}
+                                                value={row.description || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'description')}
+                                            />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.trns_type || ''}
+                                                {row.description || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
@@ -223,30 +222,6 @@ export default function AsetTransactionTable() {
                                         )}
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DemoContainer components={['DatePicker', 'DatePicker']}>
-                                                    <DateField
-                                                        variant="standard"
-                                                        format="YYYY-MM-DD"
-                                                        helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
-                                                        onChange={(event: any) => handleDataChange(event, row.id, index, 'trns_date')}
-                                                        value={row.trns_date}
-                                                    />
-                                                </DemoContainer>
-                                            </LocalizationProvider>
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.trns_date || ''}
-                                            </Typography>
-                                        )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {row.reg_date}
-                                    </TableCell>
-                                    {/*  */}
                                 </TableRow>
                             );
                         })}
@@ -265,7 +240,7 @@ export default function AsetTransactionTable() {
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 3 }} />
             ) : (
                 <TablePagination
-                    rowsPerPageOptions={[15, 20, 25]}
+                    rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
