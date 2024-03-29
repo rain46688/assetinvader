@@ -4,7 +4,7 @@ import { SpendingData } from '@/redux/spending/Spending';
 // 초기 상태 정의
 const initialState: SpendingData[] = [];
 
-const SpendingSlice = createSlice({
+const spendingSlice = createSlice({
     name: 'spending',
     initialState: initialState,
     reducers: {
@@ -21,5 +21,5 @@ const SpendingSlice = createSlice({
 });
 
 // 액션 및 리듀서 내보내기
-export const { setSpendingList } = SpendingSlice.actions;
-export default SpendingSlice.reducer;
+export const { setSpendingList } = spendingSlice.actions;
+export default spendingSlice.reducer;

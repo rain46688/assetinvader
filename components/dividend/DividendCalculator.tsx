@@ -3,11 +3,8 @@
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
-import FormLabel from "@mui/material/FormLabel";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
 import NativeSelect from "@mui/material/NativeSelect";
 import Button from "@mui/material/Button";
@@ -146,6 +143,7 @@ export default function DividendCalculator() {
           </FormGrid>
           <FormGrid item xs={12} md={1}></FormGrid>
         </Grid>
+        <br/>
       </Paper>
       <br />
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -312,6 +310,7 @@ export default function DividendCalculator() {
           </FormGrid>
           <FormGrid item xs={12} md={1}></FormGrid>
         </Grid>
+        <br/>
       </Paper>
     </>
   );
