@@ -37,16 +37,22 @@ export default function DividendCalculator() {
     selectedAssetAmount,
     dividendPricePerAmount,
     dividendPrice,
+    dividendDate,
+    snack,
+    snackBarStatus,
+    snackMessage,
     handleSelectAssetName,
     handleSearchAssetAmount,
     handleDateAccept,
     handlePriceDataChange,
+    hadleSavePriceData,
+    handleSnackClose,
   } = useDividend();
   return (
     <>
       <Paper sx={{ width: "100%", mb: 2 }}>
         {/* 스낵바 설정 */}
-        {/* <Snackbar
+        <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             open={snack}
             autoHideDuration={5000}
@@ -58,8 +64,7 @@ export default function DividendCalculator() {
                 sx={{ width: '100%' }}>
                 {snackMessage}
             </Alert>
-        </Snackbar> */}
-
+        </Snackbar>
         <Toolbar
           sx={{
             pl: { sm: 2 },
@@ -197,6 +202,9 @@ export default function DividendCalculator() {
                   sx={{ width: { xs: "100%" } }}
                   variant="contained"
                   color="primary"
+                  onClick={() => {
+                    hadleSavePriceData();
+                  }}
                 >
                   저장
                 </Button>
@@ -253,7 +261,10 @@ export default function DividendCalculator() {
                       label="날짜 선택"
                       format="YYYY-MM-DD"
                       sx={{ width: "33%" }}
-                      // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+                      onAccept={(date) => {
+                        handleDateAccept(date, "DividendDate");
+                      }}
+                      value={dividendDate == '' ? '' : dayjs(dividendDate)}
                     />
                   </DemoContainer>
                 </LocalizationProvider>

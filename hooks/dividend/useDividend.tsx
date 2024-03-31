@@ -4,12 +4,17 @@ import { formatDateV2 } from "@/utils/format";
 import { createData } from '@/redux/asset_transaction/AssetTransaction';
 import { parseDate } from '@/utils/format';
 import { validationCheck } from '@/utils/util';
+import { sendPost } from '@/utils/fetch';
 
 import { AssetTransactionData } from '@/redux/asset_transaction/AssetTransaction';
+import { useAppDispatch, useAppSelector } from '@/app/store';
+import { setDividendList } from '@/redux/dividend/dividendSlice';
 
 export const useDividend = () => {
     // 선택된 자산이름
     const [selectedAssetName, setSelectedAssetName] = useState('');
+    // 선택된 자산의 번호
+    const [selectedAssetId, setSelectedAssetId] = useState('');
     // 선택된 배당락일
     const [exDividendDate, setExDividendDate] = useState('')
     // 배당금 계산기 페이지 오픈 여부
@@ -22,6 +27,16 @@ export const useDividend = () => {
     const [dividendPrice, setDividendPrice] = useState(0);
     // 선택된 배당금지급일
     const [dividendDate, setDividendDate] = useState('');
+    // 스낵바 관련
+    const [snack, setSnack] = useState(false);
+    // 스낵바 메시지 관련
+    const [snackMessage, setSnackMessage] = useState('');
+    // 스낵바 상태 관련
+    const [snackBarStatus, setSnackBarStatus] = useState("success");
+    
+    // redux 관련 추가
+    const dispatch = useAppDispatch();
+    const rows = useAppSelector(state => state.dividendReducer);
 
     // 자산 선택 이벤트
     const handleSelectAssetName = (event: ChangeEvent<any>) => {
@@ -66,6 +81,7 @@ export const useDividend = () => {
                 if(parseDate(formatDateV2((item as any).trns_date)) > parseDate(exDividendDate)) {
                     return;
                 }
+                setSelectedAssetId((item as any).asset_id);
 
                 // 타입 변환 필요
                 return createData(
@@ -98,6 +114,7 @@ export const useDividend = () => {
         }
     }
 
+    // 주당배당금 수정 및 배당금 계산
     const handlePriceDataChange = (event: ChangeEvent<any>) => {
         console.log(" ==== handleChange ==== ");
         const value = event.target.value;
@@ -105,9 +122,41 @@ export const useDividend = () => {
         if(result) {
             console.log(value);
             setDividendPricePerAmount(value);
-            setDividendPrice(value * selectedAssetAmount);
+            setDividendPrice(Math.round(value * selectedAssetAmount));
         }
     }
+
+    // 배당금 저장
+    const hadleSavePriceData = async () => {
+        const data = JSON.stringify({
+            "asset_id": selectedAssetId,
+            "amount": dividendPrice,
+            "occurrence_date": parseDate(dividendDate)
+        });
+        console.log(data);
+
+        const result = await sendPost(data, 'cashflow/add_cashflow');
+        if (result.status === 'success') {
+            console.log(" === 수정 성공 === ");
+            setSnack(true);
+            setSnackMessage("데이터 수정 완료.");
+            setSnackBarStatus("success");
+            dispatch(setDividendList([{"id": result.data.id, "asset_name": selectedAssetName,"amount": result.data.amount,"occurrence_date": formatDateV2(result.data.occurrence_date)}, ...rows]));
+        } else {
+            console.log(" === 수정 실패 === ");
+            setSnack(true);
+            setSnackMessage("데이터 수정 실패.");
+            setSnackBarStatus("error");
+        }
+    }
+
+    // 스낵바 닫기 함수
+    const handleSnackClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnack(false);
+    };
 
 
     // 함수 반환
@@ -121,9 +170,15 @@ export const useDividend = () => {
         setSelectedAssetAmount,
         dividendPricePerAmount,
         dividendPrice,
+        dividendDate,
+        snack,
+        snackBarStatus,
+        snackMessage,
         handleSelectAssetName,
         handleSearchAssetAmount,
         handleDateAccept,
         handlePriceDataChange,
+        hadleSavePriceData,
+        handleSnackClose,
     };
 }

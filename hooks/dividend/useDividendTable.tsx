@@ -18,7 +18,6 @@ export const useDividendTable = () => {
     // 화면에 뿌려지는 기본 데이터 갯수 관련
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-
     // redux 관련 추가
     const dispatch = useAppDispatch();
     const rows = useAppSelector(state => state.dividendReducer);
