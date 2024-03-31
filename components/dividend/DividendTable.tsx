@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useDividend } from "@/hooks/dividend/useDividend";
+import { useDividendTable } from "@/hooks/dividend/useDividendTable";
 import { EnhancedTableHead } from "@/components/dividend/TableHeader";
 
 // material-ui 관련 임포트
@@ -27,7 +27,7 @@ export default function DividendTable() {
     handleRequestSort,
     handleChangePage,
     handleChangeRowsPerPage,
-  } = useDividend();
+  } = useDividendTable();
 
   return (
     <Paper sx={{ width: "100%", mb: 2 }}>

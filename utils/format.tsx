@@ -41,3 +41,13 @@ export const formatDateV3 = (dateString: string) => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     return `${year}-${month}`;
 };
+
+/**
+ * parseDate 함수 : yyyy-mm-dd 형태의 날짜를 받아서 날짜 타입으로 변경
+ * @param yyyy-mm-dd 형태의 날짜
+ * @returns : 날짜 객체
+ */
+export const parseDate = (dateString: string) => {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+}

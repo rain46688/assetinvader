@@ -21,16 +21,23 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { AlertColor } from "@mui/material";
 
-import AssetNameInput from './AssetNameInput';
+import AssetNameInput from "./AssetNameInput";
 import { useDividend } from "@/hooks/dividend/useDividend";
 
 const FormGrid = styled(Grid)(() => ({
   display: "flex",
   flexDirection: "column",
-}));;
+}));
 
 export default function DividendCalculator() {
-  const { handleSelectAssetName, handleSearchAssetAmount, handleDateAccept } = useDividend();
+  const {
+    openCalPage,
+    exDividendDate,
+    selectedAssetAmout,
+    handleSelectAssetName,
+    handleSearchAssetAmount,
+    handleDateAccept,
+  } = useDividend();
   return (
     <>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -69,13 +76,6 @@ export default function DividendCalculator() {
 
         <Grid
           container
-          sx={
-            {
-              // pl: { sm: 15 },
-              // pr: { sm: 15 },
-              // pb: { sm: 3 },
-            }
-          }
           alignItems="center"
           alignSelf="center"
         >
@@ -91,7 +91,7 @@ export default function DividendCalculator() {
             </Typography>
           </FormGrid>
           <FormGrid item xs={12} md={2}>
-            <AssetNameInput handleSelectAssetName={handleSelectAssetName}/>
+            <AssetNameInput handleSelectAssetName={handleSelectAssetName} />
           </FormGrid>
           <FormGrid item xs={12} md={2}>
             <Typography
@@ -113,7 +113,10 @@ export default function DividendCalculator() {
                   label="날짜 선택"
                   format="YYYY-MM-DD"
                   sx={{ width: "33%" }}
-                  onAccept={(date) => { handleDateAccept(date, 'exDividendDate') }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1) + '-' + (new Date().getDay() + 1))}
+                  onAccept={(date) => {
+                    handleDateAccept(date, "exDividendDate");
+                  }}
+                  value={exDividendDate == '' ? '' : dayjs(exDividendDate)}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -123,181 +126,179 @@ export default function DividendCalculator() {
               sx={{ width: { xs: "100%" } }}
               variant="contained"
               color="primary"
-              onClick={() => { handleSearchAssetAmount()}}
+              onClick={() => {
+                handleSearchAssetAmount();
+              }}
             >
               검색
             </Button>
           </FormGrid>
           <FormGrid item xs={12} md={1}></FormGrid>
         </Grid>
-        <br/>
+        <br />
       </Paper>
-      <br />
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <Grid
-          container
-          sx={
-            {
-              // pl: { sm: 15 },
-              // pr: { sm: 15 },
-              // pb: { sm: 3 },
-            }
-          }
-          spacing={2}
-          alignItems="center"
-          alignSelf="center"
-        >
-          {/* 1행 */}
-          <FormGrid item xs={12} md={1}></FormGrid>
-          <FormGrid item xs={12} md={2}>
-            <Typography
-              sx={{ width: { xs: "100%" } }}
-              variant="body1"
-              id="tableTitle"
-              component="div"
-              textAlign="center"
-            >
-              자산수량(주)
-            </Typography>
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-            <TextField
-              variant="standard"
-              value={0}
-              // helperText={
-              //   validationList.find((item) => item.id === row.id)?.amount
-              //     ? "숫자 입력"
-              //     : ""
-              // }
-              // error={
-              //   validationList.find((item) => item.id === row.id)?.amount
-              // }
-              // value={row.amount || 0}
-              // onChange={(event: ChangeEvent<any>) =>
-              //   handleDataChange(event, row.id, "amount")
-              // }
-              // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
-            />
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-            <Typography
-              sx={{ width: { xs: "100%" } }}
-              variant="body1"
-              id="tableTitle"
-              component="div"
+      {openCalPage ? (
+        <>
+          <br />
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            <Grid
+              container
+              spacing={2}
+              alignItems="center"
               alignSelf="center"
-              textAlign="center"
             >
-              주당 확정배당금(원)
-            </Typography>
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-            <TextField
-              variant="standard"
-              value={0}
-              // helperText={
-              //   validationList.find((item) => item.id === row.id)?.amount
-              //     ? "숫자 입력"
-              //     : ""
-              // }
-              // error={
-              //   validationList.find((item) => item.id === row.id)?.amount
-              // }
-              // value={row.amount || 0}
-              // onChange={(event: ChangeEvent<any>) =>
-              //   handleDataChange(event, row.id, "amount")
-              // }
-              // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
-            />
-          </FormGrid>
-          <FormGrid item xs={12} md={0.5}></FormGrid>
-          <FormGrid item xs={12} md={1.5}>
-            <Button
-              sx={{ width: { xs: "100%" } }}
-              variant="contained"
-              color="primary"
-            >
-              저장
-            </Button>
-          </FormGrid>
-          <FormGrid item xs={12} md={1}></FormGrid>
-          {/* 2행 */}
-          <FormGrid item xs={12} md={1}></FormGrid>
-          <FormGrid item xs={12} md={2}>
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-            <Typography
-              sx={{ width: { xs: "100%" } }}
-              variant="body1"
-              id="tableTitle"
-              component="div"
-              alignSelf="center"
-              textAlign="center"
-            >
-              확정 배당금(원)
-            </Typography>
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-            <TextField
-              variant="standard"
-              value={0}
-              // helperText={
-              //   validationList.find((item) => item.id === row.id)?.amount
-              //     ? "숫자 입력"
-              //     : ""
-              // }
-              // error={
-              //   validationList.find((item) => item.id === row.id)?.amount
-              // }
-              // value={row.amount || 0}
-              // onChange={(event: ChangeEvent<any>) =>
-              //   handleDataChange(event, row.id, "amount")
-              // }
-              // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
-            />
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-          </FormGrid>
-          <FormGrid item xs={12} md={1}></FormGrid>
-          {/* 3행 */}
-          <FormGrid item xs={12} md={1}></FormGrid>
-          <FormGrid item xs={12} md={2}>
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-          </FormGrid>
-          <FormGrid item xs={12} md={2}>
-            <Typography
-              sx={{ width: "100%" }}
-              variant="body1"
-              id="tableTitle"
-              component="div"
-              alignSelf="center"
-              textAlign="center"
-            >
-              배당금 지급일
-            </Typography>
-            {/*  */}
-          </FormGrid>
-          <FormGrid item xs={12} md={2.5}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]} sx={{ width: "33%s" }}>
-                <MobileDatePicker
-                  label="날짜 선택"
-                  format="YYYY-MM-DD"
-                  sx={{ width: "33%" }}
-                  // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+              {/* 1행 */}
+              <FormGrid item xs={12} md={1}></FormGrid>
+              <FormGrid item xs={12} md={2}>
+                <Typography
+                  sx={{ width: { xs: "100%" } }}
+                  variant="body1"
+                  id="tableTitle"
+                  component="div"
+                  textAlign="center"
+                >
+                  자산수량(주)
+                </Typography>
+              </FormGrid>
+              <FormGrid item xs={12} md={2}>
+                <TextField
+                  variant="standard"
+                  value={selectedAssetAmout}
+                  // helperText={
+                  //   validationList.find((item) => item.id === row.id)?.amount
+                  //     ? "숫자 입력"
+                  //     : ""
+                  // }
+                  // error={
+                  //   validationList.find((item) => item.id === row.id)?.amount
+                  // }
+                  // value={row.amount || 0}
+                  // onChange={(event: ChangeEvent<any>) =>
+                  //   handleDataChange(event, row.id, "amount")
+                  // }
+                  // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
                 />
-              </DemoContainer>
-            </LocalizationProvider>
-          </FormGrid>
-          <FormGrid item xs={12} md={1.5}>
-          </FormGrid>
-          <FormGrid item xs={12} md={1}></FormGrid>
-        </Grid>
-        <br/>
-      </Paper>
+              </FormGrid>
+              <FormGrid item xs={12} md={2}>
+                <Typography
+                  sx={{ width: { xs: "100%" } }}
+                  variant="body1"
+                  id="tableTitle"
+                  component="div"
+                  alignSelf="center"
+                  textAlign="center"
+                >
+                  주당 확정배당금(원)
+                </Typography>
+              </FormGrid>
+              <FormGrid item xs={12} md={2}>
+                <TextField
+                  variant="standard"
+                  value={0}
+                  // helperText={
+                  //   validationList.find((item) => item.id === row.id)?.amount
+                  //     ? "숫자 입력"
+                  //     : ""
+                  // }
+                  // error={
+                  //   validationList.find((item) => item.id === row.id)?.amount
+                  // }
+                  // value={row.amount || 0}
+                  // onChange={(event: ChangeEvent<any>) =>
+                  //   handleDataChange(event, row.id, "amount")
+                  // }
+                  // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+                />
+              </FormGrid>
+              <FormGrid item xs={12} md={0.5}></FormGrid>
+              <FormGrid item xs={12} md={1.5}>
+                <Button
+                  sx={{ width: { xs: "100%" } }}
+                  variant="contained"
+                  color="primary"
+                >
+                  저장
+                </Button>
+              </FormGrid>
+              <FormGrid item xs={12} md={1}></FormGrid>
+              {/* 2행 */}
+              <FormGrid item xs={12} md={1}></FormGrid>
+              <FormGrid item xs={12} md={2}></FormGrid>
+              <FormGrid item xs={12} md={2}></FormGrid>
+              <FormGrid item xs={12} md={2}>
+                <Typography
+                  sx={{ width: { xs: "100%" } }}
+                  variant="body1"
+                  id="tableTitle"
+                  component="div"
+                  alignSelf="center"
+                  textAlign="center"
+                >
+                  확정 배당금(원)
+                </Typography>
+              </FormGrid>
+              <FormGrid item xs={12} md={2}>
+                <TextField
+                  variant="standard"
+                  value={0}
+                  // helperText={
+                  //   validationList.find((item) => item.id === row.id)?.amount
+                  //     ? "숫자 입력"
+                  //     : ""
+                  // }
+                  // error={
+                  //   validationList.find((item) => item.id === row.id)?.amount
+                  // }
+                  // value={row.amount || 0}
+                  // onChange={(event: ChangeEvent<any>) =>
+                  //   handleDataChange(event, row.id, "amount")
+                  // }
+                  // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+                />
+              </FormGrid>
+              <FormGrid item xs={12} md={2}></FormGrid>
+              <FormGrid item xs={12} md={1}></FormGrid>
+              {/* 3행 */}
+              <FormGrid item xs={12} md={1}></FormGrid>
+              <FormGrid item xs={12} md={2}></FormGrid>
+              <FormGrid item xs={12} md={2}></FormGrid>
+              <FormGrid item xs={12} md={2}>
+                <Typography
+                  sx={{ width: "100%" }}
+                  variant="body1"
+                  id="tableTitle"
+                  component="div"
+                  alignSelf="center"
+                  textAlign="center"
+                >
+                  배당금 지급일
+                </Typography>
+                {/*  */}
+              </FormGrid>
+              <FormGrid item xs={12} md={2.5}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer
+                    components={["DatePicker"]}
+                    sx={{ width: "33%s" }}
+                  >
+                    <MobileDatePicker
+                      label="날짜 선택"
+                      format="YYYY-MM-DD"
+                      sx={{ width: "33%" }}
+                      // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+              </FormGrid>
+              <FormGrid item xs={12} md={1.5}></FormGrid>
+              <FormGrid item xs={12} md={1}></FormGrid>
+            </Grid>
+            <br />
+          </Paper>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
