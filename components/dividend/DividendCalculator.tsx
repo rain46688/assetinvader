@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/system";
 import NativeSelect from "@mui/material/NativeSelect";
 import Button from "@mui/material/Button";
+import { ChangeEvent } from 'react';
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -33,10 +34,13 @@ export default function DividendCalculator() {
   const {
     openCalPage,
     exDividendDate,
-    selectedAssetAmout,
+    selectedAssetAmount,
+    dividendPricePerAmount,
+    dividendPrice,
     handleSelectAssetName,
     handleSearchAssetAmount,
     handleDateAccept,
+    handlePriceDataChange,
   } = useDividend();
   return (
     <>
@@ -163,20 +167,7 @@ export default function DividendCalculator() {
               <FormGrid item xs={12} md={2}>
                 <TextField
                   variant="standard"
-                  value={selectedAssetAmout}
-                  // helperText={
-                  //   validationList.find((item) => item.id === row.id)?.amount
-                  //     ? "숫자 입력"
-                  //     : ""
-                  // }
-                  // error={
-                  //   validationList.find((item) => item.id === row.id)?.amount
-                  // }
-                  // value={row.amount || 0}
-                  // onChange={(event: ChangeEvent<any>) =>
-                  //   handleDataChange(event, row.id, "amount")
-                  // }
-                  // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+                  value={selectedAssetAmount}
                 />
               </FormGrid>
               <FormGrid item xs={12} md={2}>
@@ -194,20 +185,10 @@ export default function DividendCalculator() {
               <FormGrid item xs={12} md={2}>
                 <TextField
                   variant="standard"
-                  value={0}
-                  // helperText={
-                  //   validationList.find((item) => item.id === row.id)?.amount
-                  //     ? "숫자 입력"
-                  //     : ""
-                  // }
-                  // error={
-                  //   validationList.find((item) => item.id === row.id)?.amount
-                  // }
-                  // value={row.amount || 0}
-                  // onChange={(event: ChangeEvent<any>) =>
-                  //   handleDataChange(event, row.id, "amount")
-                  // }
-                  // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+                  value={dividendPricePerAmount}
+                  onChange={(event: ChangeEvent<any>) =>
+                    handlePriceDataChange(event)
+                  }
                 />
               </FormGrid>
               <FormGrid item xs={12} md={0.5}></FormGrid>
@@ -240,20 +221,7 @@ export default function DividendCalculator() {
               <FormGrid item xs={12} md={2}>
                 <TextField
                   variant="standard"
-                  value={0}
-                  // helperText={
-                  //   validationList.find((item) => item.id === row.id)?.amount
-                  //     ? "숫자 입력"
-                  //     : ""
-                  // }
-                  // error={
-                  //   validationList.find((item) => item.id === row.id)?.amount
-                  // }
-                  // value={row.amount || 0}
-                  // onChange={(event: ChangeEvent<any>) =>
-                  //   handleDataChange(event, row.id, "amount")
-                  // }
-                  // onBlur={(event) => handleDataBlur(event, row.id, "amount")}
+                  value={dividendPrice}
                 />
               </FormGrid>
               <FormGrid item xs={12} md={2}></FormGrid>

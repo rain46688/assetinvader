@@ -175,7 +175,7 @@ export default function AssetTypeTable() {
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.amount ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.amount}
-                                            value={row.amount || 0}
+                                            value={row.amount || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
                                     </TableCell>
@@ -185,7 +185,7 @@ export default function AssetTypeTable() {
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.earning_rate ? "소수 2자리 숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.earning_rate}
-                                            value={row.earning_rate || 0}
+                                            value={row.earning_rate || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'earning_rate')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'earning_rate')} />
                                     </TableCell>

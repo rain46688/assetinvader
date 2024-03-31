@@ -3,6 +3,7 @@ import { sendGet } from "@/utils/fetch";
 import { formatDateV2 } from "@/utils/format";
 import { createData } from '@/redux/asset_transaction/AssetTransaction';
 import { parseDate } from '@/utils/format';
+import { validationCheck } from '@/utils/util';
 
 import { AssetTransactionData } from '@/redux/asset_transaction/AssetTransaction';
 
@@ -14,7 +15,11 @@ export const useDividend = () => {
     // 배당금 계산기 페이지 오픈 여부
     const [openCalPage, setOpenCalPage] = useState(false);
     // 자산 수량
-    const [selectedAssetAmout, setSelectedAssetAmout] = useState(0);
+    const [selectedAssetAmount, setSelectedAssetAmount] = useState(0);
+    // 주당 확정배당금
+    const [dividendPricePerAmount, setDividendPricePerAmount] = useState(0);
+    // 확정배당금
+    const [dividendPrice, setDividendPrice] = useState(0);
     // 선택된 배당금지급일
     const [dividendDate, setDividendDate] = useState('');
 
@@ -87,9 +92,20 @@ export const useDividend = () => {
             if(assetAmount < 0) {
                 assetAmount = 0;
             }
-            setSelectedAssetAmout(assetAmount);
+            setSelectedAssetAmount(assetAmount);
         } else {
             console.log(' === getList error === ');
+        }
+    }
+
+    const handlePriceDataChange = (event: ChangeEvent<any>) => {
+        console.log(" ==== handleChange ==== ");
+        const value = event.target.value;
+        const result = validationCheck(value, 'dividendPricePerAmount', { dividendPricePerAmount : 'number' }, { dividendPricePerAmount : false });
+        if(result) {
+            console.log(value);
+            setDividendPricePerAmount(value);
+            setDividendPrice(value * selectedAssetAmount);
         }
     }
 
@@ -101,10 +117,13 @@ export const useDividend = () => {
         exDividendDate,
         openCalPage,
         setOpenCalPage,
-        selectedAssetAmout,
-        setSelectedAssetAmout,
+        selectedAssetAmount,
+        setSelectedAssetAmount,
+        dividendPricePerAmount,
+        dividendPrice,
         handleSelectAssetName,
         handleSearchAssetAmount,
         handleDateAccept,
+        handlePriceDataChange,
     };
 }
