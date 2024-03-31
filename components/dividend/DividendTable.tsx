@@ -17,8 +17,6 @@ import Typography from "@mui/material/Typography";
 export default function DividendTable() {
   // custom hook 사용
   const {
-    selected,
-    setSelected,
     order,
     orderBy,
     rows,
@@ -26,13 +24,7 @@ export default function DividendTable() {
     emptyRows,
     page,
     rowsPerPage,
-    setOrder,
-    setOrderBy,
-    setPage,
-    isSelected,
-    handleSelectAllClick,
     handleRequestSort,
-    handleClick,
     handleChangePage,
     handleChangeRowsPerPage,
   } = useDividend();
@@ -43,28 +35,19 @@ export default function DividendTable() {
         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
           {/* 헤더 props */}
           <EnhancedTableHead
-            numSelected={selected.length}
             order={order}
             orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={rows.length}
           />
           <TableBody>
             {visibleRows.map((row, index) => {
-              const isItemSelected = isSelected(row.id);
               const labelId = `enhanced-table-checkbox-${index}`;
 
               return (
                 <TableRow
                   hover
-                  onClick={(event) => handleClick(event, row.id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row.id}
-                  selected={isItemSelected}
-                  sx={{ cursor: "pointer" }}
                 >
                   {/*  */}
                   <TableCell

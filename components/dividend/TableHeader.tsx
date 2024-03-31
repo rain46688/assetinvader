@@ -4,7 +4,7 @@ import { Order } from '@/utils/sort';
 import { DividendData } from '@/redux/dividend/Dividend';
 
 // material-ui 관련 임포트
-import { Box, Checkbox, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
+import { Box, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 
 interface HeadCell {
     id: keyof DividendData;
@@ -27,16 +27,13 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-    numSelected: number;
     onRequestSort: (event: MouseEvent<unknown>, property: keyof DividendData) => void;
-    onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
-    rowCount: number;
 }
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const { order, orderBy, onRequestSort } = props;
     const createSortHandler = (property: keyof DividendData) => (event: MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };

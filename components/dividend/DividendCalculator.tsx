@@ -21,12 +21,16 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { AlertColor } from "@mui/material";
 
+import AssetNameInput from './AssetNameInput';
+import { useDividend } from "@/hooks/dividend/useDividend";
+
 const FormGrid = styled(Grid)(() => ({
   display: "flex",
   flexDirection: "column",
-}));
+}));;
 
 export default function DividendCalculator() {
+  const { handleSelectAssetName, handleSearchAssetAmount, handleDateAccept } = useDividend();
   return (
     <>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -80,7 +84,6 @@ export default function DividendCalculator() {
             <Typography
               sx={{ width: { xs: "100%" } }}
               variant="body1"
-              id="tableTitle"
               component="div"
               textAlign="center"
             >
@@ -88,23 +91,7 @@ export default function DividendCalculator() {
             </Typography>
           </FormGrid>
           <FormGrid item xs={12} md={2}>
-            <NativeSelect
-              value=""
-              // value={row.asset_big_class || ""}
-              // onChange={(event: ChangeEvent<any>) =>
-              //   handleDataChange(event, row.id, "asset_big_class")
-              // }
-              // onBlur={(event: ChangeEvent<any>) =>
-              //   handleDataBlur(event, row.id, "asset_big_class")
-              // }
-              style={{ width: "100%" }}
-              inputProps={{ "aria-label": "Without label" }}
-            >
-              <option value={"투자자산"}>투자자산</option>
-              <option value={"배당자산"}>배당자산</option>
-              <option value={"안전자산"}>안전자산</option>
-              <option value={"현금자산"}>현금자산</option>
-            </NativeSelect>
+            <AssetNameInput handleSelectAssetName={handleSelectAssetName}/>
           </FormGrid>
           <FormGrid item xs={12} md={2}>
             <Typography
@@ -124,10 +111,9 @@ export default function DividendCalculator() {
               <DemoContainer components={["DatePicker"]} sx={{ width: "33%s" }}>
                 <MobileDatePicker
                   label="날짜 선택"
-                  format="YYYY-MM"
+                  format="YYYY-MM-DD"
                   sx={{ width: "33%" }}
-                  views={["month", "year"]}
-                  // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
+                  onAccept={(date) => { handleDateAccept(date, 'exDividendDate') }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1) + '-' + (new Date().getDay() + 1))}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -137,6 +123,7 @@ export default function DividendCalculator() {
               sx={{ width: { xs: "100%" } }}
               variant="contained"
               color="primary"
+              onClick={() => { handleSearchAssetAmount()}}
             >
               검색
             </Button>
@@ -298,9 +285,8 @@ export default function DividendCalculator() {
               <DemoContainer components={["DatePicker"]} sx={{ width: "33%s" }}>
                 <MobileDatePicker
                   label="날짜 선택"
-                  format="YYYY-MM"
+                  format="YYYY-MM-DD"
                   sx={{ width: "33%" }}
-                  views={["month", "year"]}
                   // onAccept={(date) => { handleDateAccept(date) }} value={dayjs((new Date().getFullYear()) + '-' + (new Date().getMonth() + 1))}
                 />
               </DemoContainer>

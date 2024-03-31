@@ -14,12 +14,17 @@ export const useDividend = () => {
     const [order, setOrder] = useState<Order>('desc');
     // 정렬 기준 관련
     const [orderBy, setOrderBy] = useState<keyof DividendData>('occurrence_date');
-    // 데이터 선택 관련
-    const [selected, setSelected] = useState<readonly number[]>([]);
     // 페이지 관련
     const [page, setPage] = useState(0);
     // 화면에 뿌려지는 기본 데이터 갯수 관련
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    // 선택된 자산이름
+    const [selectedAssetName, setSelectedAssetName] = useState('');
+    // 선택된 배당락일
+    const [exDividendDate, setExDividendDate] = useState('')
+    // 선택된 배당금지급일
+    const [dividendDate, setDividendDate] = useState('')
+
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -80,43 +85,6 @@ export const useDividend = () => {
         setOrderBy(property);
     };
 
-    // 데이터 선택 관련 함수
-    const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
-    };
-
-    // 데이터 선택 관련 함수
-    const handleClick = (event: MouseEvent<unknown>, id: number) => {
-        const selectcheck = (event.target as HTMLInputElement).value;
-
-        // 체크박스가 아닌 곳을 클릭했을 때
-        if (selectcheck != 'on') {
-            return;
-        }
-
-        const selectedIndex = selected.indexOf(id);
-        let newSelected: readonly number[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-        setSelected(newSelected);
-    };
-
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -127,9 +95,6 @@ export const useDividend = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    // 선택된 데이터 확인 함수
-    const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
     // 빈 행 계산
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -150,9 +115,33 @@ export const useDividend = () => {
         return slicedRows;
     }, [order, orderBy, page, rowsPerPage, rows]);
 
+    // 자산 선택 이벤트
+    const handleSelectAssetName = (event: ChangeEvent<any>) => {
+        const changeValue: string = event.target.textContent;
+        console.log(changeValue);
+        setSelectedAssetName(changeValue);
+    }
+
+    // 날짜 선택 이벤트
+    const handleDateAccept = (date: any, name: string) => {
+        console.log(" === handleDateAccept === ");
+        if(name === 'exDividendDate') {
+            setExDividendDate(date.$y + '-' + (date.$M + 1) + '-' + (date.$D))
+        }  else {
+            setDividendDate(date.$y + '-' + (date.$M + 1) + '-' + (date.$D))
+        }
+    };
+
+    // 배당락일 기준 보유개수 검색
+    const handleSearchAssetAmount = () => {
+        console.log("AssetName : ", selectedAssetName, "/exDividendDate : ", exDividendDate)
+    }
+
+
     // 함수 반환
     return {
-        selected, setSelected,
+        selectedAssetName, 
+        setSelectedAssetName,
         order,
         orderBy,
         rows,
@@ -163,11 +152,11 @@ export const useDividend = () => {
         setOrder,
         setOrderBy,
         setPage,
-        isSelected,
-        handleSelectAllClick,
+        handleSelectAssetName,
+        handleSearchAssetAmount,
         handleRequestSort,
-        handleClick,
         handleChangePage,
         handleChangeRowsPerPage,
+        handleDateAccept,
     };
 }
