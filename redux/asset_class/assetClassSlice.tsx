@@ -8,7 +8,7 @@ const assetClassSlice = createSlice({
     name: 'asset_class',
     initialState: initialState,
     reducers: {
-        // setAsset 액션 생성 함수
+        // setAssetClassList 액션 생성 함수
         setAssetClassList: (state, action: PayloadAction<AssetClassData[]>) => {
             const list: AssetClassData[] = [];
             action.payload.forEach((item) => {

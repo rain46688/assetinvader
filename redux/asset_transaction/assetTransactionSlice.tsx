@@ -8,7 +8,7 @@ const assetTransactionSlice = createSlice({
     name: 'asset_transaction',
     initialState: initialState,
     reducers: {
-        // setAsset 액션 생성 함수
+        // setAssetTransactionList 액션 생성 함수
         setAssetTransactionList: (state, action: PayloadAction<AssetTransactionData[]>) => {
             const list: AssetTransactionData[] = [];
             action.payload.forEach((item) => {

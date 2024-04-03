@@ -172,6 +172,7 @@ export default function DividendCalculator() {
               <FormGrid item xs={12} md={2}>
                 <TextField
                   variant="standard"
+                  disabled={true}
                   value={selectedAssetAmount}
                 />
               </FormGrid>
@@ -229,6 +230,7 @@ export default function DividendCalculator() {
               <FormGrid item xs={12} md={2}>
                 <TextField
                   variant="standard"
+                  disabled={true}
                   value={dividendPrice}
                 />
               </FormGrid>

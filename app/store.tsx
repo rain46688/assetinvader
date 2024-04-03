@@ -10,6 +10,7 @@ import assetTypeReducer from '@/redux/asset_type/assetTypeSlice';
 import assetTransactionReducer from '@/redux/asset_transaction/assetTransactionSlice';
 import spendingReducer from '@/redux/spending/spendingSlice';
 import dividendReducer from '@/redux/dividend/dividendSlice';
+import cashFlowReducer from '@/redux/cash_flow/cashFlowSlice';
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     assetTransactionReducer,
     spendingReducer,
     dividendReducer,
+    cashFlowReducer,
   },
 });
 

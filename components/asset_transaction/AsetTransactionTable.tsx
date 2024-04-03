@@ -211,9 +211,9 @@ export default function AsetTransactionTable() {
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 variant="standard"
-                                                helperText={validationList[index]?.amount ? "숫자 입력" : ''}
+                                                helperText={validationList[index]?.amount ? "소수점 8자리 숫자 입력" : ''}
                                                 error={validationList[index]?.amount}
-                                                value={row.amount || 0}
+                                                value={row.amount || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
                                             />
                                         ) : (

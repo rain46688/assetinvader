@@ -8,7 +8,7 @@ const assetTypeSlice = createSlice({
     name: 'asset_type',
     initialState: initialState,
     reducers: {
-        // setAsset 액션 생성 함수
+        // setAssetTypeList 액션 생성 함수
         setAssetTypeList: (state, action: PayloadAction<AssetTypeData[]>) => {
             const list: AssetTypeData[] = [];
             action.payload.forEach((item) => {

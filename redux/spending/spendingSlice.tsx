@@ -8,7 +8,7 @@ const spendingSlice = createSlice({
     name: 'spending',
     initialState: initialState,
     reducers: {
-        // setAsset 액션 생성 함수
+        // setSpendingList 액션 생성 함수
         setSpendingList: (state, action: PayloadAction<SpendingData[]>) => {
             const list: SpendingData[] = [];
             action.payload.forEach((item) => {
