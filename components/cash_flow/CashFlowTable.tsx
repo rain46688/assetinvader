@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from 'react';
-import { useAssetTransaction } from '@/hooks/asset_transaction/useAssetTransaction';
+import { useCashFlow } from '@/hooks/cash_flow/useCashFlow';
 import { ChangeEvent } from 'react';
-import { EnhancedTableHead } from "@/components/asset_transaction/TableHeader";
-import { EnhancedTableToolbar } from "@/components/asset_transaction/TableHeaderToolbar";
+import { EnhancedTableHead } from "@/components/cash_flow/TableHeader";
+import { EnhancedTableToolbar } from "@/components/cash_flow/TableHeaderToolbar";
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -17,21 +17,13 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Autocomplete from '@mui/material/Autocomplete';
 
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { AlertColor, Box } from '@mui/material';
+import { AlertColor } from '@mui/material';
 
-// 날짜 관련 임포트
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
-
-export default function AsetTransactionTable() {
+export default function AssetTypeTable() {
 
     // custom hook 사용
     const {
@@ -46,30 +38,23 @@ export default function AsetTransactionTable() {
         validationList,
         snack,
         snackMessage,
-        addStatus,
-        validation,
-        selectData,
         snackBarStatus,
+        setValidationList,
         getList,
         setIsNotSortStatus,
-        setSnackBarStatus,
         setSnack,
         setSnackMessage,
-        handleDataAssetNameChange,
-        setAddStatus,
-        setValidationList,
+        setSnackBarStatus,
         setOrder,
         setOrderBy,
         setPage,
-        isSelected,
-        handleSelectAllClick,
         handleRequestSort,
-        handleClick,
         handleDataChange,
+        handleDataBlur,
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
-    } = useAssetTransaction();
+    } = useCashFlow();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -89,24 +74,11 @@ export default function AsetTransactionTable() {
             </Snackbar>
             {/* 툴바 props */}
             <EnhancedTableToolbar
-                numSelected={selected.length}
-                selected={selected}
-                setSelected={setSelected}
                 setPage={setPage}
-                rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
                 setOrderBy={setOrderBy}
-                validationList={validationList}
-                setValidationList={setValidationList}
-                addStatus={addStatus}
-                setAddStatus={setAddStatus}
-                validation={validation}
-                setSnack={setSnack}
-                setSnackMessage={setSnackMessage}
-                setSnackBarStatus={setSnackBarStatus}
-                setIsNotSortStatus={setIsNotSortStatus}
                 getList={getList}
-            />
+                 />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
@@ -114,44 +86,22 @@ export default function AsetTransactionTable() {
                     size='small'>
                     {/* 헤더 props */}
                     <EnhancedTableHead
-                        numSelected={selected.length}
                         order={order}
                         orderBy={orderBy}
-                        onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
                         rowCount={rows.length}
-                        addStatus={addStatus}
                         setIsNotSortStatus={setIsNotSortStatus}
-                         />
+                        />
                     <TableBody>
                         {visibleRows.map((row, index) => {
-                            const isItemSelected = isSelected(row.id);
                             const labelId = `enhanced-table-checkbox-${index}`;
-
                             return (
                                 <TableRow
                                     hover
-                                    onClick={(event) => handleClick(event, row.id)}
                                     role="checkbox"
-                                    aria-checked={isItemSelected}
                                     tabIndex={-1}
                                     key={row.id}
-                                    selected={isItemSelected}
                                     sx={{ cursor: 'pointer' }}>
-                                    {/*  */}
-                                    <TableCell padding="checkbox">
-                                        {!addStatus ? (
-                                            <Checkbox
-                                                color="primary"
-                                                checked={isItemSelected}
-                                                inputProps={{
-                                                    'aria-labelledby': labelId,
-                                                }}
-                                            />
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </TableCell>
                                     {/*  */}
                                     <TableCell
                                         component="th"
@@ -159,94 +109,134 @@ export default function AsetTransactionTable() {
                                         scope="center"
                                         padding="none"
                                         align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={selectData}
-                                                getOptionKey={(option) => option.id}
-                                                onChange={(event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', newValue || { id: 0, label: '', asset_acnt: '' })}
-                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params} />}
-                                            />
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.asset_name || ''}
-                                            </Typography>
-                                        )}
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한영특 숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.asset_name}
+                                            value={row.asset_name || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_name')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
+                                    </TableCell>
+                                    {/* 1 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.jan ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.jan}
+                                            value={row.jan || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'jan')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'jan')} />
+                                    </TableCell>
+                                    {/* 2 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.feb ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.feb}
+                                            value={row.feb || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'feb')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'feb')} />
+                                    </TableCell>
+                                    {/* 3 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.mar ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.mar}
+                                            value={row.mar || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'mar')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'mar')} />
+                                    </TableCell>
+                                    {/* 4 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.apr ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.apr}
+                                            value={row.apr || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'apr')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'apr')} />
+                                    </TableCell>
+                                    {/* 5 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.may ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.may}
+                                            value={row.may || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'may')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'may')} />
+                                    </TableCell>
+                                    {/* 6 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.jun ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.jun}
+                                            value={row.jun || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'jun')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'jun')} />
+                                    </TableCell>
+                                    {/* 7 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.jul ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.jul}
+                                            value={row.jul || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'jul')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'jul')} />
+                                    </TableCell>
+                                    {/* 8 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.aug ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.aug}
+                                            value={row.aug || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'aug')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'aug')} />
+                                    </TableCell>
+                                    {/* 9 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.sep ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.sep}
+                                            value={row.sep || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'sep')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'sep')} />
+                                    </TableCell>
+                                    {/* 10 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.oct ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.oct}
+                                            value={row.oct || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'oct')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'oct')} />
+                                    </TableCell>
+                                    {/* 11 */}
+                                    <TableCell align="center">
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.nov ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.nov}
+                                            value={row.nov || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'nov')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'nov')} />
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                disabled={true}
-                                                variant="standard"
-                                                value={row.asset_acnt || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
-                                            />
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.asset_acnt || ''}
-                                            </Typography>
-                                        )}
+                                        <TextField
+                                            variant="standard"
+                                            helperText={(validationList.find(item => item.id === row.id))?.dec ? "숫자 입력" : ''}
+                                            error={(validationList.find(item => item.id === row.id))?.dec}
+                                            value={row.dec || ''}
+                                            onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'dec')}
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'dec')} />
                                     </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <NativeSelect
-                                                value={row.trns_type}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
-                                                style={{ width: '150px', border: 'none' }}
-                                                inputProps={{ 'aria-label': 'Without label' }}>
-                                                <option value={'매수'}>매수</option>
-                                                <option value={'매도'}>매도</option>
-                                            </NativeSelect>
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.trns_type || ''}
-                                            </Typography>
-                                        )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                variant="standard"
-                                                helperText={validationList[index]?.amount ? "소수점 8자리 숫자 입력" : ''}
-                                                error={validationList[index]?.amount}
-                                                value={row.amount || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
-                                            />
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.amount || ''}
-                                            </Typography>
-                                        )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DemoContainer components={['DatePicker', 'DatePicker']}>
-                                                    <DateField
-                                                        variant="standard"
-                                                        format="YYYY-MM-DD"
-                                                        helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
-                                                        onChange={(event: any) => handleDataChange(event, row.id, index, 'trns_date')}
-                                                        value={row.trns_date}
-                                                    />
-                                                </DemoContainer>
-                                            </LocalizationProvider>
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.trns_date || ''}
-                                            </Typography>
-                                        )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {row.reg_date}
-                                    </TableCell>
-                                    {/*  */}
                                 </TableRow>
                             );
                         })}
@@ -254,26 +244,23 @@ export default function AsetTransactionTable() {
                             <TableRow
                                 style={{
                                     height: 33 * emptyRows, // 테이블 사이즈 middle : 53 / small : 33
-                                }}>
+                                }}
+                            >
                                 <TableCell colSpan={6} />
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
             </TableContainer>
-            {addStatus ? (
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 3 }} />
-            ) : (
-                <TablePagination
-                    rowsPerPageOptions={[15, 20, 25]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            )}
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </Paper>
     )
 }
