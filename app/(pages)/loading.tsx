@@ -31,7 +31,7 @@ export default function Loading() {
                             display: 'flex',
                             flexDirection: 'column',
                             minHeight: '10vh',
-                            backgroundImage: 'url(https://assetinvader.s3.ap-northeast-2.amazonaws.com/sand_timer.gif)',
+                            backgroundImage: 'url(https://assetinvader.s3.ap-northeast-2.amazonaws.com/sand_timer2.gif)',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: 'auto',
                             backgroundPosition: 'center',
