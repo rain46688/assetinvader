@@ -6,16 +6,14 @@ import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/system";
-import NativeSelect from "@mui/material/NativeSelect";
 import Button from "@mui/material/Button";
 import { ChangeEvent } from 'react';
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 // 스낵바 관련 임포트
 import Snackbar from "@mui/material/Snackbar";
