@@ -22,6 +22,7 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import Typography from "@mui/material/Typography";
 
 export default function Navbar() {
   // Custom Hook 사용
@@ -189,7 +190,7 @@ export default function Navbar() {
                 </ListItemIcon>
                 <ListItemText primary="확정이자 기록" />
               </ListItemButton>
-              {/* 이자·배당관리 > 월별 이자·배당 예상금 조회 */}
+              {/* 이자·배당관리 > 월별 이자·배당금 조회 */}
               <ListItemButton
                 sx={{ pl: 4 }}
                 component={Link}
@@ -198,7 +199,22 @@ export default function Navbar() {
                 <ListItemIcon>
                   <CurrencyExchangeIcon />
                 </ListItemIcon>
-                <ListItemText primary="월별 이자·배당 예상금 조회" />
+                {/* <ListItemText secondary="월별 이자·배당금 조회" />
+                 */}
+                <ListItemText
+                  primary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        월별 이자·배당금 조회
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
               </ListItemButton>
             </List>
           </Collapse>
@@ -206,7 +222,9 @@ export default function Navbar() {
           {/* 지출관리 */}
           <ListItemButton
             onClick={() => {
-              dispatch(setSpendingOpened({ isSpendingOpened: !isSpendingOpened }));
+              dispatch(
+                setSpendingOpened({ isSpendingOpened: !isSpendingOpened })
+              );
             }}
           >
             <ListItemIcon>
