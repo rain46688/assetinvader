@@ -269,9 +269,9 @@ export const useAssetType = () => {
         const data = JSON.stringify({
             "asset_type": item?.asset_type,
             "asset_name": item?.asset_name,
-            "amount": item?.amount,
+            "amount": String(item?.amount).trim() === '' ? "0": item?.amount,
             "asset_acnt": item?.asset_acnt,
-            "earning_rate": item?.earning_rate
+            "earning_rate": item?.earning_rate,
         });
 
         const result = await sendPut(data, 'asset/update_asset/' + id);

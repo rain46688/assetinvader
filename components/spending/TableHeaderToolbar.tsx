@@ -148,7 +148,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       "spnd_date": new_data.spnd_date,
       "spnd_type": new_data.spnd_type,
       "description": new_data.description,
-      "amount": new_data.amount
+      "amount": String(new_data.amount).trim() === '' ? "0": new_data.amount,
     });
 
     const result = await sendPost(data, 'spending/add_spending');
