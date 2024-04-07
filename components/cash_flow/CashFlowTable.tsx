@@ -28,6 +28,7 @@ export default function AssetTypeTable() {
     // custom hook 사용
     const {
         selected, setSelected,
+        year, setYear,
         order,
         orderBy,
         rows,
@@ -78,6 +79,8 @@ export default function AssetTypeTable() {
                 setOrder={setOrder}
                 setOrderBy={setOrderBy}
                 getList={getList}
+                year={year}
+                setYear={setYear}
                  />
             <TableContainer>
                 <Table
@@ -110,6 +113,7 @@ export default function AssetTypeTable() {
                                         padding="none"
                                         align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한영특 숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.asset_name}
@@ -120,6 +124,7 @@ export default function AssetTypeTable() {
                                     {/* 1 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.jan ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.jan}
@@ -130,6 +135,7 @@ export default function AssetTypeTable() {
                                     {/* 2 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.feb ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.feb}
@@ -140,6 +146,7 @@ export default function AssetTypeTable() {
                                     {/* 3 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.mar ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.mar}
@@ -150,6 +157,7 @@ export default function AssetTypeTable() {
                                     {/* 4 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.apr ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.apr}
@@ -160,6 +168,7 @@ export default function AssetTypeTable() {
                                     {/* 5 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.may ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.may}
@@ -170,6 +179,7 @@ export default function AssetTypeTable() {
                                     {/* 6 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.jun ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.jun}
@@ -180,6 +190,7 @@ export default function AssetTypeTable() {
                                     {/* 7 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.jul ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.jul}
@@ -190,6 +201,7 @@ export default function AssetTypeTable() {
                                     {/* 8 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.aug ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.aug}
@@ -200,6 +212,7 @@ export default function AssetTypeTable() {
                                     {/* 9 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.sep ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.sep}
@@ -210,6 +223,7 @@ export default function AssetTypeTable() {
                                     {/* 10 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.oct ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.oct}
@@ -220,6 +234,7 @@ export default function AssetTypeTable() {
                                     {/* 11 */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.nov ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.nov}
@@ -230,6 +245,7 @@ export default function AssetTypeTable() {
                                     {/*  */}
                                     <TableCell align="center">
                                         <TextField
+                                            disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.dec ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.dec}

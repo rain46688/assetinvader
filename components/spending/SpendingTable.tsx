@@ -212,7 +212,7 @@ export default function SpendingTable() {
                                                 variant="standard"
                                                 helperText={validationList[index]?.amount ? "숫자 입력" : ''}
                                                 error={validationList[index]?.amount}
-                                                value={row.amount || 0}
+                                                value={row.amount || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
                                             />
                                         ) : (

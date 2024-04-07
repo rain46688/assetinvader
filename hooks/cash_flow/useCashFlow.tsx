@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from "react";
-import { sendGet, sendPut } from "@/utils/fetch";
-import { formatDate } from "@/utils/format";
+import { sendGet, sendPost } from "@/utils/fetch";
 import {
   CashFlowData,
   CashFlowValidation,
@@ -8,7 +7,7 @@ import {
 } from "@/redux/cash_flow/CashFlow";
 import { Order, getComparator, stableSort } from "@/utils/sort";
 import { validationCheck } from "@/utils/util";
-import { formatDateV3 } from "@/utils/format";
+import { formatDateV3, parseDate } from "@/utils/format";
 
 // redux 관련 임포트
 import { setCashFlowList } from "@/redux/cash_flow/cashFlowSlice";
@@ -41,6 +40,8 @@ export const useCashFlow = () => {
   const [snackBarStatus, setSnackBarStatus] = useState("success");
   // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
   const [isNotSortStatus, setIsNotSortStatus] = useState(true);
+  // 날짜 선택 관련
+  const [year, setYear] = useState<string>(new Date().getFullYear().toString());
 
   // redux 관련 추가
   const dispatch = useAppDispatch();
@@ -63,6 +64,7 @@ export const useCashFlow = () => {
       const valList: CashFlowValidation[] = [];
       // 데이터 저장
       const list = res.data;
+      console.log(list);
       // 데이터 변환
       const newList = list.map((item: CashFlowData, index: number) => {
         // cash_flow 값이 없는경우 0으로 채움
@@ -83,9 +85,9 @@ export const useCashFlow = () => {
         if ((item as any).cash_flow != undefined) {
           const cash_flow_list = (item as any).cash_flow;
           cash_flow_list.map((item: any) => {
-            let split_date = formatDateV3(item.occurrence_date).split("-");
-            console.log(split_date);
-            switch (split_date[1]) {
+            const [itemYear, itemMonth] = formatDateV3(item.occurrence_date).split("-");
+            if(itemYear != year) return;
+            switch (itemMonth) {
               case "01":
                 cashFlowList.jan += item.amount;
                 break;
@@ -190,7 +192,6 @@ export const useCashFlow = () => {
     setPage(newPage);
     // 페이지 이동시에 정렬 허용
     setIsNotSortStatus(false);
-    console.log(validationList);
   };
 
   // 페이지 관련 함수
@@ -242,6 +243,7 @@ export const useCashFlow = () => {
       if (item.id === id) {
         // 입력한 값
         const value = event.target.value;
+        console.log("EnterKey : ", value)
 
         // 유효성 검사 타입
         const fieldDataType = {
@@ -291,51 +293,60 @@ export const useCashFlow = () => {
     console.log(" ==== handleDataBlur ==== ");
     // 이전 데이터와 현재 데이터가 같다면 return
 
-    // console.log(" === previousData === ", previousData);
-    // console.log(" === event.target.value === ", event.target.value);
-    // if (previousData === "") {
-    //     console.log(" === 데이터 동일 === ");
-    //     return;
-    // }
+    console.log(" === previousData === ", previousData);
+    console.log(" === event.target.value === ", event.target.value);
+    if (previousData === "") {
+        console.log(" === 데이터 동일 === ");
+        return;
+    }
 
-    // // 유효성 검사
-    // if (validation == false) {
-    //     // 유효성 검사 실패시 return
-    //     console.log(" === 유효성 검사 실패 === ");
-    //     setSnack(true);
-    //     setSnackMessage("데이터 유효성 검사 실패.");
-    //     setSnackBarStatus("warning");
-    //     return;
-    // }
+    // 유효성 검사
+    if (validation == false) {
+        // 유효성 검사 실패시 return
+        console.log(" === 유효성 검사 실패 === ");
+        setSnack(true);
+        setSnackMessage("데이터 유효성 검사 실패.");
+        setSnackBarStatus("warning");
+        return;
+    }
 
-    // console.log(" === 데이터 변경 === ");
+    console.log(" === 데이터 변경 === ");
 
-    // // list에서 해당 아이디에 매칭되는 데이터를 뽑아옴
-    // const item = rows.find(item => item.id === id);
-    // const data = JSON.stringify({
-    //     "asset_type": item?.asset_type,
-    //     "asset_name": item?.asset_name,
-    //     "amount": item?.amount,
-    //     "asset_acnt": item?.asset_acnt,
-    //     "earning_rate": item?.earning_rate
-    // });
+    // list에서 해당 아이디에 매칭되는 데이터를 뽑아옴
+    const item = rows.find(item => item.id === id);
+    console.log(field);
+    console.log(item);
+    let amount;
+    let month;
+    switch(field) {
+        case "jan" :
+            amount = item?.jan;
+            month = "01";
+            break;
+    }
 
-    // const result = await sendPut(data, 'asset/update_asset/' + id);
-    // if (result.status === 'success') {
-    //     console.log(" === 수정 성공 === ");
-    //     setSnack(true);
-    //     setSnackMessage("데이터 수정 완료.");
-    //     setSnackBarStatus("success");
-    //     setIsNotSortStatus(false);
-    //     dispatch(setAssetTypeList([...rows]));
-    // } else {
-    //     console.log(" === 수정 실패 === ");
-    //     setSnack(true);
-    //     setSnackMessage("데이터 수정 실패.");
-    //     setSnackBarStatus("error");
-    //     setIsNotSortStatus(false);
-    //     dispatch(setAssetTypeList([...rows]));
-    // }
+    console.log(year + "-" + month + "-01")
+    const data = JSON.stringify({
+        "asset_id": id,
+        "amount": String(amount).trim() === '' ? 0: amount,
+        "occurrence_date": parseDate(year + "-" + month + "-01")
+    });
+    console.log(data)
+
+    const result = await sendPost(data, 'cashflow/add_cashflow');
+    if (result.status === 'success') {
+        console.log(" === 수정 성공 === ");
+        setSnack(true);
+        setSnackMessage("데이터 수정 완료.");
+        setSnackBarStatus("success");
+        setIsNotSortStatus(false);
+    } else {
+        console.log(" === 수정 실패 === ");
+        setSnack(true);
+        setSnackMessage("데이터 수정 실패.");
+        setSnackBarStatus("error");
+        setIsNotSortStatus(false);
+    }
   };
 
   // 스낵바 닫기 함수
@@ -353,6 +364,8 @@ export const useCashFlow = () => {
   return {
     selected,
     setSelected,
+    year,
+    setYear,
     order,
     orderBy,
     rows,
