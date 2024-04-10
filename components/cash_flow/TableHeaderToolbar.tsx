@@ -69,7 +69,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          현금흐름 기록 및 예상
+          월별 이자·배당 예상금 조회
         </Typography>
       
                 {/*  */}

@@ -12,6 +12,7 @@ import { formatDateV3, parseDate } from "@/utils/format";
 // redux 관련 임포트
 import { setCashFlowList } from "@/redux/cash_flow/cashFlowSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store";
+import { InterestData } from "@/redux/interest/Interest";
 
 export const useCashFlow = () => {
   // 정렬 ASC / DESC 관련
@@ -58,15 +59,18 @@ export const useCashFlow = () => {
   // 데이터 가져오기 함수
   const getList = async (id: string) => {
     console.log("=== getList === ");
-    const res = await sendGet("/cashflow/getlist_cashflow/" + id);
-    if (res.status === "success") {
+    const res_cashflow = await sendGet("/cashflow/getlist_cashflow/" + id);
+    const res_interest = await sendGet("/interest/getlist_interest/" + id);
+    if (res_cashflow.status === "success" && res_interest.status === "success") {
       // 유효성 검사 리스트
       const valList: CashFlowValidation[] = [];
       // 데이터 저장
-      const list = res.data;
-      console.log(list);
-      // 데이터 변환
-      const newList = list.map((item: CashFlowData, index: number) => {
+      const list_cashflow = res_cashflow.data;
+      const list_interest = res_interest.data;
+      console.log(list_cashflow);
+      console.log(list_interest);
+      // 데이터 변환(cashflow)
+      let newList = list_cashflow.map((item: CashFlowData, index: number) => {
         // cash_flow 값이 없는경우 0으로 채움
         let cashFlowList = {
           jan: 0,
@@ -164,7 +168,58 @@ export const useCashFlow = () => {
           cashFlowList.dec
         );
       });
+      console.log(newList);
       // debugger;
+      // 데이터 변환(interest)
+      for(const asset of list_interest) {
+        if ((asset as any).interest != undefined) {
+          const interest_list = (asset as any).interest;
+          for(const interest of interest_list) {
+            console.log(interest);
+            const [itemYear, itemMonth] = formatDateV3(interest.occurrence_date).split("-");
+            if(itemYear != year) continue;
+            switch (itemMonth) {
+              case "01":
+                newList.find((item: CashFlowData) => item.id === asset.id).jan += interest.amount;
+                break;
+              case "02":
+                newList.find((item: CashFlowData) => item.id === asset.id).feb += interest.amount;
+                break;
+              case "03":
+                newList.find((item: CashFlowData) => item.id === asset.id).mar += interest.amount;
+                break;
+              case "04":
+                newList.find((item: CashFlowData) => item.id === asset.id).apr += interest.amount;
+                break;
+              case "05":
+                newList.find((item: CashFlowData) => item.id === asset.id).may += interest.amount;
+                break;
+              case "06":
+                newList.find((item: CashFlowData) => item.id === asset.id).jun += interest.amount;
+                break;
+              case "07":
+                newList.find((item: CashFlowData) => item.id === asset.id).jul += interest.amount;
+                break;
+              case "08":
+                newList.find((item: CashFlowData) => item.id === asset.id).aug += interest.amount;
+                break;
+              case "09":
+                newList.find((item: CashFlowData) => item.id === asset.id).sep += interest.amount;
+                break;
+              case "10":
+                newList.find((item: CashFlowData) => item.id === asset.id).oct += interest.amount;
+                break;
+              case "11":
+                newList.find((item: CashFlowData) => item.id === asset.id).nov += interest.amount;
+                break;
+              case "12":
+                newList.find((item: CashFlowData) => item.id === asset.id).dec += interest.amount;
+                break;
+            }
+          }
+        }
+      }
+      console.log(newList);
       // 유효성 검사 리스트 저장
       setValidationList(valList);
       // 데이터 저장
