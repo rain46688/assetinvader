@@ -24,6 +24,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { AlertColor } from '@mui/material';
 
+import CashFlowBarChart from './CashFlowBarChart';
+
 export default function AssetTypeTable() {
 
     // custom hook 사용
@@ -59,6 +61,7 @@ export default function AssetTypeTable() {
     } = useCashFlow();
 
     return (
+        <>
         <Paper 
         sx={{ 
             width: '100%', 
@@ -311,5 +314,7 @@ export default function AssetTypeTable() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
+        <CashFlowBarChart year={year} />
+        </>
     )
 }
