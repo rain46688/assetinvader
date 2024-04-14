@@ -69,6 +69,21 @@ export const useCashFlow = () => {
       const list_interest = res_interest.data;
       console.log(list_cashflow);
       console.log(list_interest);
+      // 합계 값 저장 리스트
+      let sumCashFlowList = {
+        jan: 0,
+        feb: 0,
+        mar: 0,
+        apr: 0,
+        may: 0,
+        jun: 0,
+        jul: 0,
+        aug: 0,
+        sep: 0,
+        oct: 0,
+        nov: 0,
+        dec: 0,
+      };
       // 데이터 변환(cashflow)
       let newList = list_cashflow.map((item: CashFlowData, index: number) => {
         // cash_flow 값이 없는경우 0으로 채움
@@ -94,39 +109,51 @@ export const useCashFlow = () => {
             switch (itemMonth) {
               case "01":
                 cashFlowList.jan += item.amount;
+                sumCashFlowList.jan += item.amount;
                 break;
               case "02":
                 cashFlowList.feb += item.amount;
+                sumCashFlowList.feb += item.amount;
                 break;
               case "03":
                 cashFlowList.mar += item.amount;
+                sumCashFlowList.mar += item.amount;
                 break;
               case "04":
                 cashFlowList.apr += item.amount;
+                sumCashFlowList.apr += item.amount;
                 break;
               case "05":
                 cashFlowList.may += item.amount;
+                sumCashFlowList.may += item.amount;
                 break;
               case "06":
                 cashFlowList.jun += item.amount;
+                sumCashFlowList.jun += item.amount;
                 break;
               case "07":
                 cashFlowList.jul += item.amount;
+                sumCashFlowList.jul += item.amount;
                 break;
               case "08":
                 cashFlowList.aug += item.amount;
+                sumCashFlowList.aug += item.amount;
                 break;
               case "09":
                 cashFlowList.sep += item.amount;
+                sumCashFlowList.sep += item.amount;
                 break;
               case "10":
                 cashFlowList.oct += item.amount;
+                sumCashFlowList.oct += item.amount;
                 break;
               case "11":
                 cashFlowList.nov += item.amount;
+                sumCashFlowList.nov += item.amount;
                 break;
               case "12":
                 cashFlowList.dec += item.amount;
+                sumCashFlowList.dec += item.amount;
                 break;
             }
           });
@@ -181,39 +208,51 @@ export const useCashFlow = () => {
             switch (itemMonth) {
               case "01":
                 newList.find((item: CashFlowData) => item.id === asset.id).jan += interest.amount;
+                sumCashFlowList.jan += interest.amount;
                 break;
               case "02":
                 newList.find((item: CashFlowData) => item.id === asset.id).feb += interest.amount;
+                sumCashFlowList.feb += interest.amount;
                 break;
               case "03":
                 newList.find((item: CashFlowData) => item.id === asset.id).mar += interest.amount;
+                sumCashFlowList.mar += interest.amount;
                 break;
               case "04":
                 newList.find((item: CashFlowData) => item.id === asset.id).apr += interest.amount;
+                sumCashFlowList.apr += interest.amount;
                 break;
               case "05":
                 newList.find((item: CashFlowData) => item.id === asset.id).may += interest.amount;
+                sumCashFlowList.may += interest.amount;
                 break;
               case "06":
                 newList.find((item: CashFlowData) => item.id === asset.id).jun += interest.amount;
+                sumCashFlowList.jun += interest.amount;
                 break;
               case "07":
                 newList.find((item: CashFlowData) => item.id === asset.id).jul += interest.amount;
+                sumCashFlowList.jul += interest.amount;
                 break;
               case "08":
                 newList.find((item: CashFlowData) => item.id === asset.id).aug += interest.amount;
+                sumCashFlowList.aug += interest.amount;
                 break;
               case "09":
                 newList.find((item: CashFlowData) => item.id === asset.id).sep += interest.amount;
+                sumCashFlowList.sep += interest.amount;
                 break;
               case "10":
                 newList.find((item: CashFlowData) => item.id === asset.id).oct += interest.amount;
+                sumCashFlowList.oct += interest.amount;
                 break;
               case "11":
                 newList.find((item: CashFlowData) => item.id === asset.id).nov += interest.amount;
+                sumCashFlowList.nov += interest.amount;
                 break;
               case "12":
                 newList.find((item: CashFlowData) => item.id === asset.id).dec += interest.amount;
+                sumCashFlowList.dec += interest.amount;
                 break;
             }
           }
@@ -223,7 +262,24 @@ export const useCashFlow = () => {
       // 유효성 검사 리스트 저장
       setValidationList(valList);
       // 데이터 저장
-      dispatch(setCashFlowList(newList));
+      dispatch(setCashFlowList([
+        {
+          id: 0,
+          asset_name: '0총계',
+          jan: sumCashFlowList.jan,
+          feb: sumCashFlowList.feb,
+          mar: sumCashFlowList.mar,
+          apr: sumCashFlowList.apr,
+          may: sumCashFlowList.may,
+          jun: sumCashFlowList.jun,
+          jul: sumCashFlowList.jul,
+          aug: sumCashFlowList.aug,
+          sep: sumCashFlowList.sep,
+          oct: sumCashFlowList.oct,
+          nov: sumCashFlowList.nov,
+          dec: sumCashFlowList.dec,
+        }, 
+        ...newList]));
     } else {
       console.log(" === getList error === ");
       setSnack(true);

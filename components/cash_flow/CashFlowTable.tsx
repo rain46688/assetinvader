@@ -5,6 +5,7 @@ import { useCashFlow } from '@/hooks/cash_flow/useCashFlow';
 import { ChangeEvent } from 'react';
 import { EnhancedTableHead } from "@/components/cash_flow/TableHeader";
 import { EnhancedTableToolbar } from "@/components/cash_flow/TableHeaderToolbar";
+import { parseNumber } from '@/utils/format';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -58,7 +59,12 @@ export default function AssetTypeTable() {
     } = useCashFlow();
 
     return (
-        <Paper sx={{ width: '100%', mb: 2 }}>
+        <Paper 
+        sx={{ 
+            width: '100%', 
+            mb: 2,
+        }}
+        >
             {/* 스낵바 설정 */}
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -82,11 +88,14 @@ export default function AssetTypeTable() {
                 year={year}
                 setYear={setYear}
                  />
-            <TableContainer>
+            <TableContainer sx={{ overflowX: 'auto', width: '100%' }}>
                 <Table
-                    sx={{ minWidth: 750 }}
-                    aria-labelledby="tableTitle"
-                    size='small'>
+                    // sx={{ 
+                    //     minWidth: 750
+                    //  }}
+                    size='small'
+                    
+                    >
                     {/* 헤더 props */}
                     <EnhancedTableHead
                         order={order}
@@ -104,15 +113,15 @@ export default function AssetTypeTable() {
                                     role="checkbox"
                                     tabIndex={-1}
                                     key={row.id}
-                                    sx={{ cursor: 'pointer' }}>
+                                    sx={{ cursor: 'pointer'}}>
                                     {/*  */}
                                     <TableCell
                                         component="th"
                                         id={labelId}
                                         scope="center"
-                                        padding="none"
                                         align="center">
                                         <TextField
+                                            sx={{ width: '150px'}}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한영특 숫자 입력" : ''}
@@ -124,132 +133,156 @@ export default function AssetTypeTable() {
                                     {/* 1 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.jan ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.jan}
-                                            value={row.jan || ''}
+                                            value={parseNumber(row.jan) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'jan')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'jan')} />
                                     </TableCell>
                                     {/* 2 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.feb ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.feb}
-                                            value={row.feb || ''}
+                                            value={parseNumber(row.feb) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'feb')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'feb')} />
                                     </TableCell>
                                     {/* 3 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.mar ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.mar}
-                                            value={row.mar || ''}
+                                            value={parseNumber(row.mar) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'mar')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'mar')} />
                                     </TableCell>
                                     {/* 4 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.apr ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.apr}
-                                            value={row.apr || ''}
+                                            value={parseNumber(row.apr) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'apr')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'apr')} />
                                     </TableCell>
                                     {/* 5 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.may ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.may}
-                                            value={row.may || ''}
+                                            value={parseNumber(row.may) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'may')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'may')} />
                                     </TableCell>
                                     {/* 6 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.jun ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.jun}
-                                            value={row.jun || ''}
+                                            value={parseNumber(row.jun) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'jun')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'jun')} />
                                     </TableCell>
                                     {/* 7 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.jul ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.jul}
-                                            value={row.jul || ''}
+                                            value={parseNumber(row.jul) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'jul')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'jul')} />
                                     </TableCell>
                                     {/* 8 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.aug ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.aug}
-                                            value={row.aug || ''}
+                                            value={parseNumber(row.aug) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'aug')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'aug')} />
                                     </TableCell>
                                     {/* 9 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.sep ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.sep}
-                                            value={row.sep || ''}
+                                            value={parseNumber(row.sep) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'sep')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'sep')} />
                                     </TableCell>
                                     {/* 10 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.oct ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.oct}
-                                            value={row.oct || ''}
+                                            value={parseNumber(row.oct) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'oct')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'oct')} />
                                     </TableCell>
                                     {/* 11 */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.nov ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.nov}
-                                            value={row.nov || ''}
+                                            value={parseNumber(row.nov) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'nov')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'nov')} />
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
                                         <TextField
+                                            sx={{ width: '100px'}}
+                                            inputProps={{ style: { textAlign: 'center' } }}
                                             disabled={true}
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.dec ? "숫자 입력" : ''}
                                             error={(validationList.find(item => item.id === row.id))?.dec}
-                                            value={row.dec || ''}
+                                            value={parseNumber(row.dec) || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'dec')}
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'dec')} />
                                     </TableCell>

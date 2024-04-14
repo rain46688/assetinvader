@@ -51,3 +51,16 @@ export const parseDate = (dateString: string) => {
     const [year, month, day] = dateString.split('-').map(Number);
     return new Date(year, month - 1, day);
 }
+
+/**
+ * parseNumber 함수 : 문자형태의 숫자를 받아 천단위 콤마를 찍어서 반환
+ * @param 콤마가 없는 형태의 숫자, 문자열
+ * @returns : 콤마가 있는 형태의 숫자 문자열
+ */
+export const parseNumber = (numString: string | number) => {
+    const str = typeof numString === 'number' ? numString.toString() : numString;
+    if(str === '0')
+        return '';
+    else
+        return str.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
