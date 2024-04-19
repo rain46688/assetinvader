@@ -210,7 +210,6 @@ export const useAssetEarning = () => {
     // 데이터 변경 함수
     const handleDataChange = (event: any, id: number, index: number, field: string) => {
         console.log(" ==== handleChange ==== ");
-        debugger;
 
         const updatedRows = rows.map(item => {
             if (item.id === id) {
