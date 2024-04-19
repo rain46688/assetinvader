@@ -54,7 +54,7 @@ export const useCashFlow = () => {
     const id = sessionStorage.getItem("id");
     // id값으로 데이터 가져오기
     getList("" + id);
-  }, []);
+  }, [year]);
 
   // 데이터 가져오기 함수
   const getList = async (id: string) => {
