@@ -12,6 +12,7 @@ import spendingReducer from '@/redux/spending/spendingSlice';
 import dividendReducer from '@/redux/dividend/dividendSlice';
 import cashFlowReducer from '@/redux/cash_flow/cashFlowSlice';
 import interestReducer from '@/redux/interest/interestSlice';
+import assetEarningReducer from '@/redux/asset_earning/assetEarningSlice';
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     dividendReducer,
     cashFlowReducer,
     interestReducer,
+    assetEarningReducer,
   },
 });
 

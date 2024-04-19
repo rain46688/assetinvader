@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from 'react';
-import { useAssetTransaction } from '@/hooks/asset_transaction/useAssetTransaction';
+import { useAssetEarning } from '@/hooks/asset_earning/useAssetEarning';
 import { ChangeEvent } from 'react';
-import { EnhancedTableHead } from "@/components/asset_transaction/TableHeader";
-import { EnhancedTableToolbar } from "@/components/asset_transaction/TableHeaderToolbar";
+import { EnhancedTableHead } from "@/components/asset_earning/TableHeader";
+import { EnhancedTableToolbar } from "@/components/asset_earning/TableHeaderToolbar";
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -31,7 +31,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 
-export default function AsetTransactionTable() {
+export default function AssetEarningTable() {
 
     // custom hook 사용
     const {
@@ -69,7 +69,7 @@ export default function AsetTransactionTable() {
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
-    } = useAssetTransaction();
+    } = useAssetEarning();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -197,8 +197,11 @@ export default function AsetTransactionTable() {
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
                                                 style={{ width: '150px', border: 'none' }}
                                                 inputProps={{ 'aria-label': 'Without label' }}>
-                                                <option value={'매수'}>매수</option>
-                                                <option value={'매도'}>매도</option>
+                                                <option value={'매매'}>매매</option>
+                                                <option value={'배당금'}>배당금</option>
+                                                <option value={'은행이자'}>은행이자</option>
+                                                <option value={'채권이자'}>채권이자</option>
+                                                <option value={'공모주'}>공모주</option>
                                             </NativeSelect>
                                         ) : (
                                             <Typography variant="body1" align="center">
@@ -211,14 +214,14 @@ export default function AsetTransactionTable() {
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 variant="standard"
-                                                helperText={validationList[index]?.amount ? "소수점 8자리 숫자 입력" : ''}
-                                                error={validationList[index]?.amount}
-                                                value={row.amount || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
+                                                helperText={validationList[index]?.cash_amount ? "숫자 입력" : ''}
+                                                error={validationList[index]?.cash_amount}
+                                                value={row.cash_amount || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'cash_amount')}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.amount || ''}
+                                                {row.cash_amount || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
