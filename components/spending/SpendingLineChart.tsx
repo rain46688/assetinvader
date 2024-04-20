@@ -6,6 +6,7 @@ import { sendGet } from '@/utils/fetch';
 // material-ui 관련 임포트
 import Paper from '@mui/material/Paper';
 import { PieChart } from '@mui/x-charts/PieChart';
+import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -58,7 +59,7 @@ export default function SpendingLineChart() {
                         count++;
                     }
                 }
-                bGraphData[i] = count > 0 ? total / count : 0;
+                bGraphData[i] = count > 0 ? Math.round(total / count) : 0;
             }
 
             // 통합 차트 데이터 담을 배열 선언
@@ -81,6 +82,7 @@ export default function SpendingLineChart() {
                 data: bGraphData,
                 label: '월별 지출금액(12MA)',
             });
+            console.log(chartData)
 
             // 데이터 저장
             setChartData(chartData);
@@ -95,7 +97,7 @@ export default function SpendingLineChart() {
     };
 
     return (
-        <Paper sx={{ width: '100%', mb: 2 }}>
+        <Paper sx={{ width: '100%'}}>
             <Toolbar
                 sx={{
                     pl: { sm: 2 },
@@ -115,12 +117,22 @@ export default function SpendingLineChart() {
                 </Tooltip>
             </Toolbar>
             {chartData.length > 0 ? (
-                <LineChart
-                    xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }]}
-                    series={chartData}
-                    height={220}
-                    margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
-                />
+                <div
+                    className="spendingLineChartClass"
+                >
+                    <LineChart
+                        xAxis={[
+                            {
+                                scaleType: 'band',
+                                data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                                id: 'months',
+                                label: '월별 지출',
+                            },
+                        ]}
+                        series={chartData}
+                        height={220}
+                    />
+                </div>
             ) : (
                 <Box sx={{
                     display: 'flex',
