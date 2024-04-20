@@ -218,7 +218,7 @@ export default function AssetEarningChart() {
                         <LinePlot />
                         <MarkPlot />
                         <ChartsLegend direction='row' />
-                        <ChartsXAxis axisId="months" label= {thisYear + " months"} labelFontSize={18} />
+                        <ChartsXAxis axisId="months" label= {thisYear + "년 월별 수익"} labelFontSize={18} />
                         <ChartsYAxis axisId="earnings" label="월별 수익" />
                         <ChartsYAxis axisId="stackEarnings" position="right" label="누적 수익" />
                         <ChartsTooltip />

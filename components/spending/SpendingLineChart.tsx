@@ -124,9 +124,9 @@ export default function SpendingLineChart() {
                         xAxis={[
                             {
                                 scaleType: 'band',
-                                data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                                data: ['M-11', 'M-10', 'M-9', 'M-8', 'M-7', 'M-6', 'M-5', 'M-4', 'M-3', 'M-2', 'M-1', 'M'],
                                 id: 'months',
-                                label: '월별 지출',
+                                label: '최근 12개월 지출',
                             },
                         ]}
                         series={chartData}
