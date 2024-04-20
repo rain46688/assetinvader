@@ -129,3 +129,19 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
     }
     return result;
 }
+
+/**
+ * getNextMonth 함수 : 다음 월을 찾아주는 함수
+ * @param {string} date - 입력 월
+ * @returns {string} - 입력월의 다음월
+ */
+export const getNextMonth = (date: string): string => {
+    const [year, month] = date.split('-').map(Number);
+    let nextYear = year;
+    let nextMonth = month + 1;
+    if (nextMonth > 12) {
+        nextMonth = 1;
+        nextYear++;
+    }
+    return `${nextYear}-${String(nextMonth).padStart(2, '0')}`;
+}
