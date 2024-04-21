@@ -97,7 +97,7 @@ export default function SpendingLineChart() {
     };
 
     return (
-        <Paper sx={{ width: '100%'}}>
+        <Paper sx={{ width: '100%' }}>
             <Toolbar
                 sx={{
                     pl: { sm: 2 },
@@ -117,10 +117,10 @@ export default function SpendingLineChart() {
                 </Tooltip>
             </Toolbar>
             {chartData.length > 0 ? (
-                <div
-                    className="spendingLineChartClass"
-                >
                     <LineChart
+                        sx={{
+                            p: 1,
+                        }}
                         xAxis={[
                             {
                                 scaleType: 'band',
@@ -132,7 +132,6 @@ export default function SpendingLineChart() {
                         series={chartData}
                         height={220}
                     />
-                </div>
             ) : (
                 <Box sx={{
                     display: 'flex',
