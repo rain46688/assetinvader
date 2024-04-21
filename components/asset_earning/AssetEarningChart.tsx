@@ -38,7 +38,7 @@ export default function AssetEarningChart() {
     useEffect(() => {
         console.log(" === AssetEarningLineBarChart === ");
         CreateChart();
-    }, []);
+    }, [thisYear]);
 
     // 차트 생성 함수
     const CreateChart = async () => {
@@ -54,80 +54,84 @@ export default function AssetEarningChart() {
             const aGroupedData: { [key: string]: number[] } = {};
             const bGroupedData: { [key: string]: number[] } = {};
 
-            list.forEach((item: { trns_type: string, trns_date: string, cash_amount: number }) => {
-                if (item.trns_type === "매수" || item.trns_type === "매도")
-                    return;
-                const formatted_trns_date = formatDateV3(item.trns_date)
-                const year = formatted_trns_date.slice(0, 4);
-                const month = parseInt(formatted_trns_date.slice(5, 7), 10);
-                if (!aGroupedData[year]) {
-                    aGroupedData[year] = new Array(12).fill(0);
-                }
-                aGroupedData[year][month - 1] += item.cash_amount;
-                const strMonth = month < 10 ? '0' + month : month.toString();
-                if (!sumData[year + "-" + strMonth]) {
-                    sumData[year + "-" + strMonth] = 0;
-                }
-                sumData[year + "-" + strMonth] += item.cash_amount;
-            });
-
-            // 객체의 키를 배열로 추출하고 정렬
-            const sortedKeys = Object.keys(sumData).sort();
-
-            // 정렬된 키를 기반으로 새로운 객체 생성
-            const sortedSumData: { [key: string]: number } = {};
-            sortedKeys.forEach(key => {
-                sortedSumData[key] = sumData[key];
-            });
-
-            // 월별 데이터 누적 배열 생성
-            // 1. 시작 날짜와 끝 날짜 찾기
-            const start_date: string = Object.keys(sortedSumData).reduce((a, b) => a < b ? a : b).slice(0, 5) + '01';
-            const end_date: string = Object.keys(sortedSumData).reduce((a, b) => a > b ? a : b).slice(0, 5) + '12';
-
-            // 2. 시작 날짜부터 끝 날짜까지 누적
-            let current_total: number = 0;
-            for (let date = start_date; date <= end_date; date = getNextMonth(date)) {
-                if (date in sortedSumData) {
-                    current_total += sortedSumData[date];
-                }
-                stackData[date] = current_total;
-            }
-            console.log(stackData);
-
-            // B 그래프 데이터 생성
-            const stackDataKeys = Object.keys(stackData);
-            stackDataKeys.forEach(key => {
-                const value = stackData[key];
-                const year = key.slice(0, 4);
-                const month = parseInt(key.slice(5, 7), 10);
-                if (!bGroupedData[year]) {
-                    bGroupedData[year] = new Array(12).fill(0);
-                }
-                bGroupedData[year][month - 1] += value;
-            });
-
             // 통합 차트 데이터 담을 배열 선언
             const chartData = [];
 
-            // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용
-            chartData.push({
-                type: 'bar',
-                id: 'earnings',
-                label: '월별 수익',
-                yAxisKey: 'earnings',
-                data: aGroupedData[thisYear],
-            });
+            if (Object.keys(list).length !== 0) {
+                list.forEach((item: { trns_type: string, trns_date: string, cash_amount: number }) => {
+                    if (item.trns_type === "매수" || item.trns_type === "매도")
+                        return;
+                    const formatted_trns_date = formatDateV3(item.trns_date)
+                    const year = formatted_trns_date.slice(0, 4);
+                    const month = parseInt(formatted_trns_date.slice(5, 7), 10);
+                    if (!aGroupedData[year]) {
+                        aGroupedData[year] = new Array(12).fill(0);
+                    }
+                    aGroupedData[year][month - 1] += item.cash_amount;
+                    const strMonth = month < 10 ? '0' + month : month.toString();
+                    if (!sumData[year + "-" + strMonth]) {
+                        sumData[year + "-" + strMonth] = 0;
+                    }
+                    sumData[year + "-" + strMonth] += item.cash_amount;
+                });
 
-            // chartData에 B 그래프 데이터 추가
-            chartData.push({
-                type: 'line',
-                id: 'stackEarnings',
-                label: '누적 수익',
-                yAxisKey: 'stackEarnings',
-                data: bGroupedData[thisYear],
-            });
+                // 객체의 키를 배열로 추출하고 정렬
+                const sortedKeys = Object.keys(sumData).sort();
 
+                // 정렬된 키를 기반으로 새로운 객체 생성
+                const sortedSumData: { [key: string]: number } = {};
+                sortedKeys.forEach(key => {
+                    sortedSumData[key] = sumData[key];
+                });
+
+                // 월별 데이터 누적 배열 생성
+                // 1. 시작 날짜와 끝 날짜 찾기
+                const start_date: string = Object.keys(sortedSumData).reduce((a, b) => a < b ? a : b).slice(0, 5) + '01';
+                const end_date: string = Object.keys(sortedSumData).reduce((a, b) => a > b ? a : b).slice(0, 5) + '12';
+
+                // 2. 시작 날짜부터 끝 날짜까지 누적
+                let current_total: number = 0;
+                for (let date = start_date; date <= end_date; date = getNextMonth(date)) {
+                    if (date in sortedSumData) {
+                        current_total += sortedSumData[date];
+                    }
+                    stackData[date] = current_total;
+                }
+
+                // B 그래프 데이터 생성
+                const stackDataKeys = Object.keys(stackData);
+                stackDataKeys.forEach(key => {
+                    const value = stackData[key];
+                    const year = key.slice(0, 4);
+                    const month = parseInt(key.slice(5, 7), 10);
+                    if (!bGroupedData[year]) {
+                        bGroupedData[year] = new Array(12).fill(0);
+                    }
+                    bGroupedData[year][month - 1] += value;
+                });
+
+                // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용
+                if (typeof aGroupedData[thisYear] !== 'undefined') {
+                    chartData.push({
+                        type: 'bar',
+                        id: 'earnings',
+                        label: '월별 수익',
+                        yAxisKey: 'earnings',
+                        data: aGroupedData[thisYear],
+                    });
+                }
+
+                // chartData에 B 그래프 데이터 추가
+                if (typeof bGroupedData[thisYear] !== 'undefined') {
+                    chartData.push({
+                        type: 'line',
+                        id: 'stackEarnings',
+                        label: '누적 수익',
+                        yAxisKey: 'stackEarnings',
+                        data: bGroupedData[thisYear],
+                    });
+                }
+            }
             // 데이터 저장
             setChartData(chartData);
         } else {
@@ -190,7 +194,7 @@ export default function AssetEarningChart() {
                 </Tooltip>
                 {/*  */}
             </Toolbar>
-            {chartData.length > 0 ? (
+            {chartData.length > 1 ? (
                 <Box sx={{ width: '100%' }}>
                     <ResponsiveChartContainer
                         xAxis={[
@@ -218,7 +222,7 @@ export default function AssetEarningChart() {
                         <LinePlot />
                         <MarkPlot />
                         <ChartsLegend direction='row' />
-                        <ChartsXAxis axisId="months" label= {thisYear + "년 월별 수익"} labelFontSize={18} />
+                        <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"}/>
                         <ChartsYAxis axisId="earnings" label="월별 수익" />
                         <ChartsYAxis axisId="stackEarnings" position="right" label="누적 수익" />
                         <ChartsTooltip />
