@@ -8,6 +8,13 @@ import { formatDateV3 } from '@/utils/format';
 // material-ui 관련 임포트
 import Paper from '@mui/material/Paper';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
+import { BarPlot } from '@mui/x-charts/BarChart';
+import { ChartsXAxis } from '@mui/x-charts/ChartsXAxis';
+import { ChartsYAxis } from '@mui/x-charts/ChartsYAxis';
+import { axisClasses } from '@mui/x-charts/ChartsAxis';
+import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
+import { ChartsLegend } from '@mui/x-charts/ChartsLegend';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -230,19 +237,19 @@ export default function CashFlowBarChart(props: CashFlowBarChartProps) {
                 {/*  */}
             </Toolbar>
             {chartData.length > 0 ? (
-                <div
-                    className="cashFlowBarChartClass"
-                >
                 <BarChart 
                     sx={{
-                        ml: { sm: 2 },
-                        mr: { sm: 2 },
+                        p: 1,
                     }}
                     series={chartData}
                     height={350}
-                    xAxis={[{ data: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'], scaleType: 'band', id: 'axis1' }]}
+                    xAxis={[{
+                        data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                        scaleType: 'band', 
+                        id: 'months',
+                        label: "월"
+                    }]}
                 />
-                </div>
             ) : (
                 <Box sx={{
                     display: 'flex',
