@@ -28,9 +28,9 @@ export const useCashFlow = () => {
   // 이전 데이터 저장
   const [previousData, setPreviousData] = useState("");
   // 유효성 검사 리스트
-  const [validationList, setValidationList] = useState<CashFlowValidation[]>(
-    []
-  );
+  const [validationList, setValidationList] = useState<CashFlowValidation[]>([]);
+  // 총계 데이터
+  const [sumCashFlow, setSumCashFlow] = useState<CashFlowData>();
   // 유효성 검사 성공 여부
   const [validation, setValidation] = useState(false);
   // 스낵바 관련
@@ -261,25 +261,25 @@ export const useCashFlow = () => {
       console.log(newList);
       // 유효성 검사 리스트 저장
       setValidationList(valList);
+      // 총계 데이터 저장
+      setSumCashFlow({
+        id: 0,
+        asset_name: '총계',
+        jan: sumCashFlowList.jan,
+        feb: sumCashFlowList.feb,
+        mar: sumCashFlowList.mar,
+        apr: sumCashFlowList.apr,
+        may: sumCashFlowList.may,
+        jun: sumCashFlowList.jun,
+        jul: sumCashFlowList.jul,
+        aug: sumCashFlowList.aug,
+        sep: sumCashFlowList.sep,
+        oct: sumCashFlowList.oct,
+        nov: sumCashFlowList.nov,
+        dec: sumCashFlowList.dec,
+      });
       // 데이터 저장
-      dispatch(setCashFlowList([
-        {
-          id: 0,
-          asset_name: '0총계',
-          jan: sumCashFlowList.jan,
-          feb: sumCashFlowList.feb,
-          mar: sumCashFlowList.mar,
-          apr: sumCashFlowList.apr,
-          may: sumCashFlowList.may,
-          jun: sumCashFlowList.jun,
-          jul: sumCashFlowList.jul,
-          aug: sumCashFlowList.aug,
-          sep: sumCashFlowList.sep,
-          oct: sumCashFlowList.oct,
-          nov: sumCashFlowList.nov,
-          dec: sumCashFlowList.dec,
-        }, 
-        ...newList]));
+      dispatch(setCashFlowList([...newList]));
     } else {
       console.log(" === getList error === ");
       setSnack(true);
@@ -332,6 +332,8 @@ export const useCashFlow = () => {
       setIsNotSortStatus(true);
       sortedRows = stableSort(rows, getComparator(order, orderBy));
     }
+
+    sortedRows = [sumCashFlow, ...sortedRows];
 
     const slicedRows = sortedRows.slice(
       page * rowsPerPage,

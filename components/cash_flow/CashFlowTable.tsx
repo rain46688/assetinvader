@@ -307,7 +307,7 @@ export default function AssetTypeTable() {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={rows.length}
+                count={rows.length + 1}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
