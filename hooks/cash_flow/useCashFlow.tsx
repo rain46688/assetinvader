@@ -333,7 +333,8 @@ export const useCashFlow = () => {
       sortedRows = stableSort(rows, getComparator(order, orderBy));
     }
 
-    sortedRows = [sumCashFlow, ...sortedRows];
+    if(typeof sumCashFlow  !== 'undefined')
+      sortedRows = [sumCashFlow, ...sortedRows];
 
     const slicedRows = sortedRows.slice(
       page * rowsPerPage,
