@@ -74,6 +74,9 @@ export const useAssetTransaction = () => {
                 if ((item as any).asset == undefined) {
                     return;
                 }
+                if ((item as any).trns_type !== "매수" && (item as any).trns_type !== "매도") {
+                    return;
+                }
 
                 // 유효성 검사 리스트에 저장 (수정 기능이 없어서 id값을 index로 사용)
                 valList.push({
