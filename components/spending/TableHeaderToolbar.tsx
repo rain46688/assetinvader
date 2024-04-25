@@ -8,6 +8,7 @@ import { SpendingValidation } from '@/redux/spending/Spending';
 import { setSpendingList } from '@/redux/spending/spendingSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
+import * as XLSX from "xlsx";
 
 // material-ui 관련 임포트
 import { alpha } from '@mui/material/styles';
@@ -22,9 +23,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
-
-import axios from 'axios';
-
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -191,7 +189,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   };
 
   // 엑셀 데이터 업로드
-  const handleFileChange = async (event: any) => {
+  const handleFileUpChange = async (event: any) => {
     console.log('=== handleFileChange === ');
     const file = event.target.files[0];
 
@@ -212,6 +210,27 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setSnackBarStatus("error");
     }
   };
+
+  // 엑셀 데이터 다운로드
+  const handleFileDown = () => {
+    console.log('=== handleFileDown === ');
+    const wsData = list.map(item => [item.id, item.spnd_date, item.spnd_type, item.description, item.amount]);
+    const ws = XLSX.utils.aoa_to_sheet([['ID', 'Spending Date', 'Spending Type', 'Description', 'Amount'], ...wsData]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Spending Data');
+
+    // 엑셀 파일을 Blob 형태로 생성합니다.
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'spending_data.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  }
 
   return (
     <Toolbar
@@ -252,11 +271,16 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {!addStatus ? (
             <>
+              <Tooltip title="Download">
+                    <IconButton component="span" aria-label="download" onClick={handleFileDown}>
+                      <ArrowCircleDownIcon />
+                    </IconButton>
+                  </Tooltip>
                 <input
                   type="file"
                   id="upload-file"
                   style={{ display: 'none' }}
-                  onChange={handleFileChange}
+                  onChange={handleFileUpChange}
                 />
                 <label htmlFor="upload-file">
                   <Tooltip title="Upload">
