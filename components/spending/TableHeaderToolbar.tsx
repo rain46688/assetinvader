@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { sendPost, sendDelete } from '@/utils/fetch';
+import { sendPost, sendDelete, sendFile } from '@/utils/fetch';
 import { createData } from '@/redux/spending/Spending';
 import { SpendingData } from '@/redux/spending/Spending';
 import { SpendingValidation } from '@/redux/spending/Spending';
@@ -23,7 +23,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
-import { useState } from 'react';
 import axios from 'axios';
 
 
@@ -191,25 +190,27 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setPage(movePage);
   };
 
-  // 업로드
-  const handleFileChange = (event: any) => {
+  // 엑셀 데이터 업로드
+  const handleFileChange = async (event: any) => {
     console.log('=== handleFileChange === ');
     const file = event.target.files[0];
-    console.log(file);
 
     const formData = new FormData();
     formData.append('excelFile', file);
+    formData.append('member_id', sessionStorage.getItem('id') || '');
 
-    axios.post(process.env.NEXT_PUBLIC_API_URL+'spending/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }).then(response => {
-      console.log(response.data);
-    }).catch(error => {
-      console.error('업로드 실패:', error);
-    });
-
+    const result = await sendFile(formData, 'spending/upload');
+    if (result.status === 'success') {
+      setSnack(true);
+      setSnackMessage("데이터 업로드 완료.");
+      setSnackBarStatus("success");
+      getList(sessionStorage.getItem('id') + '');
+    } else {
+      console.log("fail");
+      setSnack(true);
+      setSnackMessage("데이터 업로드 실패.");
+      setSnackBarStatus("error");
+    }
   };
 
   return (
