@@ -20,6 +20,12 @@ import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+
+import { useState } from 'react';
+import axios from 'axios';
+
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -91,8 +97,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 선택된 항목 삭제
   const handleDeleteList = async () => {
     console.log('=== handleDeleteList === ');
-
-    console.log(selected);
 
     selected.forEach(async (id) => {
       const result = await sendDelete('spending/delete_spending/' + id);
@@ -187,6 +191,27 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setPage(movePage);
   };
 
+  // 업로드
+  const handleFileChange = (event: any) => {
+    console.log('=== handleFileChange === ');
+    const file = event.target.files[0];
+    console.log(file);
+
+    const formData = new FormData();
+    formData.append('excelFile', file);
+
+    axios.post(process.env.NEXT_PUBLIC_API_URL+'spending/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(response => {
+      console.log(response.data);
+    }).catch(error => {
+      console.error('업로드 실패:', error);
+    });
+
+  };
+
   return (
     <Toolbar
       sx={{
@@ -226,6 +251,19 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {!addStatus ? (
             <>
+                <input
+                  type="file"
+                  id="upload-file"
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="upload-file">
+                  <Tooltip title="Upload">
+                    <IconButton component="span" aria-label="upload">
+                      <ArrowCircleUpIcon />
+                    </IconButton>
+                  </Tooltip>
+                </label>
               <Tooltip title="Refresh">
                 <IconButton aria-label="refresh" onClick={handleRefreshList}>
                   <RefreshIcon />
