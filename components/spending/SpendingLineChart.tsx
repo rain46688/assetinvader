@@ -68,21 +68,24 @@ export default function SpendingLineChart() {
             // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용
             const today = new Date();
             const thisYear = today.getFullYear().toString();
-            chartData.push({
-                curve: "linear",
-                id: '0',
-                data: aGroupedData[thisYear],
-                label: '월별 지출금액',
-            });
+            if (typeof aGroupedData[thisYear] !== 'undefined') {
+                chartData.push({
+                    curve: "linear",
+                    id: '0',
+                    data: aGroupedData[thisYear],
+                    label: '월별 지출금액',
+                });
+            }
 
             // chartData에 B 그래프 데이터 추가
-            chartData.push({
-                curve: "linear",
-                id: '1',
-                data: bGraphData,
-                label: '월별 지출금액(12MA)',
-            });
-            console.log(chartData)
+            if (typeof bGraphData !== 'undefined') {
+                chartData.push({
+                    curve: "linear",
+                    id: '1',
+                    data: bGraphData,
+                    label: '월별 지출금액(12MA)',
+                });
+            }
 
             // 데이터 저장
             setChartData(chartData);
@@ -116,22 +119,22 @@ export default function SpendingLineChart() {
                     </IconButton>
                 </Tooltip>
             </Toolbar>
-            {chartData.length > 0 ? (
-                    <LineChart
-                        sx={{
-                            p: 1,
-                        }}
-                        xAxis={[
-                            {
-                                scaleType: 'band',
-                                data: ['M-11', 'M-10', 'M-9', 'M-8', 'M-7', 'M-6', 'M-5', 'M-4', 'M-3', 'M-2', 'M-1', 'M'],
-                                id: 'months',
-                                label: '최근 12개월 지출',
-                            },
-                        ]}
-                        series={chartData}
-                        height={220}
-                    />
+            {chartData.length > 1 ? (
+                <LineChart
+                    sx={{
+                        p: 1,
+                    }}
+                    xAxis={[
+                        {
+                            scaleType: 'band',
+                            data: ['M-11', 'M-10', 'M-9', 'M-8', 'M-7', 'M-6', 'M-5', 'M-4', 'M-3', 'M-2', 'M-1', 'M'],
+                            id: 'months',
+                            label: '최근 12개월 지출',
+                        },
+                    ]}
+                    series={chartData}
+                    height={220}
+                />
             ) : (
                 <Box sx={{
                     display: 'flex',

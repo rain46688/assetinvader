@@ -190,6 +190,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
   // 엑셀 데이터 업로드
   const handleFileUpChange = async (event: any) => {
+    debugger;
     console.log('=== handleFileChange === ');
     const file = event.target.files[0];
 
@@ -214,8 +215,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 엑셀 데이터 다운로드
   const handleFileDown = () => {
     console.log('=== handleFileDown === ');
-    const wsData = list.map(item => [item.id, item.spnd_date, item.spnd_type, item.description, item.amount]);
-    const ws = XLSX.utils.aoa_to_sheet([['ID', 'Spending Date', 'Spending Type', 'Description', 'Amount'], ...wsData]);
+    const wsData = list.map(item => [item.spnd_date, item.spnd_type, item.description, item.amount]);
+    const ws = XLSX.utils.aoa_to_sheet([['spnd_date', 'spnd_type', 'description', 'amount'], ...wsData]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Spending Data');
 
