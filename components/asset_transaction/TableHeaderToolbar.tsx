@@ -154,7 +154,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       "asset_id": (new_data as any).asset_id,
       "trns_type": new_data.trns_type,
       "amount": new_data.amount,
-      "cash_amount": 0,
       "trns_date": new_data.trns_date
     });
 
