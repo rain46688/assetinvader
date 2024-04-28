@@ -216,9 +216,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 엑셀 양식 데이터 다운로드
   const handleFormFileDown = () => {
     console.log('=== handleFormFileDown === ');
-    const ws = XLSX.utils.aoa_to_sheet([['spnd_date', 'spnd_type', 'description', 'amount']]);
+    const ws = XLSX.utils.aoa_to_sheet([['지출 발생월', '지출 유형', '지출 설명', '지출 금액']]);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Spending Data');
+    XLSX.utils.book_append_sheet(wb, ws, '지출내역');
 
     // 엑셀 파일을 Blob 형태로 생성합니다.
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
@@ -228,7 +228,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'spending_data_example.xlsx');
+    link.setAttribute('download', '지출내역 데이터 양식.xlsx');
     document.body.appendChild(link);
     link.click();
   }
@@ -237,9 +237,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const handleFileDown = () => {
       console.log('=== handleFileDown === ');
       const wsData = list.map(item => [item.spnd_date, item.spnd_type, item.description, item.amount]);
-      const ws = XLSX.utils.aoa_to_sheet([['spnd_date', 'spnd_type', 'description', 'amount'], ...wsData]);
+      const ws = XLSX.utils.aoa_to_sheet([['지출 발생월', '지출 유형', '지출 설명', '지출 금액'], ...wsData]);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Spending Data');
+      XLSX.utils.book_append_sheet(wb, ws, '지출내역');
   
       // 엑셀 파일을 Blob 형태로 생성합니다.
       const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
@@ -249,7 +249,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'spending_data.xlsx');
+      link.setAttribute('download', '지출내역 데이터.xlsx');
       document.body.appendChild(link);
       link.click();
     }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { sendPost, sendDelete } from '@/utils/fetch';
+import { sendPost, sendDelete, sendFile } from '@/utils/fetch';
 import { createData } from '@/redux/asset_earning/AssetEarning';
 import { AssetEarningData } from '@/redux/asset_earning/AssetEarning';
 import { AssetEarningValidation } from '@/redux/asset_earning/AssetEarning';
@@ -8,6 +8,7 @@ import { AssetEarningValidation } from '@/redux/asset_earning/AssetEarning';
 import { setAssetEarningList } from '@/redux/asset_earning/assetEarningSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
+import * as XLSX from "xlsx";
 
 // material-ui 관련 임포트
 import { alpha } from '@mui/material/styles';
@@ -20,6 +21,9 @@ import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -193,6 +197,71 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setPage(movePage);
   };
 
+  // 엑셀 데이터 업로드
+  const handleFileUpChange = async (event: any) => {
+    debugger;
+    console.log('=== handleFileChange === ');
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('excelFile', file);
+    formData.append('member_id', sessionStorage.getItem('id') || '');
+
+    const result = await sendFile(formData, 'assetearning/upload');
+    if (result.status === 'success') {
+      setSnack(true);
+      setSnackMessage("데이터 업로드 완료.");
+      setSnackBarStatus("success");
+      getList(sessionStorage.getItem('id') + '');
+    } else {
+      console.log("fail");
+      setSnack(true);
+      setSnackMessage("데이터 업로드 실패.");
+      setSnackBarStatus("error");
+    }
+  };
+
+  // 엑셀 양식 데이터 다운로드
+  const handleFormFileDown = () => {
+    console.log('=== handleFormFileDown === ');
+    const ws = XLSX.utils.aoa_to_sheet([['수익발생 자산명', '수익 발생일', '종류', '수익(원)']]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '수익내역');
+
+    // 엑셀 파일을 Blob 형태로 생성합니다.
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', '수익내역 데이터 양식.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  }
+
+    // 엑셀 데이터 다운로드
+    const handleFileDown = () => {
+      console.log('=== handleFileDown === ');
+      const wsData = list.map(item => [item.asset_name, item.trns_date, item.trns_type, item.amount]);
+      const ws = XLSX.utils.aoa_to_sheet([['수익발생 자산명', '수익 발생일', '종류', '수익(원)'], ...wsData]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, '수익내역');
+  
+      // 엑셀 파일을 Blob 형태로 생성합니다.
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([wbout], { type: 'application/octet-stream' });
+  
+      // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', '수익내역 데이터.xlsx');
+      document.body.appendChild(link);
+      link.click();
+    }
+
   return (
     <Toolbar
       sx={{
@@ -232,6 +301,32 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {!addStatus ? (
             <>
+            {/* file download */}
+            <Tooltip title="Download">
+              <IconButton component="span" aria-label="download" onClick={handleFileDown}>
+                <FileDownloadIcon />
+              </IconButton>
+            </Tooltip>
+            {/* sheet download */}
+            <Tooltip title="FormDownload">
+              <IconButton component="span" aria-label="formDownload" onClick={handleFormFileDown}>
+                <AttachFileIcon />
+              </IconButton>
+            </Tooltip>
+            {/* file upload */}
+            <input
+              type="file"
+              id="upload-file"
+              style={{ display: 'none' }}
+              onChange={handleFileUpChange}
+            />
+            <label htmlFor="upload-file">
+              <Tooltip title="Upload">
+                <IconButton component="span" aria-label="upload">
+                  <FileUploadIcon />
+                </IconButton>
+              </Tooltip>
+            </label>
               <Tooltip title="Refresh">
                 <IconButton aria-label="refresh" onClick={handleRefreshList}>
                   <RefreshIcon />
