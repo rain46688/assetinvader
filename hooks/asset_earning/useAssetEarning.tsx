@@ -52,7 +52,7 @@ export const useAssetEarning = () => {
     // 데이터 가져오기 함수
     const getList = async (id: string) => {
         console.log('=== getList === ');
-        const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
+        const res = await sendGet('/assetearning/getlist_assetearning_main/' + id);
         if (res.status === 'success') {
 
             // 셀렉트 박스 거래 내역 이름 데이터 가져오기
@@ -84,7 +84,7 @@ export const useAssetEarning = () => {
                     asset_name: false,
                     asset_acnt: false,
                     trns_type: false,
-                    cash_amount: false,
+                    amount: false,
                     trns_date: false
                 });
 
@@ -94,7 +94,7 @@ export const useAssetEarning = () => {
                     (item as any).asset.asset_name,
                     (item as any).asset.asset_acnt,
                     item.trns_type,
-                    item.cash_amount,
+                    item.amount,
                     formatDateV2(item.trns_date),
                 )
             }
@@ -224,7 +224,7 @@ export const useAssetEarning = () => {
 
                 // 유효성 검사 타입
                 const fieldDataType = {
-                    cash_amount: "number",
+                    amount: "number",
                     trns_date: "date2",
                 }
 

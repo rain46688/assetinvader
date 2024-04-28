@@ -214,14 +214,14 @@ export default function AssetEarningTable() {
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 variant="standard"
-                                                helperText={validationList[index]?.cash_amount ? "숫자 입력" : ''}
-                                                error={validationList[index]?.cash_amount}
-                                                value={row.cash_amount || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'cash_amount')}
+                                                helperText={validationList[index]?.amount ? "숫자 입력" : ''}
+                                                error={validationList[index]?.amount}
+                                                value={row.amount || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.cash_amount || ''}
+                                                {row.amount || ''}
                                             </Typography>
                                         )}
                                     </TableCell>

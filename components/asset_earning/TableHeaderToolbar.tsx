@@ -75,7 +75,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       asset_name: true,
       asset_acnt: true,
       trns_type: true,
-      cash_amount: true,
+      amount: true,
       trns_date: true
     });
 
@@ -97,7 +97,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     console.log(selected);
 
     selected.forEach(async (id) => {
-      const result = await sendDelete('assettransaction/delete_assettransaction/' + id);
+      const result = await sendDelete('assetearning/delete_assetearning/' + id);
       if (result.status === 'success') {
         const newList = list.filter((item) => !selected.includes(item.id));
         setSelected([]);
@@ -146,19 +146,18 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
     // 아무것도 없는 경우에는 맨위에 보여지는 매수 값으로 설정
     if (new_data.trns_type === "") {
-      new_data.trns_type = "매수";
+      new_data.trns_type = "매매";
     }
 
     // 서버에 데이터 추가
     const data = JSON.stringify({
       "asset_id": (new_data as any).asset_id,
       "trns_type": new_data.trns_type,
-      "amount": 0,
-      "cash_amount": new_data.cash_amount,
+      "amount": new_data.amount,
       "trns_date": new_data.trns_date
     });
 
-    const result = await sendPost(data, 'assettransaction/add_assettransaction');
+    const result = await sendPost(data, 'assetearning/add_assetearning');
     if (result.status === 'success') {
       setSnack(true);
       setSnackMessage("데이터 추가 완료.");

@@ -5,7 +5,7 @@ export interface AssetEarningData {
     asset_name: string;
     asset_acnt: string;
     trns_type: string;
-    cash_amount: number;
+    amount: number;
     trns_date: string;
 }
 
@@ -15,7 +15,7 @@ export interface AssetEarningValidation {
     asset_name: boolean;
     asset_acnt: boolean;
     trns_type: boolean;
-    cash_amount: boolean;
+    amount: boolean;
     trns_date: boolean;
 }
 
@@ -32,7 +32,7 @@ export function createData(
     asset_name: string,
     asset_acnt: string,
     trns_type: string,
-    cash_amount: number,
+    amount: number,
     trns_date: string,
 ): AssetEarningData {
     return {
@@ -40,7 +40,7 @@ export function createData(
         asset_name,
         asset_acnt,
         trns_type,
-        cash_amount,
+        amount,
         trns_date,
     };
 }

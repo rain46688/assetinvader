@@ -43,7 +43,7 @@ export default function AssetEarningChart() {
     // 차트 생성 함수
     const CreateChart = async () => {
         const id = sessionStorage.getItem('id');
-        const res = await sendGet('/assettransaction/getlist_assettransaction_main/' + id);
+        const res = await sendGet('/assetearning/getlist_assetearning_main/' + id);
         if (res.status === 'success') {
             // 데이터 저장
             const list = res.data;
@@ -58,21 +58,19 @@ export default function AssetEarningChart() {
             const chartData = [];
 
             if (Object.keys(list).length !== 0) {
-                list.forEach((item: { trns_type: string, trns_date: string, cash_amount: number }) => {
-                    if (item.trns_type === "매수" || item.trns_type === "매도")
-                        return;
+                list.forEach((item: { trns_type: string, trns_date: string, amount: number }) => {
                     const formatted_trns_date = formatDateV3(item.trns_date)
                     const year = formatted_trns_date.slice(0, 4);
                     const month = parseInt(formatted_trns_date.slice(5, 7), 10);
                     if (!aGroupedData[year]) {
                         aGroupedData[year] = new Array(12).fill(0);
                     }
-                    aGroupedData[year][month - 1] += item.cash_amount;
+                    aGroupedData[year][month - 1] += item.amount;
                     const strMonth = month < 10 ? '0' + month : month.toString();
                     if (!sumData[year + "-" + strMonth]) {
                         sumData[year + "-" + strMonth] = 0;
                     }
-                    sumData[year + "-" + strMonth] += item.cash_amount;
+                    sumData[year + "-" + strMonth] += item.amount;
                 });
 
                 // 객체의 키를 배열로 추출하고 정렬

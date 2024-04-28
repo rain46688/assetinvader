@@ -25,7 +25,7 @@ const headCells: readonly HeadCell[] = [
         label: '종류',
     },
     {
-        id: 'cash_amount',
+        id: 'amount',
         label: '수익(원)',
     },
     {
