@@ -21,8 +21,9 @@ import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -149,7 +150,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       "spnd_date": new_data.spnd_date,
       "spnd_type": new_data.spnd_type,
       "description": new_data.description,
-      "amount": String(new_data.amount).trim() === '' ? "0": new_data.amount,
+      "amount": String(new_data.amount).trim() === '' ? "0" : new_data.amount,
     });
 
     const result = await sendPost(data, 'spending/add_spending');
@@ -161,9 +162,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setIsNotSortStatus(false);
       // 기존 리스트에 추가된 임시 id값 데이터의 id(0임)를 서버에 추가 후 반환 받은 진짜 id로 변경
       let newList = [...list];
-      let lastItem = { ...newList[newList.length - 1] }; 
-      lastItem.id = result.data.id; 
-      newList[newList.length - 1] = lastItem; 
+      let lastItem = { ...newList[newList.length - 1] };
+      lastItem.id = result.data.id;
+      newList[newList.length - 1] = lastItem;
       dispatch(setSpendingList(newList));
     } else {
       console.log("fail");
@@ -212,11 +213,10 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     }
   };
 
-  // 엑셀 데이터 다운로드
-  const handleFileDown = () => {
-    console.log('=== handleFileDown === ');
-    const wsData = list.map(item => [item.spnd_date, item.spnd_type, item.description, item.amount]);
-    const ws = XLSX.utils.aoa_to_sheet([['spnd_date', 'spnd_type', 'description', 'amount'], ...wsData]);
+  // 엑셀 양식 데이터 다운로드
+  const handleFormFileDown = () => {
+    console.log('=== handleFormFileDown === ');
+    const ws = XLSX.utils.aoa_to_sheet([['spnd_date', 'spnd_type', 'description', 'amount']]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Spending Data');
 
@@ -228,10 +228,31 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'spending_data.xlsx');
+    link.setAttribute('download', 'spending_data_example.xlsx');
     document.body.appendChild(link);
     link.click();
   }
+
+    // 엑셀 데이터 다운로드
+    const handleFileDown = () => {
+      console.log('=== handleFileDown === ');
+      const wsData = list.map(item => [item.spnd_date, item.spnd_type, item.description, item.amount]);
+      const ws = XLSX.utils.aoa_to_sheet([['spnd_date', 'spnd_type', 'description', 'amount'], ...wsData]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Spending Data');
+  
+      // 엑셀 파일을 Blob 형태로 생성합니다.
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([wbout], { type: 'application/octet-stream' });
+  
+      // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'spending_data.xlsx');
+      document.body.appendChild(link);
+      link.click();
+    }
 
   return (
     <Toolbar
@@ -272,24 +293,32 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {!addStatus ? (
             <>
+              {/* file download */}
               <Tooltip title="Download">
-                    <IconButton component="span" aria-label="download" onClick={handleFileDown}>
-                      <ArrowCircleDownIcon />
-                    </IconButton>
-                  </Tooltip>
-                <input
-                  type="file"
-                  id="upload-file"
-                  style={{ display: 'none' }}
-                  onChange={handleFileUpChange}
-                />
-                <label htmlFor="upload-file">
-                  <Tooltip title="Upload">
-                    <IconButton component="span" aria-label="upload">
-                      <ArrowCircleUpIcon />
-                    </IconButton>
-                  </Tooltip>
-                </label>
+                <IconButton component="span" aria-label="download" onClick={handleFileDown}>
+                  <FileDownloadIcon />
+                </IconButton>
+              </Tooltip>
+              {/* sheet download */}
+              <Tooltip title="FormDownload">
+                <IconButton component="span" aria-label="formDownload" onClick={handleFormFileDown}>
+                  <AttachFileIcon />
+                </IconButton>
+              </Tooltip>
+              {/* file upload */}
+              <input
+                type="file"
+                id="upload-file"
+                style={{ display: 'none' }}
+                onChange={handleFileUpChange}
+              />
+              <label htmlFor="upload-file">
+                <Tooltip title="Upload">
+                  <IconButton component="span" aria-label="upload">
+                    <FileUploadIcon />
+                  </IconButton>
+                </Tooltip>
+              </label>
               <Tooltip title="Refresh">
                 <IconButton aria-label="refresh" onClick={handleRefreshList}>
                   <RefreshIcon />
