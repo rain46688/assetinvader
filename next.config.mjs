@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: "export",
     reactStrictMode: false,
     devServer: {
         // 개발 서버를 모든 IP 주소에 바인딩
