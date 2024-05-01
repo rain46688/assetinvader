@@ -10,6 +10,12 @@ import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import Typography from "@mui/material/Typography";
+
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -18,11 +24,10 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import PaymentsIcon from "@mui/icons-material/Payments";
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import Typography from "@mui/material/Typography";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
 export default function Navbar() {
   // Custom Hook 사용
@@ -69,7 +74,7 @@ export default function Navbar() {
             }}
           >
             <ListItemIcon>
-              <InboxIcon />
+              <AccountBalanceIcon />
             </ListItemIcon>
             <ListItemText primary="자산관리" />
             {isAssetOpened ? <ExpandLess /> : <ExpandMore />}
@@ -112,7 +117,7 @@ export default function Navbar() {
             }}
           >
             <ListItemIcon>
-              <InboxIcon />
+              <SavingsIcon />
             </ListItemIcon>
             <ListItemText primary="수익관리" />
             {isEarningOpened ? <ExpandLess /> : <ExpandMore />}
@@ -146,7 +151,7 @@ export default function Navbar() {
             }}
           >
             <ListItemIcon>
-              <InboxIcon />
+              <LocalAtmIcon />
             </ListItemIcon>
             <ListItemText primary="이자·배당관리" />
             {isDividendOpened ? <ExpandLess /> : <ExpandMore />}
@@ -164,7 +169,7 @@ export default function Navbar() {
                 href={process.env.NEXT_PUBLIC_ASSET_TRANSACTION_URL || "/"}
               >
                 <ListItemIcon>
-                  <PriceCheckIcon />
+                  <SyncAltIcon />
                 </ListItemIcon>
                 <ListItemText primary="배당자산 거래기록" />
               </ListItemButton>
@@ -175,7 +180,7 @@ export default function Navbar() {
                 href={process.env.NEXT_PUBLIC_DIVIDEND_URL || "/"}
               >
                 <ListItemIcon>
-                  <PaymentsIcon />
+                  <PriceCheckIcon />
                 </ListItemIcon>
                 <ListItemText primary="확정배당금 기록" />
               </ListItemButton>
@@ -186,7 +191,7 @@ export default function Navbar() {
                 href={process.env.NEXT_PUBLIC_INTEREST_URL || "/"}
               >
                 <ListItemIcon>
-                  <PaymentsIcon />
+                  <PriceCheckIcon />
                 </ListItemIcon>
                 <ListItemText primary="확정이자 기록" />
               </ListItemButton>
@@ -197,7 +202,7 @@ export default function Navbar() {
                 href={process.env.NEXT_PUBLIC_CASH_FLOW_URL || "/"}
               >
                 <ListItemIcon>
-                  <CurrencyExchangeIcon />
+                  <ListAltIcon />
                 </ListItemIcon>
                 {/* <ListItemText secondary="월별 이자·배당금 조회" />
                  */}
@@ -228,7 +233,7 @@ export default function Navbar() {
             }}
           >
             <ListItemIcon>
-              <InboxIcon />
+              <CreditScoreIcon />
             </ListItemIcon>
             <ListItemText primary="지출관리" />
             {isSpendingOpened ? <ExpandLess /> : <ExpandMore />}
