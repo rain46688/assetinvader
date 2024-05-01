@@ -23,6 +23,9 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { AlertColor } from '@mui/material';
 
+// 숫자 포맷 관련
+import { NumericFormatCustom } from '@/utils/format';
+
 export default function AssetTypeTable() {
 
     // custom hook 사용
@@ -90,7 +93,7 @@ export default function AssetTypeTable() {
                 getList={getList}
                 validationList={validationList}
                 setValidationList={setValidationList}
-                 />
+            />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
@@ -105,12 +108,11 @@ export default function AssetTypeTable() {
                         onRequestSort={handleRequestSort}
                         rowCount={rows.length}
                         setIsNotSortStatus={setIsNotSortStatus}
-                        />
+                    />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
                             const labelId = `enhanced-table-checkbox-${index}`;
-
                             return (
                                 <TableRow
                                     hover
@@ -139,7 +141,7 @@ export default function AssetTypeTable() {
                                         padding="none"
                                         align="center">
                                         <NativeSelect
-                                            value={row.asset_type}
+                                            value={row.asset_type != "" && row.asset_type != undefined ? row.asset_type : "미분류"}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_type')}
                                             onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, index, 'asset_type')}
                                             style={{ width: '150px', border: 'none' }}
@@ -147,6 +149,7 @@ export default function AssetTypeTable() {
                                             <option value={'현금자산'}>현금자산</option>
                                             <option value={'원금보장자산'}>원금보장자산</option>
                                             <option value={'원금비보장자산'}>원금비보장자산</option>
+                                            <option value={'미분류'}>미분류</option>
                                         </NativeSelect>
                                     </TableCell>
                                     {/*  */}
@@ -177,7 +180,11 @@ export default function AssetTypeTable() {
                                             error={(validationList.find(item => item.id === row.id))?.amount}
                                             value={row.amount || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
-                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')} />
+                                            onBlur={(event) => handleDataBlur(event, row.id, index, 'amount')}
+                                            InputProps={{
+                                                inputComponent: NumericFormatCustom as any,
+                                            }}
+                                        />
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">

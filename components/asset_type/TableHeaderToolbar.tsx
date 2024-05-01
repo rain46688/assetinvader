@@ -47,8 +47,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const id = sessionStorage.getItem('id');
     const data = JSON.stringify({
       "member_id": id,
-      "asset_type": "현금자산",
-      "asset_big_class": "",
+      "asset_type": "미분류",
+      "asset_big_class": "미분류",
       "asset_mid_class": "",
       "asset_acnt": "",
       "asset_name": "",

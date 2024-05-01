@@ -6,6 +6,7 @@ import { ChangeEvent } from 'react';
 import { EnhancedTableHead } from "@/components/asset_class/TableHeader";
 import { EnhancedTableToolbar } from "@/components/asset_class/TableHeaderToolbar";
 import AssetMidClassInput from './AssetMidClassInput';
+import { parseNumber } from '@/utils/format';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -23,6 +24,9 @@ import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { AlertColor } from '@mui/material';
+
+// 숫자 포맷 관련
+import { NumericFormatCustom } from '@/utils/format';
 
 export default function AssetClassTable() {
 
@@ -62,26 +66,26 @@ export default function AssetClassTable() {
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
-        {/* 스낵바 설정 */}
-        <Snackbar
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            open={snack}
-            autoHideDuration={5000}
-            onClose={handleSnackClose}>
-            <Alert
-                onClose={handleSnackClose}
-                severity={snackBarStatus as AlertColor}
-                variant="filled"
-                sx={{ width: '100%' }}>
-                {snackMessage}
-            </Alert>
-        </Snackbar>
+            {/* 스낵바 설정 */}
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={snack}
+                autoHideDuration={5000}
+                onClose={handleSnackClose}>
+                <Alert
+                    onClose={handleSnackClose}
+                    severity={snackBarStatus as AlertColor}
+                    variant="filled"
+                    sx={{ width: '100%' }}>
+                    {snackMessage}
+                </Alert>
+            </Snackbar>
             {/* 툴바 props */}
-            <EnhancedTableToolbar 
-                numSelected={selected.length} 
-                selected={selected} 
-                setSelected={setSelected} 
-                setPage={setPage} 
+            <EnhancedTableToolbar
+                numSelected={selected.length}
+                selected={selected}
+                setSelected={setSelected}
+                setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
                 setOrderBy={setOrderBy}
@@ -90,14 +94,14 @@ export default function AssetClassTable() {
                 setSnackBarStatus={setSnackBarStatus}
                 validationList={validationList}
                 setValidationList={setValidationList}
-                getList={getList}/>
+                getList={getList} />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
                     size='small' // 테이블 사이즈 middle / small
                 >
-                {/* 헤더 props */}
+                    {/* 헤더 props */}
                     <EnhancedTableHead
                         numSelected={selected.length}
                         order={order}
@@ -123,7 +127,7 @@ export default function AssetClassTable() {
                                     selected={isItemSelected}
                                     sx={{ cursor: 'pointer' }}
                                 >
-                                {/*  */}
+                                    {/*  */}
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             color="primary"
@@ -141,7 +145,7 @@ export default function AssetClassTable() {
                                         padding="none"
                                         align="center">
                                         <NativeSelect
-                                            value={row.asset_big_class || ''}
+                                            value={row.asset_big_class != "" && row.asset_big_class != undefined ? row.asset_big_class : "미분류"}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_big_class')}
                                             onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, 'asset_big_class')}
                                             style={{ width: '150px', border: 'none' }}
@@ -150,11 +154,12 @@ export default function AssetClassTable() {
                                             <option value={'배당자산'}>배당자산</option>
                                             <option value={'안전자산'}>안전자산</option>
                                             <option value={'현금자산'}>현금자산</option>
+                                            <option value={'미분류'}>미분류</option>
                                         </NativeSelect>
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        <AssetMidClassInput row_id={row.id} row_value={row.asset_mid_class || ''}/>
+                                        <AssetMidClassInput row_id={row.id} row_value={row.asset_mid_class || ''} />
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
@@ -184,7 +189,11 @@ export default function AssetClassTable() {
                                             error={(validationList.find(item => item.id === row.id))?.amount}
                                             value={row.amount || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'amount')}
-                                            onBlur={(event) => handleDataBlur(event, row.id, 'amount')} />
+                                            onBlur={(event) => handleDataBlur(event, row.id, 'amount')}
+                                            InputProps={{
+                                                inputComponent: NumericFormatCustom as any,
+                                            }}
+                                        />
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">

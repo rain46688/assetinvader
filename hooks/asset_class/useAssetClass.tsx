@@ -250,7 +250,7 @@ export const useAssetClass = () => {
         // 이전 데이터와 현재 데이터가 같다면 return
         console.log(" === previousData === ", previousData);
         console.log(" === event.target.value === ", event.target.value);
-        if (previousData === "") {
+        if (previousData === "" && previousData == event.target.value) {
             console.log(" === 데이터 동일 === ");
             return;
         }
@@ -284,14 +284,14 @@ export const useAssetClass = () => {
             setSnack(true);
             setSnackMessage("데이터 수정 완료.");
             setSnackBarStatus("success");
-            setIsNotSortStatus(false);
+            setIsNotSortStatus(true);
             dispatch(setAssetClassList([...rows]));
         } else {
             console.log("수정 실패");
             setSnack(true);
             setSnackMessage("데이터 수정 실패.");
             setSnackBarStatus("error");
-            setIsNotSortStatus(false);
+            setIsNotSortStatus(true);
             dispatch(setAssetClassList([...rows]));
         }
     };

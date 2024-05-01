@@ -49,8 +49,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const id = sessionStorage.getItem('id');
     const data = JSON.stringify({
       "member_id": id,
-      "asset_type": "",
-      "asset_big_class": "현금자산",
+      "asset_type": "미분류",
+      "asset_big_class": "미분류",
       "asset_mid_class": "",
       "asset_acnt": "",
       "asset_name": "",
@@ -84,7 +84,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
       // 추가 시에 마지막 페이지로 이동
       const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-      console.log("movePage : ", movePage);
       setPage(movePage);
       setOrder('asc');
       setOrderBy('asset_big_class');
