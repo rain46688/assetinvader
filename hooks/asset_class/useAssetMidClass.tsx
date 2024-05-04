@@ -42,9 +42,10 @@ export const useAssetMidClass = (row_value: string) => {
         if (res.status === "success") {
           const list = res.data;
           // 데이터 변환
-          mid_class_names = list.map((item: AssetClassData) => ({
-            name: item.asset_mid_class,
-          }));
+          mid_class_names = list
+          .filter((item: AssetClassData) => item.asset_mid_class !== "") // 빈 값을 제외
+          .map((item: AssetClassData) => ({ name: item.asset_mid_class }));
+
 
           // 중복된 name 값을 제거하기 위해 Set을 활용
           const uniqueNames = Array.from(

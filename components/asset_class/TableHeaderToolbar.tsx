@@ -45,7 +45,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 항목 추가
   const handleAddList = async () => {
     console.log('=== handleAddList === ');
-    console.log("list : ", list);
     const id = sessionStorage.getItem('id');
     const data = JSON.stringify({
       "member_id": id,

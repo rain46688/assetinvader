@@ -13,7 +13,7 @@ export const useAssetClass = () => {
     // 정렬 ASC / DESC 관련
     const [order, setOrder] = useState<Order>('asc');
     // 정렬 기준 관련
-    const [orderBy, setOrderBy] = useState<keyof AssetClassData>('id');
+    const [orderBy, setOrderBy] = useState<keyof AssetClassData>('asset_big_class');
     // 데이터 선택 관련
     const [selected, setSelected] = useState<readonly number[]>([]);
     // 페이지 관련
@@ -276,7 +276,6 @@ export const useAssetClass = () => {
             "asset_acnt": item?.asset_acnt,
             "earning_rate": item?.earning_rate,
         });
-        console.log(data)
 
         const result = await sendPut(data, 'asset/update_asset/' + id);
         if (result.status === 'success') {

@@ -4,24 +4,22 @@ import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ChangeEvent } from "react";
 import { useAssetMidClass } from "@/hooks/asset_class/useAssetMidClass";
-import { useAssetClass } from "@/hooks/asset_class/useAssetClass";
 import { mid_class_name } from "@/redux/asset_class/AssetMidClass";
+import { AssetClassValidation } from '@/redux/asset_class/AssetClass';
 
 
 interface AssetMidClassProps {
   row_id: number;
   row_value: string;
+  validationList: AssetClassValidation[];
+  handleDataChange: (event: ChangeEvent<any>, id: number, field: string) => void;
+  handleDataBlur: (event: ChangeEvent<any>, id: number, field: string) => void;
 }
 
 const filter = createFilterOptions<mid_class_name>();
 
 export default function AssetMidClass(props: AssetMidClassProps) {
-  const { row_id, row_value } = props;
-  const { 
-    validationList, 
-    handleDataChange, 
-    handleDataBlur 
-  } = useAssetClass();
+  const { row_id, row_value, validationList, handleDataChange, handleDataBlur } = props;
   const {
     value, setValue,
     open, setOpen,
