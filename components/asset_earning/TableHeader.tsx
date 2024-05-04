@@ -13,12 +13,12 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'asset_name',
-        label: '수익발생 자산명',
+        id: 'asset_acnt',
+        label: '자산계좌명',
     },
     {
-        id: 'asset_acnt',
-        label: '수익발생 계좌',
+        id: 'asset_name',
+        label: '자산명',
     },
     {
         id: 'trns_type',

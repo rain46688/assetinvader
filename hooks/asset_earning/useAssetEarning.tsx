@@ -52,16 +52,16 @@ export const useAssetEarning = () => {
     // 데이터 가져오기 함수
     const getList = async (id: string) => {
         console.log('=== getList === ');
-        const res = await sendGet('/assetearning/getlist_assetearning_main/' + id);
+        const res = await sendGet('/assetearning/getlist_assetearning/' + id);
         if (res.status === 'success') {
 
             // 셀렉트 박스 거래 내역 이름 데이터 가져오기
-            const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
-            const asset_type_rest_list = asset_type_rest.data;
-            asset_type_rest_list.map((item: any) => {
-                selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
-            });
-            setSelectData(selectData);
+            // const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
+            // const asset_type_rest_list = asset_type_rest.data;
+            // asset_type_rest_list.map((item: any) => {
+            //     selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
+            // });
+            // setSelectData(selectData);
 
             // 유효성 검사 리스트
             const valList: AssetEarningValidation[] = [];
@@ -70,13 +70,6 @@ export const useAssetEarning = () => {
             // 데이터 변환
 
             const newList = list.map((item: AssetEarningData, index: number) => {
-                // asset 값이 없을 경우 건너뜀
-                if ((item as any).asset == undefined) {
-                    return;
-                }
-                if ((item as any).trns_type === "매수" || (item as any).trns_type === "매도") {
-                    return;
-                }
 
                 // 유효성 검사 리스트에 저장 (수정 기능이 없어서 id값을 index로 사용)
                 valList.push({
@@ -91,8 +84,8 @@ export const useAssetEarning = () => {
                 // 타입 변환 필요
                 return createData(
                     item.id,
-                    (item as any).asset.asset_name,
-                    (item as any).asset.asset_acnt,
+                    item.asset_name,
+                    item.asset_acnt,
                     item.trns_type,
                     item.amount,
                     formatDateV2(item.trns_date),
@@ -100,13 +93,10 @@ export const useAssetEarning = () => {
             }
             );
 
-            // 외래키로 연결된 asset 값이 없는 경우 생긴 빈 항목 제거 (연결되있던 자산 데이터가 삭제된 경우)
-            const filteredList = newList.filter((item: AssetEarningData) => item !== undefined);
-
             // 유효성 검사 리스트 저장
             setValidationList(valList);
             // 데이터 저장
-            dispatch(setAssetEarningList(filteredList));
+            dispatch(setAssetEarningList(newList));
         } else {
             console.log(' === getList error === ');
             setSnack(true);

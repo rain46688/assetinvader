@@ -28,6 +28,7 @@ import dayjs from 'dayjs';
 
 import { formatDateV3 } from '@/utils/format';
 import { getNextMonth } from '@/utils/util';
+import { colors } from '@mui/material';
 
 export default function AssetEarningChart() {
 
@@ -43,7 +44,7 @@ export default function AssetEarningChart() {
     // 차트 생성 함수
     const CreateChart = async () => {
         const id = sessionStorage.getItem('id');
-        const res = await sendGet('/assetearning/getlist_assetearning_main/' + id);
+        const res = await sendGet('/assetearning/getlist_assetearning/' + id);
         if (res.status === 'success') {
             // 데이터 저장
             const list = res.data;
@@ -203,7 +204,17 @@ export default function AssetEarningChart() {
                                 label: 'Months',
                             },
                         ]}
-                        yAxis={[{ id: 'stackEarnings' }, { id: 'earnings' }]}
+                        yAxis={[
+                            { id: 'stackEarnings' },
+                            {
+                                id: 'earnings',
+                                colorMap: {
+                                    type: 'piecewise',
+                                    thresholds: [0],
+                                    colors: ['blue', 'red'],
+                                }
+                            }
+                        ]}
                         series={chartData}
                         height={400}
                         margin={{ left: 70, right: 70 }}
@@ -220,7 +231,7 @@ export default function AssetEarningChart() {
                         <LinePlot />
                         <MarkPlot />
                         <ChartsLegend direction='row' />
-                        <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"}/>
+                        <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"} />
                         <ChartsYAxis axisId="earnings" label="월별 수익" />
                         <ChartsYAxis axisId="stackEarnings" position="right" label="누적 수익" />
                         <ChartsTooltip />

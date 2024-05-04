@@ -155,7 +155,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
     // 서버에 데이터 추가
     const data = JSON.stringify({
-      "asset_id": (new_data as any).asset_id,
+      "member_id": sessionStorage.getItem('id'),
+      "asset_acnt": new_data.asset_acnt,
+      "asset_name": new_data.asset_name,
       "trns_type": new_data.trns_type,
       "amount": new_data.amount,
       "trns_date": new_data.trns_date
@@ -224,7 +226,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 엑셀 양식 데이터 다운로드
   const handleFormFileDown = () => {
     console.log('=== handleFormFileDown === ');
-    const ws = XLSX.utils.aoa_to_sheet([['수익발생 자산명', '수익 발생일', '종류', '수익(원)']]);
+    const ws = XLSX.utils.aoa_to_sheet([['자산계좌명' ,'자산명', '종류', '수익(원)', '수익 발생일']]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, '수익내역');
 
@@ -244,8 +246,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     // 엑셀 데이터 다운로드
     const handleFileDown = () => {
       console.log('=== handleFileDown === ');
-      const wsData = list.map(item => [item.asset_name, item.trns_date, item.trns_type, item.amount]);
-      const ws = XLSX.utils.aoa_to_sheet([['수익발생 자산명', '수익 발생일', '종류', '수익(원)'], ...wsData]);
+      const wsData = list.map(item => [item.asset_acnt, item.asset_name, item.trns_type, item.amount, item.trns_date]);
+      const ws = XLSX.utils.aoa_to_sheet([['자산계좌명' ,'자산명', '종류', '수익(원)', '수익 발생일'], ...wsData]);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, '수익내역');
   
