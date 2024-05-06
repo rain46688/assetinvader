@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { sendGet } from '@/utils/fetch';
+import { ChangeEvent } from 'react';
 
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
@@ -19,6 +20,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
+import NativeSelect from '@mui/material/NativeSelect';
 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -36,10 +38,13 @@ export default function AssetEarningChart() {
     const [chartData, setChartData] = useState<any[]>([]);
     const [thisYear, setThisYear] = useState(new Date().getFullYear().toString());
 
+    // 선택 데이터 저장
+    const [chartTypeName, setChartTypeName] = useState('월별');
+
     useEffect(() => {
         console.log(" === AssetEarningLineBarChart === ");
         CreateChart();
-    }, [thisYear]);
+    }, [thisYear, chartTypeName]);
 
     // 차트 생성 함수
     const CreateChart = async () => {
@@ -109,8 +114,8 @@ export default function AssetEarningChart() {
                     bGroupedData[year][month - 1] += value;
                 });
 
-                // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용
-                if (typeof aGroupedData[thisYear] !== 'undefined') {
+                // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용 
+                if (typeof aGroupedData[thisYear] !== 'undefined' && chartTypeName == '월별') {
                     chartData.push({
                         type: 'bar',
                         id: 'earnings',
@@ -120,8 +125,8 @@ export default function AssetEarningChart() {
                     });
                 }
 
-                // chartData에 B 그래프 데이터 추가
-                if (typeof bGroupedData[thisYear] !== 'undefined') {
+                // chartData에 B 그래프 데이터 추가 
+                if (typeof bGroupedData[thisYear] !== 'undefined' && chartTypeName != '월별') {
                     chartData.push({
                         type: 'line',
                         id: 'stackEarnings',
@@ -157,6 +162,16 @@ export default function AssetEarningChart() {
                     pl: { sm: 2 },
                     pr: { xs: 1, sm: 1 },
                 }}>
+                <NativeSelect
+                    value={chartTypeName}
+                    onChange={(event: ChangeEvent<any>) => {
+                        setChartTypeName(event.target.value)
+                    }}
+                    style={{ width: '150px', border: 'none' }}
+                    inputProps={{ 'aria-label': 'Without label' }}>
+                    <option value={'월별'}>월별</option>
+                    <option value={'누적'}>누적</option>
+                </NativeSelect>
                 <Typography
                     sx={{ flex: '1 1 100%' }}
                     variant="h6"
@@ -193,49 +208,81 @@ export default function AssetEarningChart() {
                 </Tooltip>
                 {/*  */}
             </Toolbar>
-            {chartData.length > 1 ? (
+            {chartData.length > 0 ? (
                 <Box sx={{ width: '100%' }}>
-                    <ResponsiveChartContainer
-                        xAxis={[
-                            {
-                                scaleType: 'band',
-                                data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                                id: 'months',
-                                label: 'Months',
-                            },
-                        ]}
-                        yAxis={[
-                            { id: 'stackEarnings' },
-                            {
-                                id: 'earnings',
-                                colorMap: {
-                                    type: 'piecewise',
-                                    thresholds: [0],
-                                    colors: ['blue', 'red'],
+                    {chartTypeName == "월별" ? (
+                        <ResponsiveChartContainer
+                            xAxis={[
+                                {
+                                    scaleType: 'band',
+                                    data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                                    id: 'months',
+                                    label: 'Months',
+                                },
+                            ]}
+                            yAxis={[
+                                {
+                                    id: 'earnings',
+                                    colorMap: {
+                                        type: 'piecewise',
+                                        thresholds: [0],
+                                        colors: ['blue', 'red'],
+                                    }
                                 }
-                            }
-                        ]}
-                        series={chartData}
-                        height={400}
-                        margin={{ left: 70, right: 70 }}
-                        sx={{
-                            [`.${axisClasses.left} .${axisClasses.label}`]: {
-                                transform: 'translate(-25px, 0)',
-                            },
-                            [`.${axisClasses.right} .${axisClasses.label}`]: {
-                                transform: 'translate(30px, 0)',
-                            },
-                        }}
-                    >
-                        <BarPlot />
-                        <LinePlot />
-                        <MarkPlot />
-                        <ChartsLegend direction='row' />
-                        <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"} />
-                        <ChartsYAxis axisId="earnings" label="월별 수익" />
-                        <ChartsYAxis axisId="stackEarnings" position="right" label="누적 수익" />
-                        <ChartsTooltip />
-                    </ResponsiveChartContainer>
+                            ]}
+                            series={chartData}
+                            height={400}
+                            margin={{ left: 70, right: 70 }}
+                            sx={{
+                                [`.${axisClasses.left} .${axisClasses.label}`]: {
+                                    transform: 'translate(-25px, 0)',
+                                },
+                                [`.${axisClasses.right} .${axisClasses.label}`]: {
+                                    transform: 'translate(30px, 0)',
+                                },
+                            }}
+                        >
+                            <BarPlot />
+                            <ChartsLegend direction='row' />
+                            <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"} />
+                            <ChartsYAxis axisId="earnings" label="월별 수익" />
+                            <ChartsTooltip />
+                        </ResponsiveChartContainer>
+                    ) : (
+                        <ResponsiveChartContainer
+                            xAxis={[
+                                {
+                                    scaleType: 'band',
+                                    data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                                    id: 'months',
+                                    label: 'Months',
+                                },
+                            ]}
+                            yAxis={[
+                                {
+                                    id: 'stackEarnings'
+                                }
+                            ]}
+                            series={chartData}
+                            height={400}
+                            margin={{ left: 70, right: 70 }}
+                            sx={{
+                                [`.${axisClasses.left} .${axisClasses.label}`]: {
+                                    transform: 'translate(-25px, 0)',
+                                },
+                                [`.${axisClasses.right} .${axisClasses.label}`]: {
+                                    transform: 'translate(30px, 0)',
+                                },
+                            }}
+                        >
+                            <LinePlot />
+                            <MarkPlot />
+                            <ChartsLegend direction='row' />
+                            <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"} />
+                            <ChartsYAxis axisId="stackEarnings" label="누적 수익" />
+                            <ChartsTooltip />
+                        </ResponsiveChartContainer>
+                    )}
                 </Box>
             ) : (
                 <Box sx={{
@@ -248,8 +295,6 @@ export default function AssetEarningChart() {
                     </Typography>
                 </Box>
             )}
-        </Paper>
-
-
+        </Paper >
     );
 }
