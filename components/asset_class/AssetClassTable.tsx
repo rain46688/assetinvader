@@ -24,6 +24,7 @@ import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { AlertColor } from '@mui/material';
+import Button from '@mui/material/Button';
 
 // 숫자 포맷 관련
 import { NumericFormatCustom } from '@/utils/format';
@@ -44,6 +45,8 @@ export default function AssetClassTable() {
         snack,
         snackMessage,
         snackBarStatus,
+        snackButton,
+        snackButtonStatus,
         getList,
         setValidationList,
         setIsNotSortStatus,
@@ -54,6 +57,9 @@ export default function AssetClassTable() {
         setOrderBy,
         setPage,
         isSelected,
+        setSnackButton,
+        setSnackButtonStatus,
+        handleAddAssetRecord,
         handleSelectAllClick,
         handleRequestSort,
         handleClick,
@@ -76,6 +82,30 @@ export default function AssetClassTable() {
                     onClose={handleSnackClose}
                     severity={snackBarStatus as AlertColor}
                     variant="filled"
+                    action={
+                        snackButton ? (
+                            <>
+                                <Button
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {
+                                        setSnackButtonStatus(true);
+                                        setSnack(false);
+                                    }}>
+                                    예
+                                </Button>
+                                <Button
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {
+                                        setSnackButtonStatus(false);
+                                        setSnack(false);
+                                    }}>
+                                    아니오
+                                </Button>
+                            </>
+                        ) : (<></>)
+                    }
                     sx={{ width: '100%' }}>
                     {snackMessage}
                 </Alert>
@@ -90,11 +120,13 @@ export default function AssetClassTable() {
                 setOrder={setOrder}
                 setOrderBy={setOrderBy}
                 setSnack={setSnack}
+                setSnackButton={setSnackButton}
                 setSnackMessage={setSnackMessage}
                 setSnackBarStatus={setSnackBarStatus}
                 validationList={validationList}
                 setValidationList={setValidationList}
-                getList={getList} />
+                getList={getList}
+                handleAddAssetRecord={handleAddAssetRecord} />
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
@@ -159,12 +191,12 @@ export default function AssetClassTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        <AssetMidClassInput 
-                                        row_id={row.id} 
-                                        row_value={row.asset_mid_class || ''} 
-                                        validationList={validationList}
-                                        handleDataChange={handleDataChange}
-                                        handleDataBlur={handleDataBlur}
+                                        <AssetMidClassInput
+                                            row_id={row.id}
+                                            row_value={row.asset_mid_class || ''}
+                                            validationList={validationList}
+                                            handleDataChange={handleDataChange}
+                                            handleDataBlur={handleDataBlur}
                                         />
                                     </TableCell>
                                     {/*  */}

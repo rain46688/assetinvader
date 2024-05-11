@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { sendPost, sendDelete } from '@/utils/fetch';
-import { formatDate } from '@/utils/format';
+import { formatDate, formatDateV2 } from '@/utils/format';
 import { createData } from '@/redux/asset_class/AssetClass';
 import { AssetClassData } from '@/redux/asset_class/AssetClass';
 import { AssetClassValidation } from '@/redux/asset_class/AssetClass';
@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -29,16 +30,33 @@ interface EnhancedTableToolbarProps {
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
   setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetClassData>>;
   setSnack: React.Dispatch<React.SetStateAction<boolean>>;
+  setSnackButton: React.Dispatch<React.SetStateAction<boolean>>;
   setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
   setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
   getList: (id: string) => Promise<void>;
   validationList: AssetClassValidation[];
   setValidationList: React.Dispatch<React.SetStateAction<AssetClassValidation[]>>;
+  handleAddAssetRecord: () => Promise<void>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
-    setSnack, setSnackMessage, setSnackBarStatus, getList, validationList, setValidationList } = props;
+  const { 
+    selected,
+    numSelected,
+    rowsPerPage,
+    validationList,
+    setSelected,
+    setPage,
+    setOrder,
+    setOrderBy,
+    setSnack,
+    setSnackMessage,
+    setSnackBarStatus,
+    getList,
+    setValidationList,
+    setSnackButton,
+    handleAddAssetRecord
+  } = props;
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetClassReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
@@ -76,7 +94,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           1
         )
       ];
-      
+
       // validationList에 추가
       const newValList = [...validationList, { id: data.id, asset_mid_class: true, asset_acnt: true, asset_name: true, amount: true, earning_rate: true }];
       setValidationList(newValList);
@@ -87,12 +105,14 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setOrder('asc');
       setOrderBy('asset_big_class');
       setSnack(true);
+      setSnackButton(false);
       setSnackMessage("데이터 추가 완료.");
       setSnackBarStatus("success");
       dispatch(setAssetClassList(newList));
     } else {
       console.log("fail");
       setSnack(true);
+      setSnackButton(false);
       setSnackMessage("데이터 추가 실패.");
       setSnackBarStatus("error");
     }
@@ -113,12 +133,14 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         setOrder('asc');
         setOrderBy('asset_big_class');
         setSnack(true);
+        setSnackButton(false);
         setSnackMessage("데이터 삭제 완료.");
         setSnackBarStatus("success");
         dispatch(setAssetClassList(newList));
       } else {
         console.log("fail");
         setSnack(true);
+        setSnackButton(false);
         setSnackMessage("데이터 삭제 실패.");
         setSnackBarStatus("error");
       }
@@ -135,6 +157,25 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     getList(sessionStorage.getItem('id') + '');
   };
 
+  // 자산 기록저장
+  const handleRecordList = async () => {
+    console.log('=== handleAddRecordList === ');
+    const id = sessionStorage.getItem('id');
+    const search_data = JSON.stringify({
+      "member_id": id,
+      "search_date": formatDateV2(new Date() + ''),
+    });
+    const search_result = await sendPost(search_data, 'assetrecord/search_assetrecord');
+
+    if(search_result.data != undefined) {
+      setSnack(true);
+      setSnackButton(true);
+      setSnackMessage("이번달에 기록한 데이터가 있습니다. 삭제하고 새로 넣겠습니까?");
+      setSnackBarStatus("info");
+    } else {
+      handleAddAssetRecord();
+    }
+  };
 
   return (
     <Toolbar
@@ -164,6 +205,11 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           분류별 자산관리
         </Typography>
       )}
+      <Tooltip title="Add Record">
+        <IconButton aria-label="Add Record" onClick={handleRecordList}>
+          <BookmarkAddIcon />
+        </IconButton>
+      </Tooltip>
       <Tooltip title="Refresh">
         <IconButton aria-label="refresh" onClick={handleRefreshList}>
           <RefreshIcon />

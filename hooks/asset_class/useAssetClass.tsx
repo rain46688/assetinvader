@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
-import { sendGet, sendPut } from "@/utils/fetch";
-import { formatDate } from "@/utils/format";
+import { sendGet, sendPut, sendPost, sendDelete } from "@/utils/fetch";
+import { formatDate, formatDateV2 } from "@/utils/format";
 import { AssetClassData, AssetClassValidation, createData } from "@/redux/asset_class/AssetClass";
 import { Order, getComparator, stableSort } from '@/utils/sort';
 import { validationCheck } from '@/utils/util';
+import { AssetRecord } from '@/redux/asset_record/AssetRecord';
 
 // redux 관련 임포트
 import { setAssetClassList } from '@/redux/asset_class/assetClassSlice';
@@ -28,10 +29,14 @@ export const useAssetClass = () => {
     const [validation, setValidation] = useState(false);
     // 스낵바 관련
     const [snack, setSnack] = useState(false);
+    // 스낵바 버튼 관련
+    const [snackButton, setSnackButton] = useState(false);
     // 스낵바 메시지 관련
     const [snackMessage, setSnackMessage] = useState('');
     // 스낵바 상태 관련
     const [snackBarStatus, setSnackBarStatus] = useState("success");
+    // 스낵바 상태 관련
+    const [snackButtonStatus, setSnackButtonStatus] = useState(false);
     // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
     const [isNotSortStatus, setIsNotSortStatus] = useState(true);
 
@@ -46,6 +51,17 @@ export const useAssetClass = () => {
         // id값으로 데이터 가져오기
         getList('' + id);
     }, []);
+
+    // 스낵바 버튼 인식
+    useEffect(() => {
+        if (snackButtonStatus) {
+            console.log("예 클릭");
+            handleDeleteAndAddAssetRecord();
+            setSnackButtonStatus(false);
+        } else {
+            console.log("아니오 클릭");
+        }
+    }, [snackButtonStatus]);
 
     // 데이터 가져오기 함수
     const getList = async (id: string) => {
@@ -95,6 +111,7 @@ export const useAssetClass = () => {
         } else {
             console.log(' === getList error === ');
             setSnack(true);
+            setSnackButton(false);
             setSnackBarStatus("warning");
             setSnackMessage('데이터가 없거나 불러오는데 실패했습니다.');
         }
@@ -130,6 +147,7 @@ export const useAssetClass = () => {
             if (orderBy !== 'asset_big_class' || order !== 'asc') {
                 console.log(" === 수정시 정렬 초기화 === ");
                 setSnack(true);
+                setSnackButton(false);
                 setSnackBarStatus("info");
                 setSnackMessage('수정 작업시 정렬이 초기화 됩니다.');
                 setOrder('asc');
@@ -260,6 +278,7 @@ export const useAssetClass = () => {
             // 유효성 검사 실패시 return
             console.log(" === 유효성 검사 실패 === ");
             setSnack(true);
+            setSnackButton(false);
             setSnackMessage("데이터 유효성 검사 실패.");
             setSnackBarStatus("warning");
             return;
@@ -272,7 +291,7 @@ export const useAssetClass = () => {
             "asset_big_class": item?.asset_big_class,
             "asset_mid_class": item?.asset_mid_class,
             "asset_name": item?.asset_name,
-            "amount": String(item?.amount).trim() === '' ? "0": item?.amount,
+            "amount": String(item?.amount).trim() === '' ? "0" : item?.amount,
             "asset_acnt": item?.asset_acnt,
             "earning_rate": item?.earning_rate,
         });
@@ -281,6 +300,7 @@ export const useAssetClass = () => {
         if (result.status === 'success') {
             console.log("수정 성공");
             setSnack(true);
+            setSnackButton(false);
             setSnackMessage("데이터 수정 완료.");
             setSnackBarStatus("success");
             setIsNotSortStatus(true);
@@ -288,6 +308,7 @@ export const useAssetClass = () => {
         } else {
             console.log("수정 실패");
             setSnack(true);
+            setSnackButton(false);
             setSnackMessage("데이터 수정 실패.");
             setSnackBarStatus("error");
             setIsNotSortStatus(true);
@@ -301,7 +322,74 @@ export const useAssetClass = () => {
             return;
         }
         setSnack(false);
+        setSnackButton(false);
     };
+
+    const handleDeleteAndAddAssetRecord = async() => {
+        await handleDeleteAssetRecord();
+        await handleAddAssetRecord();
+    }
+
+    // 자산기록 함수(useState에서 사용하기 위해 여기다 만듬)
+    const handleAddAssetRecord = async () => {
+        // 새로운 배열을 생성하고 수정된 데이터를 추가
+        const newList: AssetRecord[] = [];
+        for (let asset of rows) {
+            const modifiedAsset: AssetRecord = {
+                member_id: asset.member_id,
+                asset_type: asset.asset_type === undefined ? "" : asset.asset_type,
+                asset_big_class: asset.asset_big_class === undefined ? "" : asset.asset_big_class,
+                asset_mid_class: asset.asset_mid_class === undefined ? "" : asset.asset_mid_class,
+                asset_acnt: asset.asset_acnt === undefined ? "" : asset.asset_acnt,
+                asset_name: asset.asset_name === undefined ? "" : asset.asset_name,
+                amount: asset.amount,
+                record_date: formatDateV2(new Date() + '')
+            };
+            newList.push(modifiedAsset);
+        }
+        const sumData = {
+            "asset_records": newList
+        };
+        const data: string = JSON.stringify(sumData, null, 4);
+        const result = await sendPost(data, 'assetrecord/add_bulk_assetrecord');
+        if (result.status === 'success') {
+            // 추가 시에 마지막 페이지로 이동
+            setOrder('asc');
+            setOrderBy('asset_big_class');
+            setSnack(true);
+            setSnackButton(false);
+            setSnackButtonStatus(false);
+            setSnackMessage("데이터 추가 완료.");
+            setSnackBarStatus("success");
+        } else {
+            console.log("fail");
+            setSnack(true);
+            setSnackButton(false);
+            setSnackButtonStatus(false);
+            setSnackMessage("데이터 추가 실패.");
+            setSnackBarStatus("error");
+        }
+    };
+
+    const handleDeleteAssetRecord = async () => {
+        // 한번 더 찾는게 비효율이 있음
+        const id = sessionStorage.getItem('id');
+        const search_data = JSON.stringify({
+            "member_id": id,
+            "search_date": formatDateV2(new Date() + ''),
+        });
+        const search_result = await sendPost(search_data, 'assetrecord/search_assetrecord');
+        for (let delete_date of search_result.data) {
+            console.log(delete_date);
+            const result = await sendDelete('assetrecord/delete_bulk_assetrecord/' + id + "/" + delete_date);
+            if (result.status === 'success') {
+                console.log("delete complete");
+            } else {
+                console.log("delete fail");
+            }
+        }
+    }
+
 
     // 함수 반환
     return {
@@ -315,8 +403,10 @@ export const useAssetClass = () => {
         rowsPerPage,
         validationList,
         snack,
+        snackButton,
         snackMessage,
         snackBarStatus,
+        snackButtonStatus,
         getList,
         setValidationList,
         setIsNotSortStatus,
@@ -327,6 +417,9 @@ export const useAssetClass = () => {
         setOrderBy,
         setPage,
         isSelected,
+        setSnackButton,
+        setSnackButtonStatus,
+        handleAddAssetRecord,
         handleSelectAllClick,
         handleRequestSort,
         handleClick,
