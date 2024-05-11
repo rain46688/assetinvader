@@ -77,8 +77,10 @@ export default function AssetRecordChart() {
             // 데이터 저장 및 변환
             list.forEach(list_data => {
                 const [itemYear, itemMonth] = formatDateV3(list_data.record_date).split("-");
-                if (itemYear === year) {
+                if (itemYear == year) {
                     accumulateData(result, list_data.asset_big_class, itemMonth, list_data.amount);
+                } else {
+                    console.log(list_data);
                 }
             });
 
