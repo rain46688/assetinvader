@@ -202,6 +202,7 @@ export default function CashFlowBarChart(props: CashFlowBarChartProps) {
         } else {
             console.log('error');
         }
+        console.log(series)
         setChartData(series);
     };
 

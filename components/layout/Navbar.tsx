@@ -28,6 +28,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 
 export default function Navbar() {
   // Custom Hook 사용
@@ -106,6 +107,17 @@ export default function Navbar() {
                   <BarChartIcon />
                 </ListItemIcon>
                 <ListItemText primary="분류별 자산관리" />
+              </ListItemButton>
+              {/* 자산관리 > 자산분석 */}
+              <ListItemButton
+                sx={{ pl: 4 }}
+                component={Link}
+                href={process.env.NEXT_PUBLIC_ASSET_RECORD_URL || "/"}
+              >
+                <ListItemIcon>
+                  <ShowChartIcon />
+                </ListItemIcon>
+                <ListItemText primary="자산분석" />
               </ListItemButton>
             </List>
           </Collapse>
