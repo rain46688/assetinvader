@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import AssetEarningTable from '@/components/asset_earning/AssetEarningTable';
 import AssetEarningChart from '@/components/asset_earning/AssetEarningChart';
 
-export default function AsetEarningPage() {
+export default function AssetEarningPage() {
 
     return (
         <Box sx={{ width: '100%' }}>

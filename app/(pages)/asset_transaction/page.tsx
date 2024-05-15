@@ -2,7 +2,7 @@
 import Box from '@mui/material/Box';
 import AssetTransactionTable from '@/components/asset_transaction/AssetTransactionTable';
 
-export default function AsetTransactionPage() {
+export default function AssetTransactionPage() {
 
     return (
         <Box sx={{ width: '100%' }}>

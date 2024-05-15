@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import AssetTypeTable from '@/components/asset_type/AssetTypeTable';
 import AssetTypeChart from '@/components/asset_type/AssetTypeChart';
 
-export default function AsetTypePage() {
+export default function AssetTypePage() {
 
   return (
     <Box sx={{ width: '100%' }}>

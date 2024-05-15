@@ -4,7 +4,7 @@ import SpendingTable from '@/components/spending/SpendingTable';
 import SpendingPieChart from '@/components/spending/SpendingPieChart';
 import SpendingLineChart from '@/components/spending/SpendingLineChart';
 
-export default function AsetTransactionPage() {
+export default function SpendingPage() {
 
     return (
         <Box sx={{ width: '100%' }}>
