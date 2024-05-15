@@ -5,7 +5,8 @@ import { sendGet } from "@/utils/fetch";
 interface tableDataClass {
     amount: number,
     ratio: number,
-    ad_ratio: number,
+    adjust_ratio: number,
+    adjust_amount: number,
     diff: number,
     earning_sum: number,
     earning_rate: number
@@ -13,7 +14,6 @@ interface tableDataClass {
 
 
 export const useAssetRecord = () => {
-
     // 표 데이터 관련
     const [tableData, setTableData] = useState<tableDataClass[]>([])
     // 스낵바 관련
@@ -22,6 +22,12 @@ export const useAssetRecord = () => {
     const [snackMessage, setSnackMessage] = useState('');
     // 스낵바 상태 관련
     const [snackBarStatus, setSnackBarStatus] = useState("success");
+    // 총 자산금액
+    const [totalAmount, setTotalAmount] = useState(0);
+    // 총 연수익률
+    const [totalEarningRate, setTotalEarningRate] = useState(0);
+    // 총 조정 연수익률
+    const [totalAdjustEarningRate, setTotalAdjustEarningRate] = useState(0);
 
     // 데이터 가져오기
     useEffect(() => {
@@ -41,12 +47,14 @@ export const useAssetRecord = () => {
             const list = res.data;
             // 데이터 그룹핑
             let total_amount = 0;
+            let total_earning_sum = 0;
             const groupedData = list.reduce((acc: { [key: string]: tableDataClass }, current: { asset_big_class: string, amount: number, earning_rate: number }) => {
                 if (!acc[current.asset_big_class]) {
                     acc[current.asset_big_class] = {
                         amount: 0,
                         ratio: 0,
-                        ad_ratio: 0,
+                        adjust_ratio: 0,
+                        adjust_amount: 0,
                         diff: 0,
                         earning_sum: 0,
                         earning_rate: 0
@@ -60,11 +68,14 @@ export const useAssetRecord = () => {
             }, {});
 
             for (const temp_data in groupedData) {
-                groupedData[temp_data].diff = (total_amount * groupedData[temp_data].ratio) - groupedData[temp_data].amount;
-                groupedData[temp_data].ad_ratio = groupedData[temp_data].amount / total_amount;
+                groupedData[temp_data].diff = (total_amount * groupedData[temp_data].adjust_ratio) - groupedData[temp_data].amount;
+                groupedData[temp_data].ratio = (groupedData[temp_data].amount / total_amount);
                 groupedData[temp_data].earning_rate = groupedData[temp_data].earning_sum / groupedData[temp_data].amount;
+                total_earning_sum += groupedData[temp_data].amount * groupedData[temp_data].earning_rate;
             }
             setTableData(groupedData);
+            setTotalAmount(total_amount);
+            setTotalEarningRate(total_earning_sum / total_amount);
         } else {
             console.log(' === getList error === ');
             setSnack(true);
@@ -73,69 +84,62 @@ export const useAssetRecord = () => {
         }
     };
 
-    const handleDataChange = (event: ChangeEvent<any>, temp_data:any) => {
+    const handleDataChange = (event: ChangeEvent<any>, temp_data: any) => {
         console.log(" ==== handleChange ==== ");
 
         // 입력한 값
         const value = event.target.value;
+        console.log(typeof(value));
         if (/^[0-9]*$/.test(value)) {
-            // let total_amount = 0;
-            // for(const temp_data in tableData){
-            //     total_amount += tableData[temp_data].amount;
-            // }
-            // setTableData(prevTableData => ({
-            //     ...prevTableData,
-            //     [temp_data]: {
-            //         ...prevTableData[temp_data],
-            //         ratio: value
-            //     }
-            // }));
-            // for(const temp_data in tableData){
-            //     tableData[temp_data].diff = (total_amount * tableData[temp_data].ratio) - tableData[temp_data].amount;
-            //     tableData[temp_data].earning_rate = tableData[temp_data].earning_sum / tableData[temp_data].amount;
-            // }
+            let total_amount = 0;
+            for (const temp_data in tableData) {
+                total_amount += tableData[temp_data].amount;
+            }
+            setTableData(prevTableData => ({
+                ...prevTableData,
+                [temp_data]: {
+                    ...prevTableData[temp_data],
+                    adjust_ratio: +value
+                }
+            }));
         }
     };
 
-    // const handleDataChange = (event: ChangeEvent<any>, temp_data: any): void => {
-    //     const value = event.target.value;
-    //     if (/^[0-9]*$/.test(value)) {
-    //         setTableData(prevTableData => {
-    //             const updatedTableData = {
-    //                 ...prevTableData,
-    //                 [temp_data]: {
-    //                     ...prevTableData[temp_data],
-    //                     ratio: value
-    //                 }
-    //             };
-                
-    //             // diff와 earning_rate 계산
-    //             let totalAmount = 0;
-    //             for (const key in updatedTableData) {
-    //                 totalAmount += updatedTableData[key].amount;
-    //             }
-    
-    //             const updatedData = Object.keys(updatedTableData).reduce((acc:{ [key: string]: tableDataClass }, key:any) => {
-    //                 const item = updatedTableData[key];
-    //                 const diff = (totalAmount * item.ratio / 100) - item.amount;
-    //                 const earningRate = item.earning_sum / item.amount;
-                    
-    //                 acc.push(key:{
-    //                     ...item,
-    //                     diff,
-    //                     earning_rate: earningRate
-    //                 });
-    //                 return acc;
-    //             }, {});
+    // 데이터 변경 함수
+    const handleDataBlur = async (event: ChangeEvent<any>) => {
+        console.log(" ==== handleDataBlur ==== ");
+        console.log(tableData);
+        let total_amount = 0;
+        let total_adjust_ratio = 0;
+        let earning_sum = 0;
+        let adjust_earning_sum = 0;
+        for (const temp_data in tableData) {
+            total_amount += tableData[temp_data].amount;
+        }
 
-    //             console.log(updatedData);
-    //             return updatedData;
-    //         });
-    //     }
-    // };
-    
-    
-    
+        for (const temp_data in tableData) {
+            total_adjust_ratio += tableData[temp_data].adjust_ratio;
+            const adjust_amount = Math.round((total_amount * tableData[temp_data].adjust_ratio) / 100);
+            const diff =  adjust_amount - tableData[temp_data].amount;
+
+            earning_sum += tableData[temp_data].amount * tableData[temp_data].earning_rate;
+            adjust_earning_sum += adjust_amount * tableData[temp_data].earning_rate;
+            tableData[temp_data].adjust_amount = adjust_amount;
+            tableData[temp_data].diff = diff;
+        }
+        setTotalAmount(total_amount);
+        setTotalEarningRate(earning_sum / total_amount);
+        setTotalAdjustEarningRate(adjust_earning_sum / total_amount);
+
+        if(total_adjust_ratio <= 100) {
+            setTableData({ ...tableData });
+        } else {
+            console.log(' === Error === ');
+            setSnack(true);
+            setSnackBarStatus("warning");
+            setSnackMessage('입력한 조정비율의 합이 100%를 넘습니다.');
+        }
+    };
 
     // 스낵바 닫기 함수
     const handleSnackClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -151,12 +155,16 @@ export const useAssetRecord = () => {
         snackMessage,
         snackBarStatus,
         tableData,
+        totalAmount,
+        totalEarningRate,
+        totalAdjustEarningRate,
         getList,
         setSnack,
         setSnackMessage,
         setSnackBarStatus,
         handleSnackClose,
         handleDataChange,
+        handleDataBlur,
     };
 
 }
