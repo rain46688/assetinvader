@@ -136,7 +136,7 @@ export default function AssetRecordChart() {
                             flex: '1 1 100%',
                             pt: { sm: 2 }
                         }}
-                        variant="h6"
+                        variant="h5"
                         id="tableTitle"
                         component="div">
                         분류별 자산차트

@@ -5,8 +5,8 @@ import { sendGet } from "@/utils/fetch";
 interface tableDataClass {
     amount: number,
     ratio: number,
-    adjust_ratio: number,
-    adjust_amount: number,
+    target_ratio: number,
+    target_amount: number,
     diff: number,
     earning_sum: number,
     earning_rate: number
@@ -26,8 +26,8 @@ export const useAssetRecord = () => {
     const [totalAmount, setTotalAmount] = useState(0);
     // 총 연수익률
     const [totalEarningRate, setTotalEarningRate] = useState(0);
-    // 총 조정 연수익률
-    const [totalAdjustEarningRate, setTotalAdjustEarningRate] = useState(0);
+    // 총 목표 연수익률
+    const [totalTargetEarningRate, setTotalTargetEarningRate] = useState(0);
 
     // 데이터 가져오기
     useEffect(() => {
@@ -53,8 +53,8 @@ export const useAssetRecord = () => {
                     acc[current.asset_big_class] = {
                         amount: 0,
                         ratio: 0,
-                        adjust_ratio: 0,
-                        adjust_amount: 0,
+                        target_ratio: 0,
+                        target_amount: 0,
                         diff: 0,
                         earning_sum: 0,
                         earning_rate: 0
@@ -68,7 +68,7 @@ export const useAssetRecord = () => {
             }, {});
 
             for (const temp_data in groupedData) {
-                groupedData[temp_data].diff = (total_amount * groupedData[temp_data].adjust_ratio) - groupedData[temp_data].amount;
+                groupedData[temp_data].diff = (total_amount * groupedData[temp_data].target_ratio) - groupedData[temp_data].amount;
                 groupedData[temp_data].ratio = (groupedData[temp_data].amount / total_amount);
                 groupedData[temp_data].earning_rate = groupedData[temp_data].earning_sum / groupedData[temp_data].amount;
                 total_earning_sum += groupedData[temp_data].amount * groupedData[temp_data].earning_rate;
@@ -99,7 +99,7 @@ export const useAssetRecord = () => {
                 ...prevTableData,
                 [temp_data]: {
                     ...prevTableData[temp_data],
-                    adjust_ratio: +value
+                    target_ratio: +value
                 }
             }));
         }
@@ -110,28 +110,28 @@ export const useAssetRecord = () => {
         console.log(" ==== handleDataBlur ==== ");
         console.log(tableData);
         let total_amount = 0;
-        let total_adjust_ratio = 0;
+        let total_target_ratio = 0;
         let earning_sum = 0;
-        let adjust_earning_sum = 0;
+        let target_earning_sum = 0;
         for (const temp_data in tableData) {
             total_amount += tableData[temp_data].amount;
         }
 
         for (const temp_data in tableData) {
-            total_adjust_ratio += tableData[temp_data].adjust_ratio;
-            const adjust_amount = Math.round((total_amount * tableData[temp_data].adjust_ratio) / 100);
-            const diff =  adjust_amount - tableData[temp_data].amount;
+            total_target_ratio += tableData[temp_data].target_ratio;
+            const target_amount = Math.round((total_amount * tableData[temp_data].target_ratio) / 100);
+            const diff =  target_amount - tableData[temp_data].amount;
 
             earning_sum += tableData[temp_data].amount * tableData[temp_data].earning_rate;
-            adjust_earning_sum += adjust_amount * tableData[temp_data].earning_rate;
-            tableData[temp_data].adjust_amount = adjust_amount;
+            target_earning_sum += target_amount * tableData[temp_data].earning_rate;``
+            tableData[temp_data].target_amount = target_amount;
             tableData[temp_data].diff = diff;
         }
         setTotalAmount(total_amount);
         setTotalEarningRate(earning_sum / total_amount);
-        setTotalAdjustEarningRate(adjust_earning_sum / total_amount);
+        setTotalTargetEarningRate(target_earning_sum / total_amount);
 
-        if(total_adjust_ratio <= 100) {
+        if(total_target_ratio <= 100) {
             setTableData({ ...tableData });
         } else {
             console.log(' === Error === ');
@@ -157,7 +157,7 @@ export const useAssetRecord = () => {
         tableData,
         totalAmount,
         totalEarningRate,
-        totalAdjustEarningRate,
+        totalTargetEarningRate,
         getList,
         setSnack,
         setSnackMessage,

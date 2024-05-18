@@ -292,7 +292,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="삭제">
           <IconButton onClick={handleDeleteList}>
             <DeleteIcon />
           </IconButton>
@@ -302,13 +302,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           {!addStatus ? (
             <>
             {/* file download */}
-            <Tooltip title="Download">
+            <Tooltip title="거래내역 엑셀 다운로드">
               <IconButton component="span" aria-label="download" onClick={handleFileDown}>
                 <FileDownloadIcon />
               </IconButton>
             </Tooltip>
             {/* sheet download */}
-            <Tooltip title="FormDownload">
+            <Tooltip title="입력 양식 다운로드">
               <IconButton component="span" aria-label="formDownload" onClick={handleFormFileDown}>
                 <AttachFileIcon />
               </IconButton>
@@ -321,18 +321,18 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
               onChange={handleFileUpChange}
             />
             <label htmlFor="upload-file">
-              <Tooltip title="Upload">
+              <Tooltip title="거래내역 엑셀 업로드">
                 <IconButton component="span" aria-label="upload">
                   <FileUploadIcon />
                 </IconButton>
               </Tooltip>
             </label>
-              <Tooltip title="Refresh">
+              <Tooltip title="새로고침">
                 <IconButton aria-label="refresh" onClick={handleRefreshList}>
                   <RefreshIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Add">
+              <Tooltip title="수기입력">
                 <IconButton onClick={handleAddList}>
                   <AddIcon />
                 </IconButton>
@@ -340,12 +340,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             </>
           ) : (
             <>
-              <Tooltip title="Close">
+              <Tooltip title="취소">
                 <IconButton onClick={handleCloseList}>
                   <CloseIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Complete">
+              <Tooltip title="입력완료">
                 <IconButton onClick={handleCompleteList}>
                   <CheckIcon />
                 </IconButton>

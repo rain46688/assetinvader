@@ -93,7 +93,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                         </div>
                     </DemoContainer>
                 </LocalizationProvider>
-      <Tooltip title="Refresh">
+      <Tooltip title="새로고침">
         <IconButton aria-label="refresh" onClick={handleRefreshList}>
           <RefreshIcon />
         </IconButton>

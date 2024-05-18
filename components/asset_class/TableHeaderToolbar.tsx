@@ -205,24 +205,24 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           분류별 자산관리
         </Typography>
       )}
-      <Tooltip title="Add Record">
+      <Tooltip title="기록(월 1회)">
         <IconButton aria-label="Add Record" onClick={handleRecordList}>
           <BookmarkAddIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Refresh">
+      <Tooltip title="새로고침">
         <IconButton aria-label="refresh" onClick={handleRefreshList}>
           <RefreshIcon />
         </IconButton>
       </Tooltip>
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="삭제">
           <IconButton onClick={handleDeleteList}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Add">
+        <Tooltip title="추가">
           <IconButton onClick={handleAddList}>
             <AddIcon />
           </IconButton>

@@ -125,13 +125,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="삭제">
           <IconButton onClick={handleDeleteList}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Refresh">
+        <Tooltip title="새로고침">
           <IconButton aria-label="refresh" onClick={handleRefreshList}>
             <RefreshIcon />
           </IconButton>

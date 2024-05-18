@@ -215,7 +215,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="삭제">
           <IconButton onClick={handleDeleteList}>
             <DeleteIcon />
           </IconButton>
@@ -224,12 +224,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {!addStatus ? (
             <>
-              <Tooltip title="Refresh">
+              <Tooltip title="새로고침">
                 <IconButton aria-label="refresh" onClick={handleRefreshList}>
                   <RefreshIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Add">
+              <Tooltip title="추가">
                 <IconButton onClick={handleAddList}>
                   <AddIcon />
                 </IconButton>
@@ -237,12 +237,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             </>
           ) : (
             <>
-              <Tooltip title="Close">
+              <Tooltip title="취소">
                 <IconButton onClick={handleCloseList}>
                   <CloseIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Complete">
+              <Tooltip title="입력완료">
                 <IconButton onClick={handleCompleteList}>
                   <CheckIcon />
                 </IconButton>

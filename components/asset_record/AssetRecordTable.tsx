@@ -1,30 +1,55 @@
 "use client"
 
 import { useAssetRecord } from '@/hooks/asset_record/useAssetRecord';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
+import { green, blueGrey, grey } from '@mui/material/colors';
 
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { AlertColor, colors } from '@mui/material';
+import { AlertColor } from '@mui/material';
 
 // 숫자 포맷 관련
 import { parseNumber, parseNumberDot } from '@/utils/format';
 
-export default function AssetRecordTable() {
+// 테이블 색상(현재)
+const CurrentTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: blueGrey[200],
+    },
+    [`&.${tableCellClasses.body}`]: {
+        backgroundColor: blueGrey[200],
+    },
+}));
 
+// 테이블 색상(목표)
+const TargetTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: green[100],
+    },
+    [`&.${tableCellClasses.body}`]: {
+        backgroundColor: green[100],
+    },
+}));
+
+
+
+export default function AssetRecordTable() {
+    // 자산 숨김여부
+    const [openEarning, setOpenEarning] = useState(false);
     const {
         snack,
         snackBarStatus,
@@ -32,11 +57,29 @@ export default function AssetRecordTable() {
         tableData,
         totalAmount,
         totalEarningRate,
-        totalAdjustEarningRate,
+        totalTargetEarningRate,
+        setSnack,
+        setSnackMessage,
+        setSnackBarStatus,
         handleSnackClose,
         handleDataChange,
         handleDataBlur
     } = useAssetRecord();
+    const handleOpenEarning = () => {
+        let total_target_ratio = 0;
+        for (const tempData in tableData) {
+            total_target_ratio += tableData[tempData].target_ratio;
+        }
+        if (total_target_ratio == 100) {
+            setOpenEarning(true);
+        } else {
+            console.log(' === getList error === ');
+            setSnack(true);
+            setSnackBarStatus("warning");
+            setSnackMessage('목표비율의 총합이 100%이어야 합니다.');
+        }
+    };
+
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -69,15 +112,87 @@ export default function AssetRecordTable() {
             </Toolbar>
             <TableContainer
                 sx={{ width: '100%' }}>
-                <Table aria-label="collapsible table">
+                <Table aria-label="collapsible table" size='small'>
+                    {/* <Table aria-label="customized table"> */}
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center">대분류명</TableCell>
-                            <TableCell align="center">자산금액(원)</TableCell>
-                            <TableCell align="center">조정비율(%)</TableCell>
-                            <TableCell align="center">조정금액(원)</TableCell>
-                            <TableCell align="center">차액(원)</TableCell>
-                            <TableCell align="center">연수익률(%)</TableCell>
+                            <TableCell
+                                align="center"
+                                rowSpan={2}
+                                sx={{
+                                    borderRight: 1,
+                                    borderRightColor: grey[400],
+                                    borderBottom: 1,
+                                    borderBottomColor: grey[400]
+                                }}>
+                                대분류명
+                            </TableCell>
+                            <TableCell
+                                align="center"
+                                rowSpan={2}
+                                sx={{
+                                    borderRight: 1,
+                                    borderRightColor: grey[400],
+                                    borderBottom: 1,
+                                    borderBottomColor: grey[400]
+                                }}>
+                                연수익률(%)
+                            </TableCell>
+                            <CurrentTableCell
+                                align="center"
+                                colSpan={2}>
+                                내 자산
+                            </CurrentTableCell>
+                            <TargetTableCell
+                                align="center"
+                                colSpan={2}
+                                sx={{
+                                    borderRight: 1,
+                                    borderRightColor: grey[400],
+                                    borderBottom: 1,
+                                    borderBottomColor: grey[400]
+                                }}>
+                                목표 자산
+                            </TargetTableCell>
+                            <TableCell
+                                align="center"
+                                rowSpan={2}
+                                sx={{
+                                    borderBottom: 1,
+                                    borderBottomColor: grey[400]
+                                }}>
+                                증감(원)<br />(목표 - 현재)
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <CurrentTableCell
+                                align="center">
+                                금액(원)
+                            </CurrentTableCell>
+                            <CurrentTableCell
+                                align="center">
+                                대분류별 비율(%)
+                            </CurrentTableCell>
+                            <TargetTableCell
+                                align="center"
+                                sx={{
+                                    borderRight: 1,
+                                    borderRightColor: grey[400],
+                                    borderBottom: 1,
+                                    borderBottomColor: grey[400]
+                                }}>
+                                금액(원)
+                            </TargetTableCell>
+                            <TargetTableCell
+                                align="center"
+                                sx={{
+                                    borderRight: 1,
+                                    borderRightColor: grey[400],
+                                    borderBottom: 1,
+                                    borderBottomColor: grey[400]
+                                }}>
+                                대분류별 비율(%)
+                            </TargetTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -86,40 +201,86 @@ export default function AssetRecordTable() {
                                 <TableRow key={index}>
                                     <TableCell
                                         align="center"
-                                        sx={{ width: '16%' }}>
+                                        sx={{
+                                            width: '14%',
+                                            borderRight: 1,
+                                            borderRightColor: grey[400],
+                                            borderBottom: 1,
+                                            borderBottomColor: grey[400]
+                                        }}>
                                         {temp_data || ''}
                                     </TableCell>
                                     <TableCell
                                         align="center"
-                                        sx={{ width: '16%' }}>
-                                        {parseNumber(tableData[temp_data].amount)}<br />
-                                        ({parseNumberDot(tableData[temp_data].ratio * 100)}%)
+                                        sx={{
+                                            width: '15%',
+                                            borderRight: 1,
+                                            borderRightColor: grey[400],
+                                            borderBottom: 1,
+                                            borderBottomColor: grey[400]
+                                        }}>
+                                        {parseNumberDot(tableData[temp_data].earning_rate * 100)}
                                     </TableCell>
-                                    <TableCell
+                                    <CurrentTableCell
                                         align="center"
-                                        sx={{ width: '16%' }}>
+                                        sx={{ width: '14%' }}>
+                                        {parseNumber(tableData[temp_data].amount)}
+                                    </CurrentTableCell>
+                                    <CurrentTableCell
+                                        align="center"
+                                        sx={{ width: '14%' }}>
+                                        {parseNumberDot(tableData[temp_data].ratio * 100)}
+                                    </CurrentTableCell>
+                                    <TargetTableCell
+                                        align="center"
+                                        sx={{
+                                            width: '14%',
+                                            borderRight: 1,
+                                            borderRightColor: grey[400],
+                                            borderBottom: 1,
+                                            borderBottomColor: grey[400]
+                                        }}>
+                                        {parseNumber(tableData[temp_data].target_amount) || '자산비율 입력'}
+                                    </TargetTableCell>
+                                    <TargetTableCell
+                                        align="center"
+                                        sx={{
+                                            width: '14%',
+                                            borderRight: 1,
+                                            borderRightColor: grey[400],
+                                            borderBottom: 1,
+                                            borderBottomColor: grey[400]
+                                        }}>
                                         <TextField
                                             variant="standard"
-                                            value={tableData[temp_data].adjust_ratio || ''}
+                                            value={tableData[temp_data].target_ratio || ''}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, temp_data)}
                                             onBlur={(event: ChangeEvent<any>) => handleDataBlur(event)}
                                         />
-                                    </TableCell>
-                                    <TableCell
-                                        align="center"
-                                        sx={{ width: '16%' }}>
-                                        {parseNumber(tableData[temp_data].adjust_amount)}
-                                    </TableCell>
-                                    <TableCell
-                                        align="center"
-                                        sx={{ width: '16%' }}>
-                                        {parseNumber(tableData[temp_data].diff)}
-                                    </TableCell>
-                                    <TableCell
-                                        align="center"
-                                        sx={{ width: '17%' }}>
-                                        {parseNumberDot(tableData[temp_data].earning_rate * 100)}
-                                    </TableCell>
+                                    </TargetTableCell>
+                                    {tableData[temp_data].diff > 0 ? (
+                                        <TableCell
+                                            align="center"
+                                            sx={{
+                                                width: '14%',
+                                                color: 'red',
+                                                borderBottom: 1,
+                                                borderBottomColor: grey[400]
+                                            }}>
+                                            {parseNumber(tableData[temp_data].diff)}
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell
+                                            align="center"
+                                            sx={{
+                                                width: '14%',
+                                                color: 'blue',
+                                                borderBottom: 1,
+                                                borderBottomColor: grey[400]
+                                            }}>
+                                            {parseNumber(tableData[temp_data].diff)}
+                                        </TableCell>
+                                    )}
                                 </TableRow>
                             );
                         })}
@@ -131,27 +292,38 @@ export default function AssetRecordTable() {
                     pl: { sm: 2 },
                     pr: { sm: 2 },
                     pt: { sm: 2 },
-                    pb: { sm: 2 }
+                    pb: { sm: 2 },
                 }}>
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    variant="h5"
-                    id="tableTitle"
-                    component="div">
-                    예상 연수익금 계산
+                {openEarning ? (
                     <Typography
-                        sx={{ 
+                        sx={{
                             flex: '1 1 100%',
+                            textAlign: 'center'
                         }}
                         variant="h6"
                         id="tableTitle"
                         component="div">
-                        현재 총자산({parseNumber(totalAmount)}원)의 연 수익률은 <b style={{color : 'red'}}>{parseNumberDot(totalEarningRate*100)}%</b>이고 
-                        연 수익금은 약 <b style={{color : 'red'}}>{parseNumber(Math.round(totalAmount * totalEarningRate))}원</b>이며<br />
-                        조정 후 연 수익률은 <b style={{color : 'blue'}}>{parseNumberDot(totalAdjustEarningRate*100)}%</b>로 되며, 
-                        연 수익금은 약 <b style={{color : 'blue'}}>{parseNumber(Math.round(totalAmount * totalAdjustEarningRate))}원</b>입니다.
+                        현재 총자산({parseNumber(totalAmount)}원)의 연 수익률은 <b style={{ color: 'red' }}>{parseNumberDot(totalEarningRate * 100)}%</b>이고
+                        연 수익금은 약 <b style={{ color: 'red' }}>{parseNumber(Math.round(totalAmount * totalEarningRate))}원</b>이며<br />
+                        목표 연 수익률은 <b style={{ color: 'blue' }}>{parseNumberDot(totalTargetEarningRate * 100)}%</b>로
+                        {totalTargetEarningRate > totalEarningRate ? (<b style={{ color: 'red' }}> 증가</b>) : (<b style={{ color: 'blue' }}> 감소</b>)}되며,
+                        연 수익금은 약 <b style={{ color: 'blue' }}>{parseNumber(Math.round(totalAmount * totalTargetEarningRate))}원</b>입니다.
                     </Typography>
-                </Typography>
+                ) : (
+                    <Typography
+                        sx={{
+                            flex: '1 1 100%',
+                            textAlign: 'center',
+                        }}
+                        variant="h6"
+                        id="tableTitle"
+                        component="div"
+                        onClick={() => {
+                            handleOpenEarning();
+                        }}>
+                        <b style={{ color: 'black', cursor: 'pointer' }}>목표 연수익률 및 연수익금 확인하기</b>
+                    </Typography>
+                )}
             </Toolbar>
         </Paper>
     );

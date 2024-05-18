@@ -161,19 +161,19 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           유형별 자산관리
         </Typography>
       )}
-      <Tooltip title="Refresh">
+      <Tooltip title="새로고침">
         <IconButton aria-label="refresh" onClick={handleRefreshList}>
           <RefreshIcon />
         </IconButton>
       </Tooltip>
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="삭제">
           <IconButton onClick={handleDeleteList}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Add">
+        <Tooltip title="추가">
           <IconButton onClick={handleAddList}>
             <AddIcon />
           </IconButton>
