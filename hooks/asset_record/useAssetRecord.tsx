@@ -140,6 +140,7 @@ export const useAssetRecord = () => {
             setOpenEarning(false);
         } else {
             console.log(' === Error === ');
+            setOpenEarning(false);
             setSnack(true);
             setSnackBarStatus("warning");
             setSnackMessage('입력한 조정비율의 합이 100%를 넘습니다.');
