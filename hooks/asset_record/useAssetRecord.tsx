@@ -28,6 +28,8 @@ export const useAssetRecord = () => {
     const [totalEarningRate, setTotalEarningRate] = useState(0);
     // 총 목표 연수익률
     const [totalTargetEarningRate, setTotalTargetEarningRate] = useState(0);
+    // 목표자산 계산 숨김여부
+    const [openEarning, setOpenEarning] = useState(false);
 
     // 데이터 가져오기
     useEffect(() => {
@@ -131,8 +133,11 @@ export const useAssetRecord = () => {
         setTotalEarningRate(earning_sum / total_amount);
         setTotalTargetEarningRate(target_earning_sum / total_amount);
 
-        if(total_target_ratio <= 100) {
+        if(total_target_ratio == 100) {
             setTableData({ ...tableData });
+        } else if(total_target_ratio < 100) {
+            setTableData({ ...tableData });
+            setOpenEarning(false);
         } else {
             console.log(' === Error === ');
             setSnack(true);
@@ -158,10 +163,12 @@ export const useAssetRecord = () => {
         totalAmount,
         totalEarningRate,
         totalTargetEarningRate,
+        openEarning,
         getList,
         setSnack,
         setSnackMessage,
         setSnackBarStatus,
+        setOpenEarning,
         handleSnackClose,
         handleDataChange,
         handleDataBlur,

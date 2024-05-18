@@ -48,8 +48,6 @@ const TargetTableCell = styled(TableCell)(({ theme }) => ({
 
 
 export default function AssetRecordTable() {
-    // 자산 숨김여부
-    const [openEarning, setOpenEarning] = useState(false);
     const {
         snack,
         snackBarStatus,
@@ -58,9 +56,11 @@ export default function AssetRecordTable() {
         totalAmount,
         totalEarningRate,
         totalTargetEarningRate,
+        openEarning,
         setSnack,
         setSnackMessage,
         setSnackBarStatus,
+        setOpenEarning,
         handleSnackClose,
         handleDataChange,
         handleDataBlur
@@ -303,11 +303,22 @@ export default function AssetRecordTable() {
                         variant="h6"
                         id="tableTitle"
                         component="div">
-                        현재 총자산({parseNumber(totalAmount)}원)의 연 수익률은 <b style={{ color: 'red' }}>{parseNumberDot(totalEarningRate * 100)}%</b>이고
-                        연 수익금은 약 <b style={{ color: 'red' }}>{parseNumber(Math.round(totalAmount * totalEarningRate))}원</b>이며<br />
-                        목표 연 수익률은 <b style={{ color: 'blue' }}>{parseNumberDot(totalTargetEarningRate * 100)}%</b>로
-                        {totalTargetEarningRate > totalEarningRate ? (<b style={{ color: 'red' }}> 증가</b>) : (<b style={{ color: 'blue' }}> 감소</b>)}되며,
-                        연 수익금은 약 <b style={{ color: 'blue' }}>{parseNumber(Math.round(totalAmount * totalTargetEarningRate))}원</b>입니다.
+                        현재 총자산({parseNumber(totalAmount)}원)의 연 수익률은 {parseNumberDot(totalEarningRate * 100)}%이고
+                        연 수익금은 약 {parseNumber(Math.round(totalAmount * totalEarningRate))}원이며<br />
+                        목표 연 수익률은 {
+                            totalTargetEarningRate > totalEarningRate ?
+                                (<b style={{ color: 'red' }}>{parseNumberDot(totalTargetEarningRate * 100)}</b>)
+                                : (<b style={{ color: 'blue' }}>{parseNumberDot(totalTargetEarningRate * 100)}</b>)
+                        }%로 {
+                            totalTargetEarningRate > totalEarningRate ?
+                                (<b style={{ color: 'red' }}> 증가</b>)
+                                : (<b style={{ color: 'blue' }}> 감소</b>)
+                        }되며,
+                        연 수익금은 약 {
+                            totalTargetEarningRate > totalEarningRate ?
+                                (<b style={{ color: 'red' }}>{parseNumber(Math.round(totalAmount * totalTargetEarningRate))}원</b>)
+                                : (<b style={{ color: 'blue' }}>{parseNumber(Math.round(totalAmount * totalTargetEarningRate))}원</b>)
+                        }입니다.
                     </Typography>
                 ) : (
                     <Typography
