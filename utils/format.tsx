@@ -60,7 +60,7 @@ export const parseDate = (dateString: string) => {
 export const parseNumber = (numString: string | number) => {
     const str = typeof numString === 'number' ? numString.toString() : numString;
     if(str === '0')
-        return '';
+        return '0';
     else
         return str.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
@@ -72,7 +72,7 @@ export const parseNumber = (numString: string | number) => {
  */
 export const parseNumberDot = (numString: string | number) => {
     const num = typeof numString === 'string' ? parseFloat(numString) : numString;
-    if (isNaN(num)) return ''; // 숫자가 아닌 경우 빈 문자열 반환
+    if (isNaN(num)) return '0.00'; // 숫자가 아닌 경우 빈 문자열 반환
     const formattedNum = num.toFixed(2); // 소수점 두 번째 자리까지 반올림
     const parts = formattedNum.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 천단위 콤마 추가

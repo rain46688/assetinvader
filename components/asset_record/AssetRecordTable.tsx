@@ -16,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import { green, blueGrey, grey } from '@mui/material/colors';
+import Checkbox from '@mui/material/Checkbox';
 
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
@@ -57,10 +58,14 @@ export default function AssetRecordTable() {
         totalEarningRate,
         totalTargetEarningRate,
         openEarning,
+        classCheckBoxStatus,
+        tartgetAmountStatus,
         setSnack,
         setSnackMessage,
         setSnackBarStatus,
         setOpenEarning,
+        setClassCheckBoxStatus,
+        setTargetAmountStatus,
         handleSnackClose,
         handleDataChange,
         handleDataBlur
@@ -107,7 +112,17 @@ export default function AssetRecordTable() {
                     variant="h5"
                     id="tableTitle"
                     component="div">
-                    대분류별 자산조회 및 조정
+                    대분류별 자산조회 및 조정(중분류 포함
+                    <Checkbox
+                        checked={classCheckBoxStatus}
+                        onChange={() => { 
+                            setClassCheckBoxStatus(!classCheckBoxStatus);
+                            setOpenEarning(false);
+                            setTargetAmountStatus(false);
+                        }}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                    )
                 </Typography>
             </Toolbar>
             <TableContainer
@@ -127,6 +142,19 @@ export default function AssetRecordTable() {
                                 }}>
                                 대분류명
                             </TableCell>
+                            {classCheckBoxStatus ? (
+                                <TableCell
+                                    align="center"
+                                    rowSpan={2}
+                                    sx={{
+                                        borderRight: 1,
+                                        borderRightColor: grey[400],
+                                        borderBottom: 1,
+                                        borderBottomColor: grey[400]
+                                    }}>
+                                    중분류명
+                                </TableCell>
+                            ) : (<></>)}
                             <TableCell
                                 align="center"
                                 rowSpan={2}
@@ -171,7 +199,7 @@ export default function AssetRecordTable() {
                             </CurrentTableCell>
                             <CurrentTableCell
                                 align="center">
-                                대분류별 비율(%)
+                                {classCheckBoxStatus ? "중" : "대"}분류별 비율(%)
                             </CurrentTableCell>
                             <TargetTableCell
                                 align="center"
@@ -191,29 +219,43 @@ export default function AssetRecordTable() {
                                     borderBottom: 1,
                                     borderBottomColor: grey[400]
                                 }}>
-                                대분류별 비율(%)
+                                {classCheckBoxStatus ? "중" : "대"}분류별 비율(%)
                             </TargetTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {Object.keys(tableData).map((temp_data: any, index) => {
+                            const splitClass = temp_data.split("_");
                             return (
                                 <TableRow key={index}>
                                     <TableCell
                                         align="center"
                                         sx={{
-                                            width: '14%',
+                                            width: '12.5%',
                                             borderRight: 1,
                                             borderRightColor: grey[400],
                                             borderBottom: 1,
                                             borderBottomColor: grey[400]
                                         }}>
-                                        {temp_data || ''}
+                                        {splitClass[0] || ''}
                                     </TableCell>
+                                    {classCheckBoxStatus ? (
+                                        <TableCell
+                                            align="center"
+                                            sx={{
+                                                width: '12.5%',
+                                                borderRight: 1,
+                                                borderRightColor: grey[400],
+                                                borderBottom: 1,
+                                                borderBottomColor: grey[400]
+                                            }}>
+                                            {splitClass[1] || ''}
+                                        </TableCell>
+                                    ) : (<></>)}
                                     <TableCell
                                         align="center"
                                         sx={{
-                                            width: '15%',
+                                            width: '12.5%',
                                             borderRight: 1,
                                             borderRightColor: grey[400],
                                             borderBottom: 1,
@@ -223,29 +265,31 @@ export default function AssetRecordTable() {
                                     </TableCell>
                                     <CurrentTableCell
                                         align="center"
-                                        sx={{ width: '14%' }}>
+                                        sx={{ width: '12%' }}>
                                         {parseNumber(tableData[temp_data].amount)}
                                     </CurrentTableCell>
                                     <CurrentTableCell
                                         align="center"
-                                        sx={{ width: '14%' }}>
+                                        sx={{ width: '13%' }}>
                                         {parseNumberDot(tableData[temp_data].ratio * 100)}
                                     </CurrentTableCell>
                                     <TargetTableCell
                                         align="center"
                                         sx={{
-                                            width: '14%',
+                                            width: '12%',
                                             borderRight: 1,
                                             borderRightColor: grey[400],
                                             borderBottom: 1,
                                             borderBottomColor: grey[400]
                                         }}>
-                                        {parseNumber(tableData[temp_data].target_amount) || '자산비율 입력'}
+                                        {parseNumber(tableData[temp_data].target_amount) ==='0' 
+                                        ? (tartgetAmountStatus ? '0' : '자산비율 입력')
+                                        : parseNumber(tableData[temp_data].target_amount)}
                                     </TargetTableCell>
                                     <TargetTableCell
                                         align="center"
                                         sx={{
-                                            width: '14%',
+                                            width: '13%',
                                             borderRight: 1,
                                             borderRightColor: grey[400],
                                             borderBottom: 1,
@@ -262,7 +306,7 @@ export default function AssetRecordTable() {
                                         <TableCell
                                             align="center"
                                             sx={{
-                                                width: '14%',
+                                                width: '12.5%',
                                                 color: 'red',
                                                 borderBottom: 1,
                                                 borderBottomColor: grey[400]
@@ -273,7 +317,7 @@ export default function AssetRecordTable() {
                                         <TableCell
                                             align="center"
                                             sx={{
-                                                width: '14%',
+                                                width: '12.5%',
                                                 color: 'blue',
                                                 borderBottom: 1,
                                                 borderBottomColor: grey[400]

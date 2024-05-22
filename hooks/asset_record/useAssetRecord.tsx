@@ -30,6 +30,10 @@ export const useAssetRecord = () => {
     const [totalTargetEarningRate, setTotalTargetEarningRate] = useState(0);
     // 목표자산 계산 숨김여부
     const [openEarning, setOpenEarning] = useState(false);
+    // 중분류 선택상자 상태
+    const [classCheckBoxStatus, setClassCheckBoxStatus] = useState(false);
+    // 목표자산 생략 체크
+    const [tartgetAmountStatus, setTargetAmountStatus] = useState(false);
 
     // 데이터 가져오기
     useEffect(() => {
@@ -38,6 +42,14 @@ export const useAssetRecord = () => {
         // id값으로 데이터 가져오기
         getList('' + id);
     }, []);
+
+    // 데이터 가져오기
+    useEffect(() => {
+        // 세션 스토리지에 저장된 id값 가져오기
+        const id = sessionStorage.getItem('id');
+        // id값으로 데이터 가져오기
+        getList('' + id);
+    }, [classCheckBoxStatus]);
 
 
     // 데이터 가져오기 함수
@@ -50,31 +62,37 @@ export const useAssetRecord = () => {
             // 데이터 그룹핑
             let total_amount = 0;
             let total_earning_sum = 0;
-            const groupedData = list.reduce((acc: { [key: string]: tableDataClass }, current: { asset_big_class: string, amount: number, earning_rate: number }) => {
-                if (!acc[current.asset_big_class]) {
-                    acc[current.asset_big_class] = {
+            const groupedData = list.reduce((acc: { [key: string]: tableDataClass }, current: { asset_big_class: string, asset_mid_class: string, amount: number, earning_rate: number }) => {
+                const disinct_name = current.asset_big_class + (classCheckBoxStatus ? "_" + current.asset_mid_class : "_");
+                if (!acc[disinct_name]) {
+                    acc[disinct_name] = {
                         amount: 0,
                         ratio: 0,
                         target_ratio: 0,
                         target_amount: 0,
                         diff: 0,
                         earning_sum: 0,
-                        earning_rate: 0
+                        earning_rate: 0,
                     };
                 }
-                acc[current.asset_big_class].amount += current.amount;
-                acc[current.asset_big_class].earning_sum += (current.amount * current.earning_rate / 100);
+                acc[disinct_name].amount += current.amount;
+                acc[disinct_name].earning_sum += (current.amount * current.earning_rate / 100);
                 total_amount += current.amount;
 
                 return acc;
             }, {});
 
+            console.log(groupedData);
+
             for (const temp_data in groupedData) {
                 groupedData[temp_data].diff = (total_amount * groupedData[temp_data].target_ratio) - groupedData[temp_data].amount;
                 groupedData[temp_data].ratio = (groupedData[temp_data].amount / total_amount);
                 groupedData[temp_data].earning_rate = groupedData[temp_data].earning_sum / groupedData[temp_data].amount;
+                if(isNaN(groupedData[temp_data].earning_rate)) groupedData[temp_data].earning_rate = 0;
                 total_earning_sum += groupedData[temp_data].amount * groupedData[temp_data].earning_rate;
             }
+
+            console.log(groupedData);
             setTableData(groupedData);
             setTotalAmount(total_amount);
             setTotalEarningRate(total_earning_sum / total_amount);
@@ -92,7 +110,7 @@ export const useAssetRecord = () => {
         // 입력한 값
         const value = event.target.value;
         console.log(typeof(value));
-        if (/^[0-9]*$/.test(value)) {
+        if (/^[0-9.]*$/.test(value)) {
             let total_amount = 0;
             for (const temp_data in tableData) {
                 total_amount += tableData[temp_data].amount;
@@ -135,12 +153,15 @@ export const useAssetRecord = () => {
 
         if(total_target_ratio == 100) {
             setTableData({ ...tableData });
+            setTargetAmountStatus(true);
         } else if(total_target_ratio < 100) {
             setTableData({ ...tableData });
             setOpenEarning(false);
+            setTargetAmountStatus(false);
         } else {
             console.log(' === Error === ');
             setOpenEarning(false);
+            setTargetAmountStatus(false);
             setSnack(true);
             setSnackBarStatus("warning");
             setSnackMessage('입력한 조정비율의 합이 100%를 넘습니다.');
@@ -165,11 +186,15 @@ export const useAssetRecord = () => {
         totalEarningRate,
         totalTargetEarningRate,
         openEarning,
+        classCheckBoxStatus,
+        tartgetAmountStatus,
         getList,
         setSnack,
         setSnackMessage,
         setSnackBarStatus,
         setOpenEarning,
+        setClassCheckBoxStatus,
+        setTargetAmountStatus,
         handleSnackClose,
         handleDataChange,
         handleDataBlur,
