@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
 import { sendGet } from "@/utils/fetch";
 
-
 interface tableDataClass {
     amount: number,
     ratio: number,
@@ -12,6 +11,9 @@ interface tableDataClass {
     earning_rate: number
 }
 
+interface targetRatio {
+    [key: string]: number;
+}
 
 export const useAssetRecord = () => {
     // 표 데이터 관련
@@ -34,6 +36,8 @@ export const useAssetRecord = () => {
     const [classCheckBoxStatus, setClassCheckBoxStatus] = useState(false);
     // 목표자산 생략 체크
     const [tartgetAmountStatus, setTargetAmountStatus] = useState(false);
+    // 목표자산 비율 임시저장
+    const [targetRatioData, setTargetRatioData] = useState<targetRatio>({});
 
     // 데이터 가져오기
     useEffect(() => {
@@ -54,7 +58,7 @@ export const useAssetRecord = () => {
 
     // 데이터 가져오기 함수
     const getList = async (id: string) => {
-        console.log('=== getList === ');
+        console.log('=== getList ===');
         const res = await sendGet('/asset/getlist_asset_class/' + id);
         if (res.status === 'success') {
             // 데이터 저장
@@ -82,13 +86,28 @@ export const useAssetRecord = () => {
                 return acc;
             }, {});
 
-            console.log(groupedData);
+            const savedRatio: any = sessionStorage.getItem('targetRatio');
+            if (savedRatio == null) {
+                console.log('=== SavedRatioData is Null===');
+            } else {
+                console.log('=== Load RatioData===');
+                const parsedData = JSON.parse(savedRatio);
+                const keys = Object.keys(parsedData);
+                keys.forEach(key => {
+                    const value = parsedData[key];
+                    if(groupedData[key] != undefined)
+                        groupedData[key].target_ratio = value;
+                });
+                setTargetRatioData(parsedData);
+            }
 
             for (const temp_data in groupedData) {
-                groupedData[temp_data].diff = (total_amount * groupedData[temp_data].target_ratio) - groupedData[temp_data].amount;
+                const target_amount = Math.round((total_amount * groupedData[temp_data].target_ratio / 100));
+                groupedData[temp_data].target_amount = target_amount;
+                groupedData[temp_data].diff = target_amount - groupedData[temp_data].amount;
                 groupedData[temp_data].ratio = (groupedData[temp_data].amount / total_amount);
                 groupedData[temp_data].earning_rate = groupedData[temp_data].earning_sum / groupedData[temp_data].amount;
-                if(isNaN(groupedData[temp_data].earning_rate)) groupedData[temp_data].earning_rate = 0;
+                if (isNaN(groupedData[temp_data].earning_rate)) groupedData[temp_data].earning_rate = 0;
                 total_earning_sum += groupedData[temp_data].amount * groupedData[temp_data].earning_rate;
             }
 
@@ -109,8 +128,8 @@ export const useAssetRecord = () => {
 
         // 입력한 값
         const value = event.target.value;
-        console.log(typeof(value));
         if (/^[0-9.]*$/.test(value)) {
+            console.log(value);
             let total_amount = 0;
             for (const temp_data in tableData) {
                 total_amount += tableData[temp_data].amount;
@@ -119,9 +138,11 @@ export const useAssetRecord = () => {
                 ...prevTableData,
                 [temp_data]: {
                     ...prevTableData[temp_data],
-                    target_ratio: +value
+                    target_ratio: value
                 }
             }));
+        } else {
+            console.log("incorrect data");
         }
     };
 
@@ -140,21 +161,30 @@ export const useAssetRecord = () => {
         for (const temp_data in tableData) {
             total_target_ratio += tableData[temp_data].target_ratio;
             const target_amount = Math.round((total_amount * tableData[temp_data].target_ratio) / 100);
-            const diff =  target_amount - tableData[temp_data].amount;
+            const diff = target_amount - tableData[temp_data].amount;
 
             earning_sum += tableData[temp_data].amount * tableData[temp_data].earning_rate;
-            target_earning_sum += target_amount * tableData[temp_data].earning_rate;``
+            target_earning_sum += target_amount * tableData[temp_data].earning_rate; ``
             tableData[temp_data].target_amount = target_amount;
             tableData[temp_data].diff = diff;
         }
+
+        // targetRatio session 저장
+        for (const key in tableData) {
+            targetRatioData[key] = tableData[key].target_ratio;
+        }
+        const jsonData = JSON.stringify(targetRatioData, null, 2);
+        sessionStorage.setItem('targetRatio', jsonData);
+        
         setTotalAmount(total_amount);
         setTotalEarningRate(earning_sum / total_amount);
         setTotalTargetEarningRate(target_earning_sum / total_amount);
+        setTargetRatioData(targetRatioData);
 
-        if(total_target_ratio == 100) {
+        if (total_target_ratio == 100) {
             setTableData({ ...tableData });
             setTargetAmountStatus(true);
-        } else if(total_target_ratio < 100) {
+        } else if (total_target_ratio < 100) {
             setTableData({ ...tableData });
             setOpenEarning(false);
             setTargetAmountStatus(false);

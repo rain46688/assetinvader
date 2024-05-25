@@ -32,6 +32,7 @@ export const useHeader = () => {
         // 세션 스토리지 삭제
         sessionStorage.removeItem('id');
         sessionStorage.removeItem('user_id');
+        sessionStorage.removeItem('targetRatio');
         // 메인으로 라우팅
         userouter.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
     }
