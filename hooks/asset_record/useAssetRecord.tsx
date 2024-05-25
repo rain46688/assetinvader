@@ -137,7 +137,7 @@ export const useAssetRecord = () => {
                 ...prevTableData,
                 [temp_data]: {
                     ...prevTableData[temp_data],
-                    target_ratio: value
+                    target_ratio: value || 0
                 }
             }));
         } else {
@@ -182,7 +182,7 @@ export const useAssetRecord = () => {
         if (total_target_ratio == 100) {
             setTableData({ ...tableData });
             setTargetAmountStatus(true);
-        } else if (total_target_ratio < 100 || isNaN(total_target_ratio)) {
+        } else if (total_target_ratio < 100) {
             console.log(' === Error === ');
             console.log(total_target_ratio)
             setTableData({ ...tableData });
