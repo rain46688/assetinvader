@@ -182,12 +182,15 @@ export const useAssetRecord = () => {
         if (total_target_ratio == 100) {
             setTableData({ ...tableData });
             setTargetAmountStatus(true);
-        } else if (total_target_ratio < 100) {
+        } else if (total_target_ratio < 100 || isNaN(total_target_ratio)) {
+            console.log(' === Error === ');
+            console.log(total_target_ratio)
             setTableData({ ...tableData });
             setOpenEarning(false);
             setTargetAmountStatus(false);
         } else {
             console.log(' === Error === ');
+            console.log(total_target_ratio)
             setOpenEarning(false);
             setTargetAmountStatus(false);
             setSnack(true);
