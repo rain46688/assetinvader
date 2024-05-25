@@ -129,7 +129,6 @@ export const useAssetRecord = () => {
         // 입력한 값
         const value = event.target.value;
         if (/^[0-9.]*$/.test(value)) {
-            console.log(value);
             let total_amount = 0;
             for (const temp_data in tableData) {
                 total_amount += tableData[temp_data].amount;
@@ -149,7 +148,6 @@ export const useAssetRecord = () => {
     // 데이터 변경 함수
     const handleDataBlur = async (event: ChangeEvent<any>) => {
         console.log(" ==== handleDataBlur ==== ");
-        console.log(tableData);
         let total_amount = 0;
         let total_target_ratio = 0;
         let earning_sum = 0;
@@ -159,12 +157,12 @@ export const useAssetRecord = () => {
         }
 
         for (const temp_data in tableData) {
-            total_target_ratio += tableData[temp_data].target_ratio;
-            const target_amount = Math.round((total_amount * tableData[temp_data].target_ratio) / 100);
+            total_target_ratio += parseFloat(""+tableData[temp_data].target_ratio); // 이상하게 타입은 숫자인데 typeof는 string임
+            const target_amount = Math.round(total_amount * tableData[temp_data].target_ratio / 100);
             const diff = target_amount - tableData[temp_data].amount;
 
             earning_sum += tableData[temp_data].amount * tableData[temp_data].earning_rate;
-            target_earning_sum += target_amount * tableData[temp_data].earning_rate; ``
+            target_earning_sum += target_amount * tableData[temp_data].earning_rate;
             tableData[temp_data].target_amount = target_amount;
             tableData[temp_data].diff = diff;
         }

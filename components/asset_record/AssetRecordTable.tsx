@@ -73,7 +73,7 @@ export default function AssetRecordTable() {
     const handleOpenEarning = () => {
         let total_target_ratio = 0;
         for (const tempData in tableData) {
-            total_target_ratio += tableData[tempData].target_ratio;
+            total_target_ratio += parseFloat(""+tableData[tempData].target_ratio); // 이상하게 타입은 숫자인데 typeof는 string임
         }
         if (total_target_ratio == 100) {
             setOpenEarning(true);
