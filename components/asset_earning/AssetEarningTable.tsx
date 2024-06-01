@@ -31,6 +31,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 
+// 숫자 포맷 관련
+import { NumericFormatCustom, parseNumber } from '@/utils/format';
+
 export default function AssetEarningTable() {
 
     // custom hook 사용
@@ -153,6 +156,21 @@ export default function AssetEarningTable() {
                                         )}
                                     </TableCell>
                                     {/*  */}
+                                    <TableCell align="center">
+                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                            <TextField
+                                                disabled={true}
+                                                variant="standard"
+                                                value={row.asset_acnt || ''}
+                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
+                                            />
+                                        ) : (
+                                            <Typography variant="body1" align="center">
+                                                {row.asset_acnt || ''}
+                                            </Typography>
+                                        )}
+                                    </TableCell>
+                                    {/*  */}
                                     <TableCell
                                         component="th"
                                         id={labelId}
@@ -171,21 +189,6 @@ export default function AssetEarningTable() {
                                         ) : (
                                             <Typography variant="body1" align="center">
                                                 {row.asset_name || ''}
-                                            </Typography>
-                                        )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                disabled={true}
-                                                variant="standard"
-                                                value={row.asset_acnt || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
-                                            />
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.asset_acnt || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
@@ -218,10 +221,13 @@ export default function AssetEarningTable() {
                                                 error={validationList[index]?.amount}
                                                 value={row.amount || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
+                                                InputProps={{
+                                                    inputComponent: NumericFormatCustom as any,
+                                                }}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.amount || ''}
+                                                {parseNumber(row.amount) || ''}
                                             </Typography>
                                         )}
                                     </TableCell>
@@ -273,6 +279,8 @@ export default function AssetEarningTable() {
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
+                    showFirstButton={true}
+                    showLastButton={true}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
