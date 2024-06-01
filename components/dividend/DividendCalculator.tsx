@@ -255,7 +255,7 @@ export default function DividendCalculator() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
                     components={["DatePicker"]}
-                    sx={{ width: "33%s" }}
+                    sx={{ width: "33%" }}
                   >
                     <MobileDatePicker
                       label="날짜 선택"

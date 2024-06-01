@@ -232,14 +232,14 @@ export default function AssetEarningChart() {
                             ]}
                             series={chartData}
                             height={400}
-                            margin={{ left: 70, right: 70 }}
+                            margin={{ left: 100 }}
                             sx={{
                                 [`.${axisClasses.left} .${axisClasses.label}`]: {
-                                    transform: 'translate(-25px, 0)',
+                                    transform: 'translate(-45px, 0)',
                                 },
-                                [`.${axisClasses.right} .${axisClasses.label}`]: {
-                                    transform: 'translate(30px, 0)',
-                                },
+                                // [`.${axisClasses.right} .${axisClasses.label}`]: {
+                                //     transform: 'translate(30px, 0)',
+                                // },
                             }}
                         >
                             <BarPlot />
@@ -265,14 +265,14 @@ export default function AssetEarningChart() {
                             ]}
                             series={chartData}
                             height={400}
-                            margin={{ left: 70, right: 70 }}
+                            margin={{ left: 100 }}
                             sx={{
                                 [`.${axisClasses.left} .${axisClasses.label}`]: {
-                                    transform: 'translate(-25px, 0)',
+                                    transform: 'translate(-45px, 0)',
                                 },
-                                [`.${axisClasses.right} .${axisClasses.label}`]: {
-                                    transform: 'translate(30px, 0)',
-                                },
+                                // [`.${axisClasses.right} .${axisClasses.label}`]: {
+                                //     transform: 'translate(30px, 0)',
+                                // },
                             }}
                         >
                             <LinePlot />

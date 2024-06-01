@@ -127,9 +127,9 @@ export default function AssetClassTable() {
                 setValidationList={setValidationList}
                 getList={getList}
                 handleAddAssetRecord={handleAddAssetRecord} />
-            <TableContainer>
+            <TableContainer
+                sx={{ overflowX: 'auto', width: '100%' }}>
                 <Table
-                    sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
                     size='small' // 테이블 사이즈 middle / small
                 >
@@ -171,6 +171,7 @@ export default function AssetClassTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell
+                                        sx={{ width: '14%', minWidth: '150px' }}
                                         component="th"
                                         id={labelId}
                                         scope="center"
@@ -180,7 +181,7 @@ export default function AssetClassTable() {
                                             value={row.asset_big_class != "" && row.asset_big_class != undefined ? row.asset_big_class : "미분류"}
                                             onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, 'asset_big_class')}
                                             onBlur={(event: ChangeEvent<any>) => handleDataBlur(event, row.id, 'asset_big_class')}
-                                            style={{ width: '150px', border: 'none' }}
+                                            style={{ border: 'none', minWidth: '150px' }}
                                             inputProps={{ 'aria-label': 'Without label' }}>
                                             <option value={'투자자산'}>투자자산</option>
                                             <option value={'배당자산'}>배당자산</option>
@@ -190,7 +191,7 @@ export default function AssetClassTable() {
                                         </NativeSelect>
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '17%', minWidth: '200px' }}>
                                         <AssetMidClassInput
                                             row_id={row.id}
                                             row_value={row.asset_mid_class || ''}
@@ -200,7 +201,7 @@ export default function AssetClassTable() {
                                         />
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '13%', minWidth: '150px' }}>
                                         <TextField
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.asset_acnt ? "한글 영문 입력" : ''}
@@ -210,7 +211,7 @@ export default function AssetClassTable() {
                                             onBlur={(event) => handleDataBlur(event, row.id, 'asset_acnt')} />
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '17%', minWidth: '200px' }}>
                                         <TextField
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.asset_name ? "한글 영문 입력" : ''}
@@ -220,7 +221,7 @@ export default function AssetClassTable() {
                                             onBlur={(event) => handleDataBlur(event, row.id, 'asset_name')} />
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '13%', minWidth: '150px' }}>
                                         <TextField
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.amount ? "숫자 입력" : ''}
@@ -234,7 +235,7 @@ export default function AssetClassTable() {
                                         />
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '13%', minWidth: '150px' }}>
                                         <TextField
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.earning_rate ? "소수 2자리 숫자 입력" : ''}
@@ -244,7 +245,9 @@ export default function AssetClassTable() {
                                             onBlur={(event) => handleDataBlur(event, row.id, 'earning_rate')} />
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">{row.reg_date}</TableCell>
+                                    <TableCell align="center" sx={{ width: '13%', minWidth: '150px' }}>
+                                        {row.reg_date}
+                                    </TableCell>
                                 </TableRow>
                             );
                         })}

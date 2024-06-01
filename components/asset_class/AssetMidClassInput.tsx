@@ -31,7 +31,6 @@ export default function AssetMidClass(props: AssetMidClassProps) {
     <Autocomplete
       value={value}
       id="disable-close-on-select"
-      sx={{ width: "150px" }}
       open={open}
       onOpen={() => {
         setOpen(true);

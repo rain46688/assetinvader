@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { parseNumber } from '@/utils/format';
 
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
@@ -217,7 +218,7 @@ export default function SpendingTable() {
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.amount || ''}
+                                                {parseNumber(row.amount) || ''}
                                             </Typography>
                                         )}
                                     </TableCell>

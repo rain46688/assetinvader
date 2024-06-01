@@ -15,6 +15,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from '@mui/material/Checkbox';
 import Typography from "@mui/material/Typography";
+import { parseNumber } from "@/utils/format";
 
 // 스낵바 관련 임포트
 import Snackbar from "@mui/material/Snackbar";
@@ -84,7 +85,7 @@ export default function DividendTable() {
         getList={getList}
       />
       <TableContainer>
-        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
+        <Table sx={{ width:'100%' }} aria-labelledby="tableTitle" size="small">
           {/* 헤더 props */}
           <EnhancedTableHead
             numSelected={selected.length}
@@ -136,7 +137,7 @@ export default function DividendTable() {
                   {/*  */}
                   <TableCell align="center">
                     <Typography variant="body1" align="center">
-                      {row.amount || ""}
+                      {parseNumber(row.amount) || ""}
                     </Typography>
                   </TableCell>
                   {/*  */}

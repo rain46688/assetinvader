@@ -239,11 +239,9 @@ export default function CashFlowBarChart(props: CashFlowBarChartProps) {
             </Toolbar>
             {chartData.length > 0 ? (
                 <BarChart 
-                    sx={{
-                        p: 1,
-                    }}
                     series={chartData}
                     height={350}
+                    margin={{ left: 100, top: 100}}
                     xAxis={[{
                         data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                         scaleType: 'band', 
