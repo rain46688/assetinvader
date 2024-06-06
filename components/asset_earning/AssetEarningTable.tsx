@@ -159,7 +159,7 @@ export default function AssetEarningTable() {
                                     <TableCell align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
-                                                disabled={true}
+                                                // disabled={true}
                                                 variant="standard"
                                                 value={row.asset_acnt || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'asset_acnt')}
@@ -179,12 +179,15 @@ export default function AssetEarningTable() {
                                         align="center">
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <Autocomplete
-                                                disablePortal
+                                                // disablePortal
+                                                freeSolo
                                                 id="combo-box-demo"
                                                 options={selectData}
-                                                getOptionKey={(option) => option.id}
-                                                onChange={(event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', newValue || { id: 0, label: '', asset_acnt: '' })}
-                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params} />}
+                                                getOptionKey={(option) => typeof option === "string" ? 0 : option.id}
+                                                onChange={(event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', 
+                                                    typeof newValue === "string" ? { id: 0, label: newValue, asset_acnt: '' } : newValue || { id: 0, label: '', asset_acnt: '' })}
+                                                onBlur={(event: ChangeEvent<any>) => {handleDataAssetNameChange(event, row.id, row.id, 'asset_name', { id: 0, label: event.target.value, asset_acnt: '' })}}
+                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params}/>}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
