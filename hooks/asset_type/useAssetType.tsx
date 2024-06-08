@@ -127,7 +127,6 @@ export const useAssetType = () => {
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
             // if (orderBy !== 'asset_type' || order !== 'asc') {
-            console.log(isNotSortStatus);
             if (!isNotSortStatus) {
                 console.log(" === 수정시 정렬 초기화 === ");
                 setSnack(true);

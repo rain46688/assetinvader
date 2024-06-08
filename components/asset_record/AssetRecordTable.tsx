@@ -164,7 +164,7 @@ export default function AssetRecordTable() {
                                     borderBottom: 1,
                                     borderBottomColor: grey[400]
                                 }}>
-                                연수익률(%)
+                                연수익률(%)<br/>(매매차익 제외)
                             </TableCell>
                             <CurrentTableCell
                                 align="center"
@@ -376,7 +376,7 @@ export default function AssetRecordTable() {
                         onClick={() => {
                             handleOpenEarning();
                         }}>
-                        <b style={{ color: 'black', cursor: 'pointer' }}>목표 연수익률 및 연수익금 확인하기</b>
+                        <b style={{ color: 'black', cursor: 'pointer' }}>목표 연수익률 및 연수익금 확인하기(매매차익 제외)</b>
                     </Typography>
                 )}
             </Toolbar>
