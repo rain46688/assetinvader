@@ -127,11 +127,14 @@ export const useAssetType = () => {
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
             // if (orderBy !== 'asset_type' || order !== 'asc') {
-            console.log(" === 수정시 정렬 초기화 === ");
-            setSnack(true);
-            setSnackBarStatus("info");
-            setSnackMessage('수정 시 자동정렬 기능이 종료됩니다. 다시 정렬하려면 정렬버튼을 클릭해주세요.');
-            // }
+            console.log(isNotSortStatus);
+            if (!isNotSortStatus) {
+                console.log(" === 수정시 정렬 초기화 === ");
+                setSnack(true);
+                setSnackBarStatus("info");
+                setIsNotSortStatus(true);
+                setSnackMessage('수정 시 자동정렬 기능이 종료됩니다. 다시 정렬하려면 정렬버튼을 클릭해주세요.');
+            }
             return;
         }
 
@@ -265,7 +268,7 @@ export const useAssetType = () => {
         const data = JSON.stringify({
             "asset_type": item?.asset_type,
             "asset_name": item?.asset_name,
-            "amount": String(item?.amount).trim() === '' ? "0": item?.amount,
+            "amount": String(item?.amount).trim() === '' ? "0" : item?.amount,
             "asset_acnt": item?.asset_acnt,
             "earning_rate": item?.earning_rate,
         });

@@ -145,12 +145,14 @@ export const useAssetClass = () => {
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
             // if (orderBy !== 'asset_big_class' || order !== 'asc') {
-            console.log(" === 수정시 정렬 초기화 === ");
-            setSnack(true);
-            setSnackButton(false);
-            setSnackBarStatus("info");
-            setSnackMessage('수정 시 자동정렬 기능이 종료됩니다. 다시 정렬하려면 정렬버튼을 클릭해주세요.');
-            // }
+            if (!isNotSortStatus) {
+                console.log(" === 수정시 정렬 초기화 === ");
+                setSnack(true);
+                setSnackButton(false);
+                setSnackBarStatus("info");
+                setIsNotSortStatus(true);
+                setSnackMessage('수정 시 자동정렬 기능이 종료됩니다. 다시 정렬하려면 정렬버튼을 클릭해주세요.');
+            }
             return;
         }
 
@@ -321,7 +323,7 @@ export const useAssetClass = () => {
         setSnackButton(false);
     };
 
-    const handleDeleteAndAddAssetRecord = async() => {
+    const handleDeleteAndAddAssetRecord = async () => {
         await handleDeleteAssetRecord();
         await handleAddAssetRecord();
     }
