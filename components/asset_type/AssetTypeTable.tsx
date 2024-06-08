@@ -199,7 +199,7 @@ export default function AssetTypeTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center" sx={{width:'15%', minWidth: '150px' }}>
-                                        {row.reg_date}
+                                        {row.mod_date}
                                     </TableCell>
                                     {/*  */}
                                 </TableRow>

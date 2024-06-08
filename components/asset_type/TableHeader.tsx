@@ -31,8 +31,8 @@ const headCells: readonly HeadCell[] = [
         label: '연 수익률(%)',
     },
     {
-        id: 'reg_date',
-        label: '등록일',
+        id: 'mod_date',
+        label: '최근수정일',
     },
 ];
 
