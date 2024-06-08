@@ -79,6 +79,23 @@ export const parseNumberDot = (numString: string | number) => {
     return parts.join('.'); // 소수점 이후와 합쳐서 반환
 }
 
+/**
+ * parseNumberDotCustom 함수 : 문자형태의 숫자를 받아 천단위 콤마 및 소수점 둘째자리에서 반올림하여 반환
+ * @param numString 콤마가 없는 형태의 숫자, 문자열
+ * @param dotString 남길 소수점 자리수
+ * @returns : 콤마가 있고 입력받은 소수점 자리에서 반올림된 형태의 숫자 문자열
+ */
+export const parseNumberDotCustom = (numString: string | number, dotString: string | number) => {
+    const num = typeof numString === 'string' ? parseFloat(numString) : numString;
+    let dot = typeof dotString === 'string' ? parseInt(dotString) : dotString;
+    dot = dot >= 0 ? dot : 0;
+    if (isNaN(num)) return '0.' + "0".repeat(dot); // 숫자가 아닌 경우 빈 문자열 반환(빈 문자열의 겨우 2자리)
+    const formattedNum = num.toFixed(dot); // 입력받은 소수점 자리까지 반올림
+    const parts = formattedNum.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 천단위 콤마 추가
+    return parts.join('.'); // 소수점 이후와 합쳐서 반환
+}
+
 // 숫자 관련
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import * as React from 'react';

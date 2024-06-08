@@ -31,6 +31,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 
+// 숫자 포맷 관련
+import { NumericFormatCustom, parseNumberDotCustom } from '@/utils/format';
+
 export default function AssetTransactionTable() {
 
     // custom hook 사용
@@ -215,10 +218,13 @@ export default function AssetTransactionTable() {
                                                 error={validationList[index]?.amount}
                                                 value={row.amount || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
+                                                InputProps={{
+                                                    inputComponent: NumericFormatCustom as any,
+                                                }}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.amount || ''}
+                                                {parseNumberDotCustom(row.amount, 8) || ''}
                                             </Typography>
                                         )}
                                     </TableCell>

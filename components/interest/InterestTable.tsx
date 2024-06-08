@@ -30,6 +30,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 
+import { NumericFormatCustom, parseNumber } from '@/utils/format';
+
 export default function InterestTable() {
 
     // custom hook 사용
@@ -197,10 +199,13 @@ export default function InterestTable() {
                                                 error={validationList[index]?.amount}
                                                 value={row.amount || ''}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
+                                                InputProps={{
+                                                    inputComponent: NumericFormatCustom as any,
+                                                }}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
-                                                {row.amount || ''}
+                                                {parseNumber(row.amount) || ''}
                                             </Typography>
                                         )}
                                     </TableCell>

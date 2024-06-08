@@ -4,6 +4,8 @@ import { formatDate } from '@/utils/format';
 import { createData } from '@/redux/asset_type/AssetType';
 import { AssetTypeData, AssetTypeValidation } from '@/redux/asset_type/AssetType';
 
+import * as XLSX from "xlsx";
+
 // redux 관련 임포트
 import { setAssetTypeList } from '@/redux/asset_type/assetTypeSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
@@ -18,6 +20,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -133,6 +136,27 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     getList(sessionStorage.getItem('id') + '');
   };
 
+  // 엑셀 데이터 다운로드
+  const handleFileDown = () => {
+    console.log('=== handleFileDown === ');
+    const wsData = list.map(item => [item.asset_type, item.asset_big_class, item.asset_mid_class, item.asset_acnt, item.asset_name, item.amount, item.earning_rate, item.mod_date]);
+    const ws = XLSX.utils.aoa_to_sheet([['자산유형' ,'자산대분류' ,'자산중분류' ,'자산계좌명', '자산명', '금액(원)', '수익률','최근수정일'], ...wsData]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '자산내역');
+
+    // 엑셀 파일을 Blob 형태로 생성합니다.
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', '자산내역 데이터.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  }
+
   return (
     <Toolbar
       sx={{
@@ -161,6 +185,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           유형별 자산관리
         </Typography>
       )}
+      {/* file download */}
+      <Tooltip title="자산내역 엑셀 다운로드">
+        <IconButton component="span" aria-label="download" onClick={handleFileDown}>
+          <FileDownloadIcon />
+        </IconButton>
+      </Tooltip>
+      {/* refresh */}
       <Tooltip title="새로고침">
         <IconButton aria-label="refresh" onClick={handleRefreshList}>
           <RefreshIcon />

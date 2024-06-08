@@ -126,14 +126,12 @@ export const useAssetType = () => {
 
         // 체크박스가 아닌 곳을 클릭했을 때
         if (selectcheck != 'on') {
-            if (orderBy !== 'asset_type' || order !== 'asc') {
-                console.log(" === 수정시 정렬 초기화 === ");
-                setSnack(true);
-                setSnackBarStatus("info");
-                setSnackMessage('수정 작업시 정렬이 초기화 됩니다.');
-                setOrder('asc');
-                setOrderBy('asset_type');
-            }
+            // if (orderBy !== 'asset_type' || order !== 'asc') {
+            console.log(" === 수정시 정렬 초기화 === ");
+            setSnack(true);
+            setSnackBarStatus("info");
+            setSnackMessage('수정 시 자동정렬 기능이 종료됩니다. 다시 정렬하려면 정렬버튼을 클릭해주세요.');
+            // }
             return;
         }
 
@@ -158,8 +156,6 @@ export const useAssetType = () => {
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
-        // 페이지 이동시에 정렬 허용
-        setIsNotSortStatus(false);
         console.log(validationList);
     };
 
@@ -167,8 +163,6 @@ export const useAssetType = () => {
     const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-        // 페이지 데이터 갯수 변경시에 정렬 허용
-        setIsNotSortStatus(false);
     };
 
     // 선택된 데이터 확인 함수
@@ -191,6 +185,8 @@ export const useAssetType = () => {
             console.log(" === 정렬 가능 상태 === ");
             setIsNotSortStatus(true);
             sortedRows = stableSort(rows, getComparator(order, orderBy));
+            // 정렬된 데이터 저장
+            dispatch(setAssetTypeList(sortedRows));
         }
 
         const slicedRows = sortedRows.slice(
@@ -245,10 +241,10 @@ export const useAssetType = () => {
         console.log(" ==== handleDataBlur ==== ");
         // 이전 데이터와 현재 데이터가 같다면 return
 
-        console.log(" === previousData === ", previousData);
-        console.log(" === event.target.value === ", event.target.value);
-        if (previousData === "" && previousData == event.target.value) {
-            console.log(" === 데이터 동일 === ");
+        console.log(" === previousData ==> ", previousData);
+        console.log(" === event.target.value ==> ", event.target.value);
+        if (previousData == "" || previousData == event.target.value) {
+            console.log(" === 데이터 동일 하거나 이전 데이터가 없음 === ");
             return;
         }
 
@@ -280,14 +276,14 @@ export const useAssetType = () => {
             setSnack(true);
             setSnackMessage("데이터 수정 완료.");
             setSnackBarStatus("success");
-            setIsNotSortStatus(true);
+            // setIsNotSortStatus(true);
             dispatch(setAssetTypeList([...rows]));
         } else {
             console.log(" === 수정 실패 === ");
             setSnack(true);
             setSnackMessage("데이터 수정 실패.");
             setSnackBarStatus("error");
-            setIsNotSortStatus(true);
+            // setIsNotSortStatus(true);
             dispatch(setAssetTypeList([...rows]));
         }
     };
