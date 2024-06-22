@@ -104,6 +104,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                 </TableCell>
                 {headCells.map((headCell) => (
                     <BlackTooltip
+                    key={headCell.id}
                         title={
                             <p>
                                 {headCell.description.split('\n').map((line, index) => (
