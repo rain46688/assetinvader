@@ -29,6 +29,7 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 export default function Navbar() {
   // Custom Hook 사용
@@ -86,6 +87,17 @@ export default function Navbar() {
             unmountOnExit
           >
             <List component="div" disablePadding>
+              {/* 자산관리 > 자산관리 개요 */}
+              <ListItemButton
+                sx={{ pl: 4 }}
+                component={Link}
+                href={process.env.NEXT_PUBLIC_DESCRIPTION_URL || "/"}
+              >
+                <ListItemIcon>
+                  <MenuBookIcon />
+                </ListItemIcon>
+                <ListItemText primary="자산관리 개요" />
+              </ListItemButton>
               {/* 자산관리 > 유형별 자산관리 */}
               <ListItemButton
                 sx={{ pl: 4 }}
