@@ -2,9 +2,9 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function DescriptionCH2_5_2Page() {
   return (
@@ -50,7 +50,9 @@ export default function DescriptionCH2_5_2Page() {
             variant="subtitle1"
             component="a"
             href="/description/ch2_5_1"
-          >2.5.1.입출식 통장</Typography>
+          >
+            2.5.1.입출식 통장
+          </Typography>
         </Grid>
         <Grid
           item
@@ -99,6 +101,27 @@ export default function DescriptionCH2_5_2Page() {
           </Typography>
         </Grid>
       </Grid>
+      <Typography
+        sx={{
+          flex: "1 1 100%",
+          pt: { sm: 2 },
+        }}
+        variant="body1"
+        component="div"
+      >
+        파킹통장과 CMA는 일별 이자를 계산하여 일별, 월별로 지급하는 계좌입니다.
+        이 둘의 차이는 파킹통장은 예금자보호가 되는 상품이고, CMA는 예금자보호가
+        불가능한 상품이라는 큰 차이가 있습니다. 따라서 파킹통장보다 CMA가 금리가
+        조금 더 높게 지급됩니다. 파킹통장은 은행별로 입금한도가 정해져있거나,
+        일정 한도이상부터는 저율금리가 적용되는 상품도 있습니다. CMA는 한가지만
+        있는것이 아닌 종류별로 RP형, MMW형, MMF형이 있습니다. 각 종류별 정리는
+        아래의 표를 참조해주세요. 파킹통장과 CMA에 저금을 하는 목적은 언제든지
+        필요할 때 돈을 찾아 쓸수 있다는 점과 입출식 통장보다 높은 이율을 받을 수
+        있다는 목적때문입니다. 좀더 안전함을 원한다면 파킹통장, 파킹통장보다 덜
+        안전하지만 조금 더 높은 수익을 원한다면 CMA를 선택하면 됩니다. 여기서
+        CMA가 파킹통장보다 덜 안전하다는것도 주식 등의 투자 상품에 비하면 매우
+        안전한 상품입니다.
+      </Typography>
     </Box>
   );
 }

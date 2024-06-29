@@ -2,9 +2,9 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function DescriptionCH2_4_5Page() {
   return (
@@ -50,7 +50,9 @@ export default function DescriptionCH2_4_5Page() {
             variant="subtitle1"
             component="a"
             href="/description/ch2_4_4"
-          >2.4.4.외화</Typography>
+          >
+            2.4.4.외화
+          </Typography>
         </Grid>
         <Grid
           item
@@ -99,6 +101,19 @@ export default function DescriptionCH2_4_5Page() {
           </Typography>
         </Grid>
       </Grid>
+      <Typography
+        sx={{
+          flex: "1 1 100%",
+          pt: { sm: 2 },
+        }}
+        variant="body1"
+        component="div"
+      >
+        금은 어느 누가보아도 대표적인 안전자산입니다. 경기가 안좋아지면 금의
+        가치는 올라가고 이에 대응하여 화폐의 가치는 떨어지는것이 보통의
+        흐름입니다. 그래서 외화와 마찬가지로 시장이 좋지 않을때 완충역활을 할 수
+        있으므로 일정 비중 매수해두는 것이 좋습니다.
+      </Typography>
     </Box>
   );
 }

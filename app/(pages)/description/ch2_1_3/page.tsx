@@ -2,12 +2,12 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
 
 export default function DescriptionCH2_1_3Page() {
   return (
@@ -53,7 +53,9 @@ export default function DescriptionCH2_1_3Page() {
             variant="subtitle1"
             component="a"
             href="/description/ch2_1_2"
-          >2.1.2.난 무엇에 돈을 넣고 있을까?</Typography>
+          >
+            2.1.2.난 무엇에 돈을 넣고 있을까?
+          </Typography>
         </Grid>
         <Grid
           item
@@ -110,7 +112,9 @@ export default function DescriptionCH2_1_3Page() {
         variant="body1"
         component="div"
       >
-        이전에 유형별은 유동성, 안정성, 이익률로 나누었다면 이번 분류별은 유형별로 나눈 자산을 세분화하여 구체적인 목표를 정하는 단계입니다. 먼저 유형별 자산과 분류별 자산의 관계를 알려드리겠습니다.
+        이전에 유형별은 유동성, 안정성, 이익률로 나누었다면 이번 분류별은
+        유형별로 나눈 자산을 세분화하여 구체적인 목표를 정하는 단계입니다. 먼저
+        유형별 자산과 분류별 자산의 관계를 알려드리겠습니다.
       </Typography>
 
       <TableContainer sx={{ mt: 2 }}>
@@ -182,9 +186,11 @@ export default function DescriptionCH2_1_3Page() {
         variant="body1"
         component="div"
       >
-        위의 표처럼 유형별 자산을 위와 같이 분류별로 나누어 구체적인 자산배분 분류를 정리할 수 있게됩니다. 이제 구체적으로 자산분류 및 세분류에 대한 특징을 파악하고 이 책에서 나름대로 구분한 투자성향에 따라 자산배분을 구체화 해봅시다.
+        위의 표처럼 유형별 자산을 위와 같이 분류별로 나누어 구체적인 자산배분
+        분류를 정리할 수 있게됩니다. 이제 구체적으로 자산분류 및 세분류에 대한
+        특징을 파악하고 이 책에서 나름대로 구분한 투자성향에 따라 자산배분을
+        구체화 해봅시다.
       </Typography>
-
     </Box>
   );
 }

@@ -2,9 +2,9 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function DescriptionCH1_1Page() {
   return (
@@ -99,7 +99,12 @@ export default function DescriptionCH1_1Page() {
         variant="body1"
         component="div"
       >
-        자산관리의 핵심은 제목에서도 나와있다 싶이 자산배분입니다. 여기서 자산배분이란 현재 독자분들이 가지고있는 자산의 종류 및 금액을 파악하고, 적절한 자산분류(예금, 적금, 주식 등)에 본인만의 비율로 자산을 나누어 담아 놓는것입니다. 그럼 적절한 자산분류는 어떻게 찾아야할까요? 이 책에서는 적절한 자산분류를 크게 투자자산, 배당자산, 안전자산, 현금자산 총 4가지로 분류합니다.
+        자산관리의 핵심은 제목에서도 나와있다 싶이 자산배분입니다. 여기서
+        자산배분이란 현재 독자분들이 가지고있는 자산의 종류 및 금액을 파악하고,
+        적절한 자산분류(예금, 적금, 주식 등)에 본인만의 비율로 자산을 나누어
+        담아 놓는것입니다. 그럼 적절한 자산분류는 어떻게 찾아야할까요? 이
+        책에서는 적절한 자산분류를 크게 투자자산, 배당자산, 안전자산, 현금자산
+        총 4가지로 분류합니다.
       </Typography>
 
       <Typography
@@ -136,7 +141,9 @@ export default function DescriptionCH1_1Page() {
         variant="body1"
         component="div"
       >
-        이후 장에서 설명드릴 자산분류의 특징을 파악하고, 독자분들의 투자성향에따라 일정 비율만큼 분류된 자산에 나누어 담으면 됩니다. 그렇다면 우리는 왜 자산배분을 해야할까요?
+        이후 장에서 설명드릴 자산분류의 특징을 파악하고, 독자분들의
+        투자성향에따라 일정 비율만큼 분류된 자산에 나누어 담으면 됩니다.
+        그렇다면 우리는 왜 자산배분을 해야할까요?
       </Typography>
     </Box>
   );

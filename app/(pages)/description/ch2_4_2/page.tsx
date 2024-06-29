@@ -2,9 +2,9 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function DescriptionCH2_4_2Page() {
   return (
@@ -50,7 +50,9 @@ export default function DescriptionCH2_4_2Page() {
             variant="subtitle1"
             component="a"
             href="/description/ch2_4_1"
-          >2.4.1.안전자산은 무엇일까?</Typography>
+          >
+            2.4.1.안전자산은 무엇일까?
+          </Typography>
         </Grid>
         <Grid
           item
@@ -107,8 +109,11 @@ export default function DescriptionCH2_4_2Page() {
         variant="body1"
         component="div"
       >
-        예적금은 대표적인 안전자산입니다. 자산관리를 따로 하지않는 사람들도 예적금은 보유하고 있습니다. 가장 접하기 쉬우며 은행과 거래를 한다는 측면에서 매우 안정적이라고 느껴지기 때문입니다. 대부분의 사람들은 예적금을 가지고 있으므로 상품에 대한 부연설명은 필요없을 것으로 생각됩니다.
-        (수정필요)
+        예적금은 대표적인 안전자산입니다. 자산관리를 따로 하지않는 사람들도
+        예적금은 보유하고 있습니다. 가장 접하기 쉬우며 은행과 거래를 한다는
+        측면에서 매우 안정적이라고 느껴지기 때문입니다. 대부분의 사람들은
+        예적금을 가지고 있으므로 상품에 대한 부연설명은 필요없을 것으로
+        생각됩니다. (수정필요)
       </Typography>
     </Box>
   );
