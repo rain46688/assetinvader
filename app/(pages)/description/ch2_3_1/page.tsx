@@ -96,7 +96,7 @@ export default function DescriptionCH2_3_1Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_3_2"
           >
             2.3.2.개별주식

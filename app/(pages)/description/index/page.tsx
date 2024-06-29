@@ -11,7 +11,7 @@ export default function DescriptionIndexPage() {
     <Box sx={{ width: '100%' }}>
       {/* DescriptionIndexPage 컴포넌트 */}
       <List component="div" dense={true}>
-        <ListItem component={Link} href={process.env.NEXT_PUBLIC_DESCRIPTION_CH0 || "/" }>
+        <ListItem component={Link} href={"/description/ch0" }>
           <ListItemText
             primary="0.서문"
           />

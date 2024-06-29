@@ -102,7 +102,7 @@ export default function DescriptionCH2_3_3Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_3_4"
           >
             2.3.4.고배당 ETF

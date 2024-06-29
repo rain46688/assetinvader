@@ -96,7 +96,7 @@ export default function DescriptionCH2_2_2Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_2_3"
           >
             2.2.3.지수추종 ETF

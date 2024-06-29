@@ -86,7 +86,7 @@ export default function DescriptionCH1_2Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_1_1"
           >
             2.나도 한 번 해보자! 자산배분

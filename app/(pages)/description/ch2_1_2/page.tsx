@@ -99,7 +99,7 @@ export default function DescriptionCH2_1_2Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_1_3"
           >
             2.1.3.유형별로 나눈 자산 분류별로 더 구체화해보자

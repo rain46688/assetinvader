@@ -102,7 +102,7 @@ export default function DescriptionCH2_2_3Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_3_1"
           >
             2.3.배당자산 파해치기

@@ -96,7 +96,7 @@ export default function DescriptionCH2_1_1Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_1_2"
           >
             2.1.2.난 무엇에 돈을 넣고 있을까?
