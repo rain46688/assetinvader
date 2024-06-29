@@ -5,7 +5,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 export default function DescriptionIndexPage() {
-
   return (
     <Box sx={{ width: '100%' }}>
       {/* DescriptionIndexPage 컴포넌트 */}
