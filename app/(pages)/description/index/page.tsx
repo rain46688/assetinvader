@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // material-ui 관련 임포트
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -9,7 +11,7 @@ export default function DescriptionIndexPage() {
     <Box sx={{ width: '100%' }}>
       {/* DescriptionIndexPage 컴포넌트 */}
       <List component="div" dense={true}>
-        <ListItem component="a" href="/description/ch0">
+        <ListItem component={Link} href={process.env.NEXT_PUBLIC_DESCRIPTION_CH0 || "/" }>
           <ListItemText
             primary="0.서문"
           />
@@ -20,7 +22,7 @@ export default function DescriptionIndexPage() {
           />
         </ListItem>
         <List component="div" sx={{ pl: 4, pt: 0, pb: 0 }} dense={true}>
-          <ListItem component="a" href="/description/ch1_1">
+          <ListItem component={Link} href="/description/ch1_1">
             <ListItemText
               primary="1.1.자산을 배분한다는것이 무엇인가요?"
             />
