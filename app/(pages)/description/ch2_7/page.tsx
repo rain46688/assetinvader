@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // material-ui 관련 임포트
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -38,7 +40,7 @@ export default function DescriptionCH2_7Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_5_2"
           >
             2.6. 내 저축성향 파악하기
@@ -61,7 +63,7 @@ export default function DescriptionCH2_7Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/index"
           >
             목록으로
@@ -84,7 +86,7 @@ export default function DescriptionCH2_7Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href=""
           ></Typography>
         </Grid>

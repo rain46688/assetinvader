@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // material-ui 관련 임포트
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -48,7 +50,7 @@ export default function DescriptionCH2_4_3Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_4_2"
           >
             2.4.2.예적금
@@ -71,7 +73,7 @@ export default function DescriptionCH2_4_3Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/index"
           >
             목록으로
@@ -94,7 +96,7 @@ export default function DescriptionCH2_4_3Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch2_4_4"
           >
             2.4.4.외화

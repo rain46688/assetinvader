@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // material-ui 관련 임포트
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -48,7 +50,7 @@ export default function DescriptionCH2_1_1Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/ch1_2"
           >
             1.2.많지도 않은 내 자산 왜 배분해야 하는거예요?
@@ -71,7 +73,7 @@ export default function DescriptionCH2_1_1Page() {
               textDecoration: "none", // 밑줄 제거
             }}
             variant="subtitle1"
-            component="a"
+            component={Link}
             href="/description/index"
           >
             목록으로
