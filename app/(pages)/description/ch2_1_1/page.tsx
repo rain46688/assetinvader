@@ -176,7 +176,12 @@ export default function DescriptionCH2_1_1Page() {
       </Typography>
 
       {/* 머니버스 계좌 화면, 시스템 입력화면 예시 */}
-
+      <img
+        src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_1_1_img1.png'}
+        alt={"ch2_1_1_img1"}
+        loading="lazy"
+        width={'100%'}
+      />
       <Typography
         sx={{
           flex: "1 1 100%",
@@ -225,7 +230,12 @@ export default function DescriptionCH2_1_1Page() {
       </Typography>
 
       {/* 대신증권 자산 화면, 시스템 입력화면 예시 */}
-
+      <img
+        src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_1_1_img2.png'}
+        alt={"ch2_1_1_img2"}
+        loading="lazy"
+        width={'100%'}
+      />
       <Typography
         sx={{
           flex: "1 1 100%",

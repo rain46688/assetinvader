@@ -123,7 +123,13 @@ export default function DescriptionCH2_3_2Page() {
           variant="body1"
           component="div"
         >
-          (네이버 증권에서 찾기)
+          {/* 네이버 증권에서 찾기 */}
+          <img
+            src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_3_2_img1.png'}
+            alt={"ch2_3_2_img1"}
+            loading="lazy"
+            width={'100%'}
+          />
         </Typography>
         위 네이버 증권에서 배당률을 보고 제 기준 최소 은행 정기예금의 1~2%p이상
         주는 종목을 구매하시는 것이 좋습니다. 정기예금 금리를 알고 싶다면
@@ -137,7 +143,13 @@ export default function DescriptionCH2_3_2Page() {
           variant="body1"
           component="div"
         >
-          (cofix 사이트 사진)
+          {/* cofix 사이트 사진 */}
+          <img
+            src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_3_2_img2.png'}
+            alt={"ch2_3_2_img2"}
+            loading="lazy"
+            width={'100%'}
+          />
         </Typography>
         그리고 네이버 증권에서 배당 주식을 고를때에는 배당률이 10%이상 넘어가는
         종목의 경우 일시적인지 아닌지 확인할 필요가 있습니다. 어떤 회사는

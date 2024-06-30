@@ -228,6 +228,14 @@ export default function DescriptionCH2_4_3Page() {
           <ListItem>
             <ListItemText primary="신용도란 발행주체가 해당 채권의 지급을 얼마나 안전하게 보장해 줄 수 있는지를 나타내는 지표라고 할 수 있습니다. 우리 사회에서도 개인이 은행에 돈을 빌릴때 개인의 신용을 수치화하여 점수로 나타내고 있듯이 기업도 신용을 평가하여 등급을 매깁니다. 신용평가는 한국기업평가(한기평), 한국신용평가(한신평), NICE신용평가에서 기업의 신용을 평가합니다. 등급은 AAA~D까지 있고 각 단계별 +,-로 구분되어 윗단계, 아래단계로 나뉘어집니다. 안전자산으로 채권투자를 한다면 AAA~A-까지만 고려해야하며 그 아래부터는 리스크가 점점 증가합니다." />
           </ListItem>
+          <ListItem>
+            <img
+              src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_4_3_img1.png'}
+              alt={"ch2_4_3_img1"}
+              loading="lazy"
+              width={'100%'}
+            />
+          </ListItem>
         </List>
         <ListItem>
           <ListItemText primary="2. 상품위험도" />

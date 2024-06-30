@@ -8,6 +8,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
+import Image from 'next/image';
+import exampleImage from '../public/ch1_2_img1.jpg';
+
 export default function DescriptionCH1_2Page() {
   return (
     <Box sx={{ width: "100%" }}>
@@ -174,7 +177,12 @@ export default function DescriptionCH1_2Page() {
         큰 수익이 되어 독자분들에게 돌아올 것입니다. 제가 말씀드릴수 있는 이유는
         자산배분이 가지는 특징 중 하나인 섀넌의 도깨비현상이 있기 때문입니다.
       </Typography>
-
+      <img
+        src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch1_2_img1.png'}
+        alt={"ch1_2_img1"}
+        loading="lazy"
+        width={'100%'}
+      />
       <Typography
         sx={{
           flex: "1 1 100%",
