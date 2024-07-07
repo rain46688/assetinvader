@@ -48,7 +48,16 @@ export default function DescriptionCH2_3_4Page() {
         2.3.4.고배당 ETF
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            textAlign: "left",
+          }}
+        >
           <Typography
             sx={{
               flex: "1 1 100%",

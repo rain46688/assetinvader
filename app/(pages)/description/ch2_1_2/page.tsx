@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 
 // material-ui 관련 임포트
@@ -10,6 +12,22 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
+
+import { styled } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
+const StyledTableContainer = styled(TableContainer)({
+  border: '1px solid rgba(224, 224, 224, 1)',
+})
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  textAlign: 'center',
+  border: '1px solid rgba(224, 224, 224, 1)',
+}))
+
+const StyledTableHeadCell = styled(StyledTableCell)({
+  fontWeight: 'bold',
+  backgroundColor: grey[300], // 원하는 배경색으로 설정
+})
 
 export default function DescriptionCH2_1_2Page() {
   return (
@@ -45,7 +63,16 @@ export default function DescriptionCH2_1_2Page() {
         2.1.2.난 무엇에 돈을 넣고 있을까?
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            textAlign: "left",
+          }}
+        >
           <Typography
             sx={{
               flex: "1 1 100%",
@@ -122,40 +149,38 @@ export default function DescriptionCH2_1_2Page() {
         각 유형마다 유동성, 이익률, 안정성이 다르고, 이를 참조하여 본인의 유형별
         비율을 나누어 자산목표비율 정합니다.
       </Typography>
-
-      <TableContainer sx={{ mt: 2 }}>
+      <StyledTableContainer sx={{ mt: 2 }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>자산유형</TableCell>
-              <TableCell>유동성</TableCell>
-              <TableCell>이익률</TableCell>
-              <TableCell>안정성</TableCell>
+              <StyledTableHeadCell>자산유형</StyledTableHeadCell>
+              <StyledTableHeadCell>유동성</StyledTableHeadCell>
+              <StyledTableHeadCell>이익률</StyledTableHeadCell>
+              <StyledTableHeadCell>안정성</StyledTableHeadCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell>현금자산</TableCell>
-              <TableCell>높음</TableCell>
-              <TableCell>낮음</TableCell>
-              <TableCell>높음</TableCell>
+              <StyledTableCell>현금자산</StyledTableCell>
+              <StyledTableCell>높음</StyledTableCell>
+              <StyledTableCell>낮음</StyledTableCell>
+              <StyledTableCell>높음</StyledTableCell>
             </TableRow>
             <TableRow>
-              <TableCell>원금보장자산</TableCell>
-              <TableCell>보통</TableCell>
-              <TableCell>보통</TableCell>
-              <TableCell>높음</TableCell>
+              <StyledTableCell>원금보장자산</StyledTableCell>
+              <StyledTableCell>보통</StyledTableCell>
+              <StyledTableCell>보통</StyledTableCell>
+              <StyledTableCell>높음</StyledTableCell>
             </TableRow>
             <TableRow>
-              <TableCell>원금비보장자산</TableCell>
-              <TableCell>낮음</TableCell>
-              <TableCell>높음</TableCell>
-              <TableCell>낮음</TableCell>
+              <StyledTableCell>원금비보장자산</StyledTableCell>
+              <StyledTableCell>낮음</StyledTableCell>
+              <StyledTableCell>높음</StyledTableCell>
+              <StyledTableCell>낮음</StyledTableCell>
             </TableRow>
           </TableBody>
         </Table>
-      </TableContainer>
-
+      </StyledTableContainer>
       <Typography
         sx={{
           flex: "1 1 100%",

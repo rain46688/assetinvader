@@ -42,7 +42,16 @@ export default function DescriptionCH2_1_1Page() {
         2.1.1.내가 가진 자산들이 어느 계좌에 숨어있을까?
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            textAlign: "left",
+          }}
+        >
           <Typography
             sx={{
               flex: "1 1 100%",

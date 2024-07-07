@@ -8,9 +8,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
-import Image from 'next/image';
-import exampleImage from '../public/ch1_2_img1.jpg';
-
 export default function DescriptionCH1_2Page() {
   return (
     <Box sx={{ width: "100%" }}>
@@ -35,7 +32,16 @@ export default function DescriptionCH1_2Page() {
         1.2.많지도 않은 내 자산 왜 배분해야 하는거예요?
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            textAlign: "left",
+          }}
+        >
           <Typography
             sx={{
               flex: "1 1 100%",
@@ -175,14 +181,29 @@ export default function DescriptionCH1_2Page() {
         그렇지만 자산배분은 단기적으로는 투자자산에 모두 투자하는것보다 큰
         수익을 가져오지 못 합니다. 하지만 자산배분을 수년간 계속하다보면 어느새
         큰 수익이 되어 독자분들에게 돌아올 것입니다. 제가 말씀드릴수 있는 이유는
-        자산배분이 가지는 특징 중 하나인 섀넌의 도깨비현상이 있기 때문입니다.
+        자산배분이 가지는 특징 중 하나인 <b>섀넌의 도깨비현상(Shannon's Demon)</b>이 있기 때문입니다.
       </Typography>
-      <img
-        src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch1_2_img1.png'}
-        alt={"ch1_2_img1"}
-        loading="lazy"
-        width={'100%'}
-      />
+      <Typography
+        sx={{
+          display: 'flex', // Flexbox 컨테이너로 만듭니다
+          justifyContent: 'center', // 수평 가운데 정렬
+          alignItems: 'center', // 수직 가운데 정렬
+          flex: "1 1 100%",
+          pt: {
+            sm: 2
+          },
+        }}
+        variant="body1"
+        component="div"
+      >
+        <img
+          src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch1_2_img1.png'}
+          alt={"ch1_2_img1"}
+          loading="lazy"
+          width={'50%'}
+          height={'50%'}
+        />
+      </Typography>
       <Typography
         sx={{
           flex: "1 1 100%",
@@ -214,7 +235,10 @@ export default function DescriptionCH1_2Page() {
 
       <List component="div" sx={{ pl: 4, pt: 0, pb: 0 }} dense={true}>
         <ListItem>
-          <ListItemText primary="1. 주가지수가 상승할 때 자산분류의 비율 변화" />
+          <ListItemText 
+          primary="1. 주가지수가 상승할 때 자산분류의 비율 변화" 
+          primaryTypographyProps={{ sx: { fontSize: '1.1rem',  } }} // 글씨 크기 및 굵기 변경 fontWeight: 'bold'
+          />
         </ListItem>
         <ListItem>
           <ListItemText primary="- 안전자산 : 투자자산 대비 상대적인 상승률이 부족하므로 전체 자산대비 비율 감소" />
@@ -223,10 +247,22 @@ export default function DescriptionCH1_2Page() {
           <ListItemText primary="- 투자자산 : 주가지수 상승으로 인한 수익률이 안전자산의 수익률보다 증가하여 전체 자산대비 비율 증가" />
         </ListItem>
         <ListItem>
-          <ListItemText primary="⇒ 두 자산분류(투자자산과 안전자산)의 비율 유지를 위해 투자자산을 매도하고 안전자산을 매수하면서 높은가격에서 투자자산을 매도" />
+          <Typography
+            sx={{
+              flex: "1 1 100%",
+              color: 'red'
+            }}
+            variant="subtitle1"
+            component="p"
+          >
+            ⇒ 두 자산분류(투자자산과 안전자산)의 비율 유지를 위해 투자자산을 매도하고 안전자산을 매수하면서 높은가격에서 투자자산을 매도
+          </Typography>
         </ListItem>
         <ListItem>
-          <ListItemText primary="2. 주가지수가 하락할 때 자산분류의 비율 변화" />
+          <ListItemText 
+          primary="2. 주가지수가 하락할 때 자산분류의 비율 변화" 
+          primaryTypographyProps={{ sx: { fontSize: '1.1rem',  } }} // 글씨 크기 및 굵기 변경 fontWeight: 'bold'
+          />
         </ListItem>
         <ListItem>
           <ListItemText primary="- 안전자산 : 하락하지 않거나 조금 상승하므로 전체 자산대비 비율 증가" />
@@ -235,7 +271,16 @@ export default function DescriptionCH1_2Page() {
           <ListItemText primary="- 투자자산 : 주가지수 하락으로 인한 수익률 감소로 전체 자산대비 비율 감소" />
         </ListItem>
         <ListItem>
-          <ListItemText primary="⇒ 비율 유지를 위해 안전자산을 매도하고 투자자산을 매수하면서 낮은가격에서 투자자산을 매수" />
+          <Typography
+            sx={{
+              flex: "1 1 100%",
+              color: 'red'
+            }}
+            variant="subtitle1"
+            component="p"
+          >
+            ⇒ 비율 유지를 위해 안전자산을 매도하고 투자자산을 매수하면서 낮은가격에서 투자자산을 매수
+          </Typography>
         </ListItem>
       </List>
 
@@ -249,7 +294,7 @@ export default function DescriptionCH1_2Page() {
       >
         위 두가지 경우를 보면 주가지수가 상승할 때는 투자자산을 100%인
         포트폴리오보다는 덜 벌지만, 주가지수가 하락할때 덜 잃는 방식으로 자산을
-        꾸준히 늘려갈 수 있습니다. 이를 BLASH(Buy Low And Sell High) 효과라고
+        꾸준히 늘려갈 수 있습니다. 이를 <b>BLASH(Buy Low And Sell High) 효과</b>라고
         합니다. 이 책에서는 위 예시와 다르게 자산분류를 안전자산, 투자자산,
         배당자산, 현금자산으로 나누어 더욱 리스크를 분할하고 꾸준히 투자할 수
         있는 원동력을 제공하기 위한 방법을 알려드립니다. 그러면 다음 장부터는

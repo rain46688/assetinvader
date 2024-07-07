@@ -38,7 +38,16 @@ export default function DescriptionCH2_6Page() {
         2.6. 내 저축성향 파악하기
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            textAlign: "left",
+          }}
+        >
           <Typography
             sx={{
               flex: "1 1 100%",

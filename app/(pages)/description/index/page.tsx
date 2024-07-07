@@ -2,6 +2,7 @@ import Link from "next/link";
 
 // material-ui 관련 임포트
 import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,9 +10,19 @@ import ListItemText from '@mui/material/ListItemText';
 export default function DescriptionIndexPage() {
   return (
     <Box sx={{ width: '100%' }}>
+      <Typography
+        sx={{
+          flex: "1 1 100%",
+          pt: { sm: 2 },
+        }}
+        variant="h4"
+        component="div"
+      >
+        Index
+      </Typography>
       {/* DescriptionIndexPage 컴포넌트 */}
       <List component="div" dense={true}>
-        <ListItem component={Link} href={"/description/ch0" }>
+        <ListItem component={Link} href={"/description/ch0"}>
           <ListItemText
             primary="0.서문"
           />

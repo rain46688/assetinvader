@@ -45,7 +45,16 @@ export default function DescriptionCH2_1_3Page() {
         2.1.3.유형별로 나눈 자산 분류별로 더 구체화해보자
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            textAlign: "left",
+          }}
+        >
           <Typography
             sx={{
               flex: "1 1 100%",

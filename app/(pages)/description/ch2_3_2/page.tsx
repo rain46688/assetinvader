@@ -42,7 +42,16 @@ export default function DescriptionCH2_3_2Page() {
         2.3.2.개별주식
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            textAlign: "left",
+          }}
+        >
           <Typography
             sx={{
               flex: "1 1 100%",
@@ -124,12 +133,26 @@ export default function DescriptionCH2_3_2Page() {
           component="div"
         >
           {/* 네이버 증권에서 찾기 */}
-          <img
-            src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_3_2_img1.png'}
-            alt={"ch2_3_2_img1"}
-            loading="lazy"
-            width={'100%'}
-          />
+          <Typography
+            sx={{
+              display: 'flex', // Flexbox 컨테이너로 만듭니다
+              justifyContent: 'center', // 수평 가운데 정렬
+              alignItems: 'center', // 수직 가운데 정렬
+              flex: "1 1 100%",
+              pt: {
+                sm: 2
+              },
+            }}
+            variant="body1"
+            component="div"
+          >
+            <img
+              src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_3_2_img1.png'}
+              alt={"ch2_3_2_img1"}
+              loading="lazy"
+              width={'100%'}
+            />
+          </Typography>
         </Typography>
         위 네이버 증권에서 배당률을 보고 제 기준 최소 은행 정기예금의 1~2%p이상
         주는 종목을 구매하시는 것이 좋습니다. 정기예금 금리를 알고 싶다면
