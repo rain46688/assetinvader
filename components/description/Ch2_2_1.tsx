@@ -223,58 +223,58 @@ export default function Ch2_2_1Page() {
                     ETF를 만들고 운용하는 회사입니다. 삼성자산운용, 미래에셋자산운용 등이
                     있으며 각 자산운용사마다 각자의 브랜드명을 가지고 ETF를 상장시킵니다.
                 </Typography>
-                <TableContainer sx={{ mt: 1, mb: 2 }}>
+                <StyledTableContainer sx={{ mt: 1, mb: 2 }}>
                     <Table aria-label="ETF 운용사 테이블">
                         <TableHead>
                             <TableRow>
-                                <TableCell>브랜드명</TableCell>
-                                <TableCell>자산운용사명</TableCell>
+                                <StyledTableHeadCell>브랜드명</StyledTableHeadCell>
+                                <StyledTableHeadCell>자산운용사명</StyledTableHeadCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell>TIGER</TableCell>
-                                <TableCell>미래에셋</TableCell>
+                                <StyledTableCell>TIGER</StyledTableCell>
+                                <StyledTableCell>미래에셋</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>KODEX</TableCell>
-                                <TableCell>삼성</TableCell>
+                                <StyledTableCell>KODEX</StyledTableCell>
+                                <StyledTableCell>삼성</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>SOL</TableCell>
-                                <TableCell>신한</TableCell>
+                                <StyledTableCell>SOL</StyledTableCell>
+                                <StyledTableCell>신한</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>KBSTAR</TableCell>
-                                <TableCell>국민(KB)</TableCell>
+                                <StyledTableCell>KBSTAR</StyledTableCell>
+                                <StyledTableCell>국민(KB)</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>KOSEF</TableCell>
-                                <TableCell>키움</TableCell>
+                                <StyledTableCell>KOSEF</StyledTableCell>
+                                <StyledTableCell>키움</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>ACE</TableCell>
-                                <TableCell>한국투자</TableCell>
+                                <StyledTableCell>ACE</StyledTableCell>
+                                <StyledTableCell>한국투자</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>ARIRANG</TableCell>
-                                <TableCell>한화</TableCell>
+                                <StyledTableCell>ARIRANG</StyledTableCell>
+                                <StyledTableCell>한화</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>SPDR</TableCell>
-                                <TableCell>State Street</TableCell>
+                                <StyledTableCell>SPDR</StyledTableCell>
+                                <StyledTableCell>State Street</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>iShares</TableCell>
-                                <TableCell>BlackRock</TableCell>
+                                <StyledTableCell>iShares</StyledTableCell>
+                                <StyledTableCell>BlackRock</StyledTableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Vanguard</TableCell>
-                                <TableCell>Vanguard</TableCell>
+                                <StyledTableCell>Vanguard</StyledTableCell>
+                                <StyledTableCell>Vanguard</StyledTableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
-                </TableContainer>
+                </StyledTableContainer>
                 <Typography
                     sx={{
                         pt: 1,

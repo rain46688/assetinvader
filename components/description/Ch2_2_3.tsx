@@ -154,77 +154,77 @@ export default function Ch2_2_3Page() {
                 더욱 많습니다. 아래에 지수추종 자산의 대략적인 종류를 정리하였습니다.
             </Typography>
 
-            <TableContainer sx={{ mt: 2 }}>
+            <StyledTableContainer sx={{ mt: 2 }}>
                 <Table aria-label="지수추종 자산 정리 테이블">
                     <TableHead>
                         <TableRow>
-                            <TableCell>자산명</TableCell>
-                            <TableCell>자산운용사</TableCell>
-                            <TableCell>ETF의 종류</TableCell>
-                            <TableCell>운용자산의 크기</TableCell>
-                            <TableCell>분배율(%)</TableCell>
-                            <TableCell>분배금 지급주기</TableCell>
-                            <TableCell>보수(%)</TableCell>
+                            <StyledTableHeadCell>자산명</StyledTableHeadCell>
+                            <StyledTableHeadCell>자산운용사</StyledTableHeadCell>
+                            <StyledTableHeadCell>ETF의 종류</StyledTableHeadCell>
+                            <StyledTableHeadCell>운용자산의 크기</StyledTableHeadCell>
+                            <StyledTableHeadCell>분배율(%)</StyledTableHeadCell>
+                            <StyledTableHeadCell>분배금 지급주기</StyledTableHeadCell>
+                            <StyledTableHeadCell>보수(%)</StyledTableHeadCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>KODEX 200</TableCell>
-                            <TableCell>삼성</TableCell>
-                            <TableCell>KOSPI 200</TableCell>
-                            <TableCell>62,913억원</TableCell>
-                            <TableCell>1.18</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.15</TableCell>
+                            <StyledTableCell>KODEX 200</StyledTableCell>
+                            <StyledTableCell>삼성</StyledTableCell>
+                            <StyledTableCell>KOSPI 200</StyledTableCell>
+                            <StyledTableCell>62,913억원</StyledTableCell>
+                            <StyledTableCell>1.18</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.15</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>KODEX 코스닥150</TableCell>
-                            <TableCell>삼성</TableCell>
-                            <TableCell>KOSDAQ 150</TableCell>
-                            <TableCell>8,626억원</TableCell>
-                            <TableCell>0.14</TableCell>
-                            <TableCell>연 1회</TableCell>
-                            <TableCell>0.25</TableCell>
+                            <StyledTableCell>KODEX 코스닥150</StyledTableCell>
+                            <StyledTableCell>삼성</StyledTableCell>
+                            <StyledTableCell>KOSDAQ 150</StyledTableCell>
+                            <StyledTableCell>8,626억원</StyledTableCell>
+                            <StyledTableCell>0.14</StyledTableCell>
+                            <StyledTableCell>연 1회</StyledTableCell>
+                            <StyledTableCell>0.25</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>TIGER 미국S&P500</TableCell>
-                            <TableCell>미래에셋</TableCell>
-                            <TableCell>S&P500</TableCell>
-                            <TableCell>35,556억원</TableCell>
-                            <TableCell>0.3</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.07</TableCell>
+                            <StyledTableCell>TIGER 미국S&P500</StyledTableCell>
+                            <StyledTableCell>미래에셋</StyledTableCell>
+                            <StyledTableCell>S&P500</StyledTableCell>
+                            <StyledTableCell>35,556억원</StyledTableCell>
+                            <StyledTableCell>0.3</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.07</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>TIGER 미국나스닥100</TableCell>
-                            <TableCell>미래에셋</TableCell>
-                            <TableCell>NASDAQ 100</TableCell>
-                            <TableCell>33,430억원</TableCell>
-                            <TableCell>0.12</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.07</TableCell>
+                            <StyledTableCell>TIGER 미국나스닥100</StyledTableCell>
+                            <StyledTableCell>미래에셋</StyledTableCell>
+                            <StyledTableCell>NASDAQ 100</StyledTableCell>
+                            <StyledTableCell>33,430억원</StyledTableCell>
+                            <StyledTableCell>0.12</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.07</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Vanguard S&P 500 ETF(VOO)</TableCell>
-                            <TableCell>Vanguard</TableCell>
-                            <TableCell>S&P 500</TableCell>
-                            <TableCell>4,729억달러</TableCell>
-                            <TableCell>1.32</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.03</TableCell>
+                            <StyledTableCell>Vanguard S&P 500 ETF(VOO)</StyledTableCell>
+                            <StyledTableCell>Vanguard</StyledTableCell>
+                            <StyledTableCell>S&P 500</StyledTableCell>
+                            <StyledTableCell>4,729억달러</StyledTableCell>
+                            <StyledTableCell>1.32</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.03</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Invesco QQQ Trust(QQQ)</TableCell>
-                            <TableCell>Invesco</TableCell>
-                            <TableCell>NASDAQ 100(금융주 제외)</TableCell>
-                            <TableCell>2,748억달러</TableCell>
-                            <TableCell>0.58</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.2</TableCell>
+                            <StyledTableCell>Invesco QQQ Trust(QQQ)</StyledTableCell>
+                            <StyledTableCell>Invesco</StyledTableCell>
+                            <StyledTableCell>NASDAQ 100(금융주 제외)</StyledTableCell>
+                            <StyledTableCell>2,748억달러</StyledTableCell>
+                            <StyledTableCell>0.58</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.2</StyledTableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </StyledTableContainer>
 
             <Typography
                 sx={{

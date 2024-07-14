@@ -164,80 +164,70 @@ export default function Ch2_3_3Page() {
                 중요합니다. 여기도 마찬가지로 대표적인 ETF들만 모아서 정리해 보았습니다.
                 제가 보여드리는것이 전부는 아니니, 직접 찾아보시면서 고민해보시고
                 정하시면됩니다.
-                <Typography
-                    sx={{
-                        flex: "1 1 100%",
-                        pt: { sm: 2 },
-                    }}
-                    variant="body1"
-                    component="div"
-                >
-                    (배당성장 ETF 모음)
-                </Typography>
             </Typography>
 
-            <TableContainer component="div">
-                <Table>
+            <StyledTableContainer sx={{ mt: 2 }}>
+                <Table aria-label="배당성장 자산 정리 테이블">
                     <TableHead>
                         <TableRow>
-                            <TableCell>자산명</TableCell>
-                            <TableCell>자산운용사</TableCell>
-                            <TableCell>ETF의 종류</TableCell>
-                            <TableCell>운용자산의 크기</TableCell>
-                            <TableCell>분배율(%)</TableCell>
-                            <TableCell>분배금 지급주기</TableCell>
-                            <TableCell>보수(%)</TableCell>
+                            <StyledTableHeadCell>자산명</StyledTableHeadCell>
+                            <StyledTableHeadCell>자산운용사</StyledTableHeadCell>
+                            <StyledTableHeadCell>ETF의 종류</StyledTableHeadCell>
+                            <StyledTableHeadCell>운용자산의 크기</StyledTableHeadCell>
+                            <StyledTableHeadCell>분배율(%)</StyledTableHeadCell>
+                            <StyledTableHeadCell>분배금 지급주기</StyledTableHeadCell>
+                            <StyledTableHeadCell>보수(%)</StyledTableHeadCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>KODEX 배당성장</TableCell>
-                            <TableCell>삼성</TableCell>
-                            <TableCell>코스피 배당성장 50</TableCell>
-                            <TableCell>200억원</TableCell>
-                            <TableCell>3.31</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.15</TableCell>
+                            <StyledTableCell>KODEX 배당성장</StyledTableCell>
+                            <StyledTableCell>삼성</StyledTableCell>
+                            <StyledTableCell>코스피 배당성장 50</StyledTableCell>
+                            <StyledTableCell>200억원</StyledTableCell>
+                            <StyledTableCell>3.31</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.15</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>TIGER 배당성장</TableCell>
-                            <TableCell>미래에셋</TableCell>
-                            <TableCell>코스피 배당성장 50</TableCell>
-                            <TableCell>191억원</TableCell>
-                            <TableCell>3.15</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.115</TableCell>
+                            <StyledTableCell>TIGER 배당성장</StyledTableCell>
+                            <StyledTableCell>미래에셋</StyledTableCell>
+                            <StyledTableCell>코스피 배당성장 50</StyledTableCell>
+                            <StyledTableCell>191억원</StyledTableCell>
+                            <StyledTableCell>3.15</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.115</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>SOL 미국배당다우존스</TableCell>
-                            <TableCell>신한</TableCell>
-                            <TableCell>Dow Jones U.S. Dividend 100 Index(PR)</TableCell>
-                            <TableCell>5,606억원</TableCell>
-                            <TableCell>4.48</TableCell>
-                            <TableCell>연 12회</TableCell>
-                            <TableCell>0.01</TableCell>
+                            <StyledTableCell>SOL 미국배당다우존스</StyledTableCell>
+                            <StyledTableCell>신한</StyledTableCell>
+                            <StyledTableCell>Dow Jones U.S. Dividend 100 Index(PR)</StyledTableCell>
+                            <StyledTableCell>5,606억원</StyledTableCell>
+                            <StyledTableCell>4.48</StyledTableCell>
+                            <StyledTableCell>연 12회</StyledTableCell>
+                            <StyledTableCell>0.01</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>ACE 미국배당다우존스</TableCell>
-                            <TableCell>한국투자</TableCell>
-                            <TableCell>Dow Jones U.S. Dividend 100 Index(PR)</TableCell>
-                            <TableCell>3,411억원</TableCell>
-                            <TableCell>4.06</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.01</TableCell>
+                            <StyledTableCell>ACE 미국배당다우존스</StyledTableCell>
+                            <StyledTableCell>한국투자</StyledTableCell>
+                            <StyledTableCell>Dow Jones U.S. Dividend 100 Index(PR)</StyledTableCell>
+                            <StyledTableCell>3,411억원</StyledTableCell>
+                            <StyledTableCell>4.06</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.01</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Schwab US Dividend Equity ETF(SCHD)</TableCell>
-                            <TableCell>Charles Schwab</TableCell>
-                            <TableCell>Dow Jones U.S. Dividend 100 Index(PR)</TableCell>
-                            <TableCell>547억달러</TableCell>
-                            <TableCell>3.43</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.06</TableCell>
+                            <StyledTableCell>Schwab US Dividend Equity ETF(SCHD)</StyledTableCell>
+                            <StyledTableCell>Charles Schwab</StyledTableCell>
+                            <StyledTableCell>Dow Jones U.S. Dividend 100 Index(PR)</StyledTableCell>
+                            <StyledTableCell>547억달러</StyledTableCell>
+                            <StyledTableCell>3.43</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.06</StyledTableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </StyledTableContainer>
 
             <Typography
                 sx={{

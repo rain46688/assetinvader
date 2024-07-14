@@ -148,66 +148,66 @@ export default function Ch2_1_3Page() {
                 유형별 자산과 분류별 자산의 관계를 알려드리겠습니다.
             </Typography>
 
-            <TableContainer sx={{ mt: 2 }}>
-                <Table aria-label="simple table">
+            <StyledTableContainer sx={{ mt: 2 }}>
+                <Table aria-label="자산유형, 자산분류 구분 테이블">
                     <TableHead>
                         <TableRow>
-                            <TableCell>자산유형</TableCell>
-                            <TableCell>자산분류</TableCell>
-                            <TableCell>자산세분류</TableCell>
+                            <StyledTableHeadCell>자산유형</StyledTableHeadCell>
+                            <StyledTableHeadCell>자산분류</StyledTableHeadCell>
+                            <StyledTableHeadCell>자산세분류</StyledTableHeadCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell rowSpan={3}>현금자산</TableCell>
-                            <TableCell rowSpan={3}>현금자산</TableCell>
-                            <TableCell>입출금 통장</TableCell>
+                            <StyledTableCell rowSpan={3}>현금자산</StyledTableCell>
+                            <StyledTableCell rowSpan={3}>현금자산</StyledTableCell>
+                            <StyledTableCell>입출금 통장</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>파킹통장</TableCell>
+                            <StyledTableCell>파킹통장</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>CMA</TableCell>
+                            <StyledTableCell>CMA</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell rowSpan={2}>원금보장자산</TableCell>
-                            <TableCell rowSpan={2}>안전자산</TableCell>
-                            <TableCell>예금, 적금</TableCell>
+                            <StyledTableCell rowSpan={2}>원금보장자산</StyledTableCell>
+                            <StyledTableCell rowSpan={2}>안전자산</StyledTableCell>
+                            <StyledTableCell>예금, 적금</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>개별채권</TableCell>
+                            <StyledTableCell>개별채권</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell rowSpan={8}>원금비보장자산</TableCell>
-                            <TableCell rowSpan={3}>안전자산</TableCell>
-                            <TableCell>외환</TableCell>
+                            <StyledTableCell rowSpan={8}>원금비보장자산</StyledTableCell>
+                            <StyledTableCell rowSpan={3}>안전자산</StyledTableCell>
+                            <StyledTableCell>외환</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>금</TableCell>
+                            <StyledTableCell>금</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>배당자산</TableCell>
+                            <StyledTableCell>배당자산</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell rowSpan={3}>배당자산</TableCell>
-                            <TableCell>개별주식</TableCell>
+                            <StyledTableCell rowSpan={3}>배당자산</StyledTableCell>
+                            <StyledTableCell>개별주식</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>배당성장</TableCell>
+                            <StyledTableCell>배당성장</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>고배당</TableCell>
+                            <StyledTableCell>고배당</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell rowSpan={2}>투자자산</TableCell>
-                            <TableCell>개별주식</TableCell>
+                            <StyledTableCell rowSpan={2}>투자자산</StyledTableCell>
+                            <StyledTableCell>개별주식</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>지수추종</TableCell>
+                            <StyledTableCell>지수추종</StyledTableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </StyledTableContainer>
 
             <Typography
                 sx={{

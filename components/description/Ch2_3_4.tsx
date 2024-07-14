@@ -275,97 +275,87 @@ export default function Ch2_3_4Page() {
                 중요합니다. 여기도 마찬가지로 대표적인 ETF들만 모아서 정리해 보았습니다.
                 제가 보여드리는것이 전부는 아니니, 직접 찾아보시면서 고민해보시고
                 정하시면됩니다.
-                <Typography
-                    sx={{
-                        flex: "1 1 100%",
-                        pt: { sm: 2 },
-                    }}
-                    variant="body1"
-                    component="div"
-                >
-                    (고배당 ETF 모음)
-                </Typography>
             </Typography>
 
-            <TableContainer component="div">
-                <Table>
+            <StyledTableContainer sx={{ mt: 2 }}>
+                <Table aria-label="고배당 자산 정리 테이블">
                     <TableHead>
                         <TableRow>
-                            <TableCell>자산명</TableCell>
-                            <TableCell>자산운용사</TableCell>
-                            <TableCell>ETF의 종류</TableCell>
-                            <TableCell>운용자산의 크기</TableCell>
-                            <TableCell>분배율(%)</TableCell>
-                            <TableCell>분배금 지급주기</TableCell>
-                            <TableCell>보수(%)</TableCell>
+                            <StyledTableHeadCell>자산명</StyledTableHeadCell>
+                            <StyledTableHeadCell>자산운용사</StyledTableHeadCell>
+                            <StyledTableHeadCell>ETF의 종류</StyledTableHeadCell>
+                            <StyledTableHeadCell>운용자산의 크기</StyledTableHeadCell>
+                            <StyledTableHeadCell>분배율(%)</StyledTableHeadCell>
+                            <StyledTableHeadCell>분배금 지급주기</StyledTableHeadCell>
+                            <StyledTableHeadCell>보수(%)</StyledTableHeadCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>ARIRANG 고배당주</TableCell>
-                            <TableCell>한화</TableCell>
-                            <TableCell>FnGuide 고배당주지수</TableCell>
-                            <TableCell>3,124억원</TableCell>
-                            <TableCell>11.05</TableCell>
-                            <TableCell>연 4회</TableCell>
-                            <TableCell>0.23</TableCell>
+                            <StyledTableCell>ARIRANG 고배당주</StyledTableCell>
+                            <StyledTableCell>한화</StyledTableCell>
+                            <StyledTableCell>FnGuide 고배당주지수</StyledTableCell>
+                            <StyledTableCell>3,124억원</StyledTableCell>
+                            <StyledTableCell>11.05</StyledTableCell>
+                            <StyledTableCell>연 4회</StyledTableCell>
+                            <StyledTableCell>0.23</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>KBSTAR 200고배당커버드콜ATM</TableCell>
-                            <TableCell>국민(KB)</TableCell>
-                            <TableCell>코스피 200 고배당 커버드콜 ATM</TableCell>
-                            <TableCell>100억원</TableCell>
-                            <TableCell>8.66</TableCell>
-                            <TableCell>연 12회</TableCell>
-                            <TableCell>0.4</TableCell>
+                            <StyledTableCell>KBSTAR 200고배당커버드콜ATM</StyledTableCell>
+                            <StyledTableCell>국민(KB)</StyledTableCell>
+                            <StyledTableCell>코스피 200 고배당 커버드콜 ATM</StyledTableCell>
+                            <StyledTableCell>100억원</StyledTableCell>
+                            <StyledTableCell>8.66</StyledTableCell>
+                            <StyledTableCell>연 12회</StyledTableCell>
+                            <StyledTableCell>0.4</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>TIGER 미국배당+7%프리미엄다우존스</TableCell>
-                            <TableCell>미래에셋</TableCell>
-                            <TableCell>
+                            <StyledTableCell>TIGER 미국배당+7%프리미엄다우존스</StyledTableCell>
+                            <StyledTableCell>미래에셋</StyledTableCell>
+                            <StyledTableCell>
                                 Dow Jones U.S. Dividend 100 7% Premium Covered Call 지수(Total
                                 Return)
-                            </TableCell>
-                            <TableCell>7,614억원</TableCell>
-                            <TableCell>11.28</TableCell>
-                            <TableCell>연 12회</TableCell>
-                            <TableCell>0.39</TableCell>
+                            </StyledTableCell>
+                            <StyledTableCell>7,614억원</StyledTableCell>
+                            <StyledTableCell>11.28</StyledTableCell>
+                            <StyledTableCell>연 12회</StyledTableCell>
+                            <StyledTableCell>0.39</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>KODEX 미국배당+10%프리미엄다우존스</TableCell>
-                            <TableCell>삼성</TableCell>
-                            <TableCell>
+                            <StyledTableCell>KODEX 미국배당+10%프리미엄다우존스</StyledTableCell>
+                            <StyledTableCell>삼성</StyledTableCell>
+                            <StyledTableCell>
                                 Dow Jones U.S. Dividend 100 10% Premium Covered Call Index(Total
                                 Return)
-                            </TableCell>
-                            <TableCell>308억원</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>연 12회</TableCell>
-                            <TableCell>0.39</TableCell>
+                            </StyledTableCell>
+                            <StyledTableCell>308억원</StyledTableCell>
+                            <StyledTableCell>-</StyledTableCell>
+                            <StyledTableCell>연 12회</StyledTableCell>
+                            <StyledTableCell>0.39</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>JPMorgan Equity Premium Income ETF(JEPI)</TableCell>
-                            <TableCell>JPMorgan</TableCell>
-                            <TableCell>S&P 500</TableCell>
-                            <TableCell>335억달러</TableCell>
-                            <TableCell>7.61</TableCell>
-                            <TableCell>연 12회</TableCell>
-                            <TableCell>0.35</TableCell>
+                            <StyledTableCell>JPMorgan Equity Premium Income ETF(JEPI)</StyledTableCell>
+                            <StyledTableCell>JPMorgan</StyledTableCell>
+                            <StyledTableCell>S&P 500</StyledTableCell>
+                            <StyledTableCell>335억달러</StyledTableCell>
+                            <StyledTableCell>7.61</StyledTableCell>
+                            <StyledTableCell>연 12회</StyledTableCell>
+                            <StyledTableCell>0.35</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>
+                            <StyledTableCell>
                                 JPMorgan Nasdaq Equity Premium Income ETF(JEPQ)
-                            </TableCell>
-                            <TableCell>JPMorgan</TableCell>
-                            <TableCell>나스닥 100</TableCell>
-                            <TableCell>140억달러</TableCell>
-                            <TableCell>9.57</TableCell>
-                            <TableCell>연 12회</TableCell>
-                            <TableCell>0.35</TableCell>
+                            </StyledTableCell>
+                            <StyledTableCell>JPMorgan</StyledTableCell>
+                            <StyledTableCell>나스닥 100</StyledTableCell>
+                            <StyledTableCell>140억달러</StyledTableCell>
+                            <StyledTableCell>9.57</StyledTableCell>
+                            <StyledTableCell>연 12회</StyledTableCell>
+                            <StyledTableCell>0.35</StyledTableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </StyledTableContainer>
 
             <Typography
                 sx={{

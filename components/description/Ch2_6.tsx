@@ -137,42 +137,42 @@ export default function Ch2_6Page() {
                 정해봅시다.
             </Typography>
 
-            <TableContainer sx={{ mt: 2 }}>
-                <Table>
+            <StyledTableContainer sx={{ mt: 2 }}>
+                <Table aria-label="성향 분류 테이블">
                     <TableHead>
                         <TableRow>
-                            <TableCell>저축성향</TableCell>
-                            <TableCell>투자자산</TableCell>
-                            <TableCell>배당자산</TableCell>
-                            <TableCell>안전자산</TableCell>
-                            <TableCell>현금자산</TableCell>
+                            <StyledTableHeadCell>저축성향</StyledTableHeadCell>
+                            <StyledTableHeadCell>투자자산</StyledTableHeadCell>
+                            <StyledTableHeadCell>배당자산</StyledTableHeadCell>
+                            <StyledTableHeadCell>안전자산</StyledTableHeadCell>
+                            <StyledTableHeadCell>현금자산</StyledTableHeadCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>투자지향형</TableCell>
-                            <TableCell>40%</TableCell>
-                            <TableCell>30%</TableCell>
-                            <TableCell>20%</TableCell>
-                            <TableCell>10%</TableCell>
+                            <StyledTableCell>투자지향형</StyledTableCell>
+                            <StyledTableCell>40%</StyledTableCell>
+                            <StyledTableCell>30%</StyledTableCell>
+                            <StyledTableCell>20%</StyledTableCell>
+                            <StyledTableCell>10%</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>배당지향형</TableCell>
-                            <TableCell>30%</TableCell>
-                            <TableCell>40%</TableCell>
-                            <TableCell>20%</TableCell>
-                            <TableCell>10%</TableCell>
+                            <StyledTableCell>배당지향형</StyledTableCell>
+                            <StyledTableCell>30%</StyledTableCell>
+                            <StyledTableCell>40%</StyledTableCell>
+                            <StyledTableCell>20%</StyledTableCell>
+                            <StyledTableCell>10%</StyledTableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>안전지향형</TableCell>
-                            <TableCell>20%</TableCell>
-                            <TableCell>30%</TableCell>
-                            <TableCell>40%</TableCell>
-                            <TableCell>10%</TableCell>
+                            <StyledTableCell>안전지향형</StyledTableCell>
+                            <StyledTableCell>20%</StyledTableCell>
+                            <StyledTableCell>30%</StyledTableCell>
+                            <StyledTableCell>40%</StyledTableCell>
+                            <StyledTableCell>10%</StyledTableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </StyledTableContainer>
 
             <Typography
                 sx={{
