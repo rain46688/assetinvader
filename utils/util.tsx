@@ -73,7 +73,7 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
             break;
         // 숫자만 입력
         case "number":
-            if (/^[0-9]*$/.test(value)) {
+            if (/^-?[0-9]*$/.test(value)) {
                 fieldData[field] = false;
                 result = true;
             } else {

@@ -152,6 +152,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     if (new_data.trns_type === "") {
       new_data.trns_type = "매매";
     }
+    
+
+    console.log(new_data);
 
     // 서버에 데이터 추가
     const data = JSON.stringify({

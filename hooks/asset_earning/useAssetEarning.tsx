@@ -241,7 +241,6 @@ export const useAssetEarning = () => {
         // 수정된 배열을 설정
         const updatedRows = rows.map(item => {
             if (item.id === id) {
-                console.log(item);
                 return {
                     ...item,
                     asset_name: newValue.label,

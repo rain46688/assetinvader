@@ -184,9 +184,10 @@ export default function AssetEarningTable() {
                                                 id="combo-box-demo"
                                                 options={selectData}
                                                 getOptionKey={(option) => typeof option === "string" ? 0 : option.id}
-                                                onChange={(event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', 
-                                                    typeof newValue === "string" ? { id: 0, label: newValue, asset_acnt: '' } : newValue || { id: 0, label: '', asset_acnt: '' })}
-                                                onBlur={(event: ChangeEvent<any>) => {handleDataAssetNameChange(event, row.id, row.id, 'asset_name', { id: 0, label: event.target.value, asset_acnt: '' })}}
+                                                onChange={
+                                                    (event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', 
+                                                    typeof newValue === "string" ? { id: 0, label: newValue, asset_acnt: row.asset_acnt } : newValue || { id: 0, label: '', asset_acnt: row.asset_acnt })}
+                                                onBlur={(event: ChangeEvent<any>) => {handleDataAssetNameChange(event, row.id, row.id, 'asset_name', { id: 0, label: event.target.value, asset_acnt: row.asset_acnt })}}
                                                 renderInput={(params) => <TextField key={params.id} variant="standard" {...params}/>}
                                             />
                                         ) : (
