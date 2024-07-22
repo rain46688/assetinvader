@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 
 export default function DescriptionCH2_5_2Page() {
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", pb: { sm:4 } }}>
       <Ch2_5_2Page />
     </Box>
   );

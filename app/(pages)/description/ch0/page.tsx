@@ -5,9 +5,8 @@ import Box from "@mui/material/Box";
 import Ch0Page from '@/components/description/Ch0';
 
 export default function DescriptionCH0Page() {
-
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", pb: { sm:4 } }}>
       <Ch0Page/>
     </Box>
   );
