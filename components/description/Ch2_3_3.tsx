@@ -151,13 +151,22 @@ export default function Ch2_3_3Page() {
                 그림과 같이 배당률이 상승하는것을 볼 수있습니다.
                 <Typography
                     sx={{
+                        display: 'flex', // Flexbox 컨테이너로 만듭니다
+                        justifyContent: 'center', // 수평 가운데 정렬
+                        alignItems: 'center', // 수직 가운데 정렬
                         flex: "1 1 100%",
                         pt: { sm: 2 },
                     }}
                     variant="body1"
                     component="div"
                 >
-                    (SCHD 배당률 과거 계산 차트)
+                    <img
+                        src={'https://assetinvader.s3.ap-northeast-2.amazonaws.com/ch2_3_3_img1.png'}
+                        alt={"ch2_3_3_img1"}
+                        loading="lazy"
+                        width={'50%'}
+                        height={'50%'}
+                    />
                 </Typography>
                 배당성장 ETF를 고를때에도 이전의 ETF를 고르는 기준과 비슷하나 배당을
                 받기위해 매수하는 ETF이니 분배금과 분배금 지급시기를 주로 보는것이
