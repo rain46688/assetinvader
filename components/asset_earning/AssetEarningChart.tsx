@@ -93,9 +93,11 @@ export default function AssetEarningChart() {
                 const start_date: string = Object.keys(sortedSumData).reduce((a, b) => a < b ? a : b).slice(0, 5) + '01';
                 const end_date: string = Object.keys(sortedSumData).reduce((a, b) => a > b ? a : b).slice(0, 5) + '12';
 
-                // 2. 시작 날짜부터 끝 날짜까지 누적
+                // 2. 시작 날짜부터 끝 날짜까지 연별로 누적
                 let current_total: number = 0;
                 for (let date = start_date; date <= end_date; date = getNextMonth(date)) {
+                    if (date.slice(5, 7) == '01')
+                        current_total = 0;
                     if (date in sortedSumData) {
                         current_total += sortedSumData[date];
                     }
@@ -211,43 +213,52 @@ export default function AssetEarningChart() {
             {chartData.length > 0 ? (
                 <Box sx={{ width: '100%' }}>
                     {chartTypeName == "월별" ? (
-                        <ResponsiveChartContainer
-                            xAxis={[
-                                {
-                                    scaleType: 'band',
-                                    data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                                    id: 'months',
-                                    label: 'Months',
-                                },
-                            ]}
-                            yAxis={[
-                                {
-                                    id: 'earnings',
-                                    colorMap: {
-                                        type: 'piecewise',
-                                        thresholds: [0],
-                                        colors: ['blue', 'red'],
+                        <>
+                            <Typography
+                                sx={{ pl: { sm: 2 }, flex: '1 1 100%' }}
+                                variant="subtitle2"
+                                id="tableTitle"
+                                component="div">
+                                월별 막대 선택 시 자산분류별 수익현황을 확인할 수 있습니다.
+                            </Typography>
+                            <ResponsiveChartContainer
+                                xAxis={[
+                                    {
+                                        scaleType: 'band',
+                                        data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                                        id: 'months',
+                                        label: 'Months',
+                                    },
+                                ]}
+                                yAxis={[
+                                    {
+                                        id: 'earnings',
+                                        colorMap: {
+                                            type: 'piecewise',
+                                            thresholds: [0],
+                                            colors: ['blue', 'red'],
+                                        }
                                     }
-                                }
-                            ]}
-                            series={chartData}
-                            height={400}
-                            margin={{ left: 100 }}
-                            sx={{
-                                [`.${axisClasses.left} .${axisClasses.label}`]: {
-                                    transform: 'translate(-45px, 0)',
-                                },
-                                // [`.${axisClasses.right} .${axisClasses.label}`]: {
-                                //     transform: 'translate(30px, 0)',
-                                // },
-                            }}
-                        >
-                            <BarPlot />
-                            <ChartsLegend direction='row' />
-                            <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"} />
-                            <ChartsYAxis axisId="earnings" label="월별 수익" />
-                            <ChartsTooltip />
-                        </ResponsiveChartContainer>
+                                ]}
+                                series={chartData}
+                                height={400}
+                                margin={{ left: 100 }}
+                                sx={{
+                                    [`.${axisClasses.left} .${axisClasses.label}`]: {
+                                        transform: 'translate(-45px, 0)',
+                                    },
+                                    // [`.${axisClasses.right} .${axisClasses.label}`]: {
+                                    //     transform: 'translate(30px, 0)',
+                                    // },
+                                }}
+                            >
+                                <BarPlot />
+                                <ChartsLegend direction='row' />
+                                <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"} />
+                                <ChartsYAxis axisId="earnings" label="월별 수익" />
+                                <ChartsTooltip />
+                            </ResponsiveChartContainer>
+                        </>
                     ) : (
                         <ResponsiveChartContainer
                             xAxis={[
