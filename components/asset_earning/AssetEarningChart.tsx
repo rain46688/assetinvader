@@ -15,7 +15,7 @@ import { ChartsYAxis } from '@mui/x-charts/ChartsYAxis';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
 import { ChartsLegend } from '@mui/x-charts/ChartsLegend';
-import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
+import { BarChart } from '@mui/x-charts/BarChart';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
@@ -31,26 +31,20 @@ import dayjs from 'dayjs';
 
 import { formatDateV3 } from '@/utils/format';
 import { getNextMonth } from '@/utils/util';
-import { colors } from '@mui/material';
 
 export default function AssetEarningChart() {
 
     // 데이터 저장
     const [chartData, setChartData] = useState<any[]>([]);
     const [thisYear, setThisYear] = useState(new Date().getFullYear().toString());
-    const [detailData, setDetailData] = useState<Record<string, number[][]>>({});
-    const [detailChart, setDetailChart] = useState(false);
     const [detailChartData, setDetailChartData] = useState<any[]>([]);
-    // 차트 합계값 저장
-    const [sumChartData, setSumChartData] = useState(0);
 
     // 선택 데이터 저장
     const [chartTypeName, setChartTypeName] = useState('월별');
 
     useEffect(() => {
-        console.log(" === AssetEarningLineBarChart === ");
+        console.log(" === AssetEarningChart(main, detail) === ");
         CreateChart();
-        setDetailChart(false);
     }, [thisYear, chartTypeName]);
 
     // 차트 생성 함수
@@ -162,9 +156,22 @@ export default function AssetEarningChart() {
                     });
                 }
             }
+
+            // C 그래프 데이터 형식변경
+            // 형식에 맞게 변환된 데이터 
+            const yearData = cGroupedData[thisYear];
+            const result = [];
+            for (let i = 0; i < typeList.length; i++) {
+                const data = yearData.map(row => row[i]);
+                result.push({
+                    label: typeList[i],
+                    data: data
+                });
+            }
+
             // 데이터 저장
             setChartData(chartData);
-            setDetailData(cGroupedData);
+            setDetailChartData(result);
         } else {
             console.log('error');
         }
@@ -181,50 +188,6 @@ export default function AssetEarningChart() {
         console.log(" === handleDateAccept === ");
         setThisYear(date.$y);
     };
-
-
-    // 서브차트 생성 함수
-    const CreateDetailChart = async (selectedIndex: number) => {
-        // 종류 헤더 배열 선언
-        const typeList = ['매매', '배당금', '은행이자', '채권이자', '공모주'];
-
-        // 형식에 맞게 변환된 데이터
-        const data = [
-            {
-                "id": 0,
-                "value": detailData[thisYear][selectedIndex][0],
-                "label": typeList[0]
-            },
-            {
-                "id": 1,
-                "value": detailData[thisYear][selectedIndex][1],
-                "label": typeList[1]
-            },
-            {
-                "id": 2,
-                "value": detailData[thisYear][selectedIndex][2],
-                "label": typeList[2]
-            },
-            {
-                "id": 3,
-                "value": detailData[thisYear][selectedIndex][3],
-                "label": typeList[3]
-            },
-            {
-                "id": 4,
-                "value": detailData[thisYear][selectedIndex][4],
-                "label": typeList[4]
-            }
-        ];
-        let tempSum = 
-            detailData[thisYear][selectedIndex][0]
-            + detailData[thisYear][selectedIndex][1]
-            + detailData[thisYear][selectedIndex][2]
-            + detailData[thisYear][selectedIndex][3]
-            + detailData[thisYear][selectedIndex][4];
-        setSumChartData(tempSum);
-        setDetailChartData(data);
-    }
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -321,13 +284,7 @@ export default function AssetEarningChart() {
                                     // },
                                 }}
                             >
-                                <BarPlot
-                                    onItemClick={(event, d) => {
-                                        console.log(d)
-                                        setDetailChart(true);
-                                        CreateDetailChart(d.dataIndex);
-                                    }}
-                                />
+                                <BarPlot />
                                 <ChartsLegend direction='row' />
                                 <ChartsXAxis axisId="months" label={thisYear + "년 월별 수익"} />
                                 <ChartsYAxis axisId="earnings" label="월별 수익" />
@@ -386,7 +343,7 @@ export default function AssetEarningChart() {
                     </Typography>
                 </Box>
             )}
-            {detailChart ? (
+            {detailChartData.length > 0 ? (
                 <Paper sx={{ width: '100%', mb: 2 }}>
                     <Toolbar
                         sx={{
@@ -404,45 +361,29 @@ export default function AssetEarningChart() {
                             종류별 수익차트
                         </Typography>
                     </Toolbar>
-                    {detailChartData.length > 0 ? (
-                        <PieChart
-                            series={[
-                                {
-                                    arcLabel: (item) => `${Math.round(item.value / sumChartData * 100)}%`,
-                                    data: detailChartData,
-                                    innerRadius: 30,
-                                    outerRadius: 120,
-                                    paddingAngle: 2,
-                                    cornerRadius: 5,
-                                    cy: 120,
-                                    highlightScope: { faded: 'global', highlighted: 'item' },
-                                    faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-                                },
-                            ]}
-                            height={300}
-                            sx={{
-                                [`& .${pieArcLabelClasses.root}`]: {
-                                    fill: 'white',
-                                    fontWeight: 'bold',
-                                },
-                            }}
-                        />
-                    ) : (
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            minHeight: '8vh',
-                        }}>
-                            <Typography variant="body1" align="center">
-                                {'데이터가 없습니다.'}
-                            </Typography>
-                        </Box>
-                    )}
+                    <BarChart
+                        series={detailChartData}
+                        height={350}
+                        margin={{ left: 100, top: 100 }}
+                        xAxis={[{
+                            data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                            scaleType: 'band',
+                            id: 'months',
+                            label: "월"
+                        }]}
+                    />
                 </Paper>
             ) : (
-                <></>
-            )
-            }
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '8vh',
+                }}>
+                    <Typography variant="body1" align="center">
+                        {'데이터가 없습니다.'}
+                    </Typography>
+                </Box>
+            )}
         </Paper >
     );
 }

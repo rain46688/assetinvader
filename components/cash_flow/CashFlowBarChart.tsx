@@ -8,13 +8,6 @@ import { formatDateV3 } from '@/utils/format';
 // material-ui 관련 임포트
 import Paper from '@mui/material/Paper';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
-import { BarPlot } from '@mui/x-charts/BarChart';
-import { ChartsXAxis } from '@mui/x-charts/ChartsXAxis';
-import { ChartsYAxis } from '@mui/x-charts/ChartsYAxis';
-import { axisClasses } from '@mui/x-charts/ChartsAxis';
-import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
-import { ChartsLegend } from '@mui/x-charts/ChartsLegend';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
