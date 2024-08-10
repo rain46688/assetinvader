@@ -83,7 +83,7 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
             break;
         // 소수점 2자리까지 입력
         case "double":
-            if (/^\d+(\.\d{1,2})?$/.test(value)) {
+            if (/^\d+(\.\d{0,2})?$/.test(value)) {
                 fieldData[field] = false;
                 result = true;
             } else {
@@ -93,7 +93,7 @@ export const validationCheck = (value: string, field: string, fieldDataType: any
             break;
         // 소수점 8자리까지 입력
         case "double2":
-            if (/^\d+\.\d{8}$/.test(value)) {
+            if (/^\d+(\.\d{0,8})?$/.test(value)) {
                 fieldData[field] = false;
                 result = true;
             } else {
