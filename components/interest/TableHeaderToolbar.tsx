@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { sendPost, sendDelete } from '@/utils/fetch';
+import { sendPost, sendDelete, sendFile } from '@/utils/fetch';
 import { createData } from '@/redux/interest/Interest';
 import { InterestData } from '@/redux/interest/Interest';
 import { InterestValidation } from '@/redux/interest/Interest';
@@ -8,6 +8,7 @@ import { InterestValidation } from '@/redux/interest/Interest';
 import { setInterestList } from '@/redux/interest/interestSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
+import * as XLSX from "xlsx";
 
 // material-ui 관련 임포트
 import { alpha } from '@mui/material/styles';
@@ -20,6 +21,9 @@ import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -158,9 +162,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setIsNotSortStatus(false);
       // 기존 리스트에 추가된 임시 id값 데이터의 id(0임)를 서버에 추가 후 반환 받은 진짜 id로 변경
       let newList = [...list];
-      let lastItem = { ...newList[newList.length - 1] }; 
-      lastItem.id = result.data.id; 
-      newList[newList.length - 1] = lastItem; 
+      let lastItem = { ...newList[newList.length - 1] };
+      lastItem.id = result.data.id;
+      newList[newList.length - 1] = lastItem;
       dispatch(setInterestList(newList));
     } else {
       console.log("fail");
@@ -184,6 +188,71 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
     setPage(movePage);
   };
+
+  // 엑셀 데이터 업로드
+  const handleFileUpChange = async (event: any) => {
+    debugger;
+    console.log('=== handleFileChange === ');
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('excelFile', file);
+    formData.append('member_id', sessionStorage.getItem('id') || '');
+
+    const result = await sendFile(formData, 'interest/upload');
+    if (result.status === 'success') {
+      setSnack(true);
+      setSnackMessage("데이터 업로드 완료.");
+      setSnackBarStatus("success");
+      getList(sessionStorage.getItem('id') + '');
+    } else {
+      console.log("fail");
+      setSnack(true);
+      setSnackMessage("데이터 업로드 실패.");
+      setSnackBarStatus("error");
+    }
+  };
+
+  // 엑셀 양식 데이터 다운로드
+  const handleFormFileDown = () => {
+    console.log('=== handleFormFileDown === ');
+    const ws = XLSX.utils.aoa_to_sheet([['자산 이름', '이자 발생일', '이자 금액']]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '이자내역');
+
+    // 엑셀 파일을 Blob 형태로 생성합니다.
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', '이자내역 데이터 양식.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  }
+
+  // 엑셀 데이터 다운로드
+  const handleFileDown = () => {
+    console.log('=== handleFileDown === ');
+    const wsData = list.map(item => [item.asset_name, item.occurrence_date, item.amount]);
+    const ws = XLSX.utils.aoa_to_sheet([['자산 이름', '이자 발생일', '이자 금액'], ...wsData]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '이자내역');
+
+    // 엑셀 파일을 Blob 형태로 생성합니다.
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', '이자내역 데이터.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  }
 
   return (
     <Toolbar
@@ -224,6 +293,32 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {!addStatus ? (
             <>
+              {/* file download */}
+              <Tooltip title="이자내역 엑셀 다운로드">
+                <IconButton component="span" aria-label="download" onClick={handleFileDown}>
+                  <FileDownloadIcon />
+                </IconButton>
+              </Tooltip>
+              {/* sheet download */}
+              <Tooltip title="입력 양식 다운로드">
+                <IconButton component="span" aria-label="formDownload" onClick={handleFormFileDown}>
+                  <AttachFileIcon />
+                </IconButton>
+              </Tooltip>
+              {/* file upload */}
+              <input
+                type="file"
+                id="upload-file"
+                style={{ display: 'none' }}
+                onChange={handleFileUpChange}
+              />
+              <label htmlFor="upload-file">
+                <Tooltip title="이자내역 엑셀 업로드">
+                  <IconButton component="span" aria-label="upload">
+                    <FileUploadIcon />
+                  </IconButton>
+                </Tooltip>
+              </label>
               <Tooltip title="새로고침">
                 <IconButton aria-label="refresh" onClick={handleRefreshList}>
                   <RefreshIcon />

@@ -257,6 +257,8 @@ export default function InterestTable() {
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
+                    showFirstButton={true}
+                    showLastButton={true}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
