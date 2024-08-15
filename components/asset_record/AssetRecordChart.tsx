@@ -85,23 +85,23 @@ export default function AssetRecordChart() {
             for (const item of result) {
                 series = [
                     {
-                        data:[
+                        data: [
                             item.data['01'],
-                            item.data['02'], 
-                            item.data['03'], 
-                            item.data['04'], 
-                            item.data['05'], 
-                            item.data['06'], 
-                            item.data['07'], 
-                            item.data['08'], 
-                            item.data['09'], 
-                            item.data['10'], 
-                            item.data['11'], 
-                            item.data['12']], 
-                        stack: 'sum', 
+                            item.data['02'],
+                            item.data['03'],
+                            item.data['04'],
+                            item.data['05'],
+                            item.data['06'],
+                            item.data['07'],
+                            item.data['08'],
+                            item.data['09'],
+                            item.data['10'],
+                            item.data['11'],
+                            item.data['12']],
+                        stack: 'sum',
                         label: item.name
-                    }, 
-                ...series];
+                    },
+                    ...series];
             }
 
             // 데이터 저장
@@ -179,10 +179,14 @@ export default function AssetRecordChart() {
                             scaleType: 'band',
                             id: 'months',
                             label: "월",
-                            valueFormatter: (code:string, context) => {
-                                const label = Number(code.replace('월',''))-1
-                                const value = chartData[0].data[label] + chartData[1].data[label] + chartData[2].data[label] + chartData[3].data[label];
-                                return code + '(총계: ' + `${parseNumber(value)}` + ')'
+                            valueFormatter: (code: string, context) => {
+                                if (context.location === 'tick')
+                                    return code
+                                else {
+                                    const label = Number(code.replace('월', '')) - 1
+                                    const value = chartData[0].data[label] + chartData[1].data[label] + chartData[2].data[label] + chartData[3].data[label];
+                                    return code + '(총계: ' + `${parseNumber(value)}` + ')'
+                                }
                             }
                         }]}
                     />
