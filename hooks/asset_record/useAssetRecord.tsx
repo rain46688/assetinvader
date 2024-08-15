@@ -95,7 +95,7 @@ export const useAssetRecord = () => {
                 const keys = Object.keys(parsedData);
                 keys.forEach(key => {
                     const value = parsedData[key];
-                    if(groupedData[key] != undefined)
+                    if (groupedData[key] != undefined)
                         groupedData[key].target_ratio = value;
                 });
                 setTargetRatioData(parsedData);
@@ -111,7 +111,6 @@ export const useAssetRecord = () => {
                 total_earning_sum += groupedData[temp_data].amount * groupedData[temp_data].earning_rate;
             }
 
-            console.log(groupedData);
             setTableData(groupedData);
             setTotalAmount(total_amount);
             setTotalEarningRate(total_earning_sum / total_amount);
@@ -122,7 +121,6 @@ export const useAssetRecord = () => {
             setSnackMessage('데이터가 없거나 불러오는데 실패했습니다.');
         }
     };
-
     const handleDataChange = (event: ChangeEvent<any>, temp_data: any) => {
         console.log(" ==== handleChange ==== ");
 
@@ -157,7 +155,7 @@ export const useAssetRecord = () => {
         }
 
         for (const temp_data in tableData) {
-            total_target_ratio += parseFloat(""+tableData[temp_data].target_ratio); // 이상하게 타입은 숫자인데 typeof는 string임
+            total_target_ratio += parseFloat("" + tableData[temp_data].target_ratio); // 이상하게 타입은 숫자인데 typeof는 string임
             const target_amount = Math.round(total_amount * tableData[temp_data].target_ratio / 100);
             const diff = target_amount - tableData[temp_data].amount;
 
@@ -173,7 +171,7 @@ export const useAssetRecord = () => {
         }
         const jsonData = JSON.stringify(targetRatioData, null, 2);
         sessionStorage.setItem('targetRatio', jsonData);
-        
+
         setTotalAmount(total_amount);
         setTotalEarningRate(earning_sum / total_amount);
         setTotalTargetEarningRate(target_earning_sum / total_amount);

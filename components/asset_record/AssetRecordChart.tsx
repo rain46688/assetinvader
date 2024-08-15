@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { sendGet } from '@/utils/fetch';
 import { parseNumber } from '@/utils/format';
 import { formatDateV3 } from '@/utils/format';
-import { AssetRecord } from '@/redux/asset_record/AssetRecord';
 
 // material-ui 관련 임포트
 import Paper from '@mui/material/Paper';
@@ -13,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
-import { BarChart } from '@mui/x-charts/BarChart';
+import { BarChart } from '@mui/x-charts';
 import Box from '@mui/material/Box';
 
 // 차트관련
@@ -106,6 +105,7 @@ export default function AssetRecordChart() {
             }
 
             // 데이터 저장
+            console.log(series);
             setChartData(series);
         } else {
             console.log('error');
@@ -178,7 +178,12 @@ export default function AssetRecordChart() {
                             data: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                             scaleType: 'band',
                             id: 'months',
-                            label: "월"
+                            label: "월",
+                            valueFormatter: (code:string, context) => {
+                                const label = Number(code.replace('월',''))-1
+                                const value = chartData[0].data[label] + chartData[1].data[label] + chartData[2].data[label] + chartData[3].data[label];
+                                return code + '(총계: ' + `${parseNumber(value)}` + ')'
+                            }
                         }]}
                     />
                 ) : (
