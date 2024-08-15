@@ -5,8 +5,6 @@ import { sendGet } from '@/utils/fetch';
 
 // material-ui 관련 임포트
 import Paper from '@mui/material/Paper';
-import { PieChart } from '@mui/x-charts/PieChart';
-import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -30,59 +28,75 @@ export default function SpendingLineChart() {
         const id = sessionStorage.getItem('id');
         const res = await sendGet('/spending/getlist_spending/' + id);
         if (res.status === 'success') {
-            // 데이터 저장
+            // 데이터 저장 및 현재 월 기준으로 과거 2년치 데이터만 필터링
             const list = res.data;
-
-            // A 그래프 데이터 생성
-            const aGroupedData: { [key: string]: number[] } = {};
-            list.forEach((item: { spnd_date: string, amount: number }) => {
+            let current_date = new Date();
+            const current_year = current_date.getFullYear().toString();
+            const current_month = current_date.getMonth()+1;
+            const current_YM = current_year+'-'+current_month.toString().padStart(2, '0');
+            let past_date = new Date();
+            past_date.setMonth(current_date.getMonth()-23);
+            const past_year = past_date.getFullYear().toString();
+            const past_month = past_date.getMonth()+1;
+            const past_YM = past_year+'-'+past_month.toString().padStart(2, '0');
+            const newList = list.filter((item: { spnd_date: string, amount: number }) => {
                 const year = item.spnd_date.slice(0, 4);
                 const month = parseInt(item.spnd_date.slice(5, 7), 10);
-                if (!aGroupedData[year]) {
-                    aGroupedData[year] = new Array(12).fill(0);
-                }
-                aGroupedData[year][month - 1] += item.amount;
+                const YM = year+'-'+month.toString().padStart(2, '0');
+                const check = (past_YM <= YM) && (YM <= current_YM);
+                // console.log(year+'-'+month+'==>'+check);
+                return check;
+            })
+
+            // A 그래프 데이터 생성
+            let aGroupedData:number[] = [];
+            let tempData:number[] = [];
+            aGroupedData = new Array(12).fill(0);
+            tempData = new Array(24).fill(0);
+            newList.forEach((item: { spnd_date: string, amount: number }) => {
+                const year = item.spnd_date.slice(0, 4);
+                const month = parseInt(item.spnd_date.slice(5, 7), 10);
+                const diff = (Number(year) - Number(past_year))*12 + (Number(month.toString().padStart(2, '0')) - Number(past_month.toString().padStart(2, '0')));
+                // console.log(year+'-'+month+'='+diff);
+                if((diff-12) >= 0)
+                    aGroupedData[diff-12] += item.amount;
+                tempData[diff] += item.amount;
             });
 
             // B 그래프 데이터 생성
-            const bGraphData: number[] = new Array(12).fill(0);
+            const bGroupedData: number[] = new Array(12).fill(0);
             for (let i = 0; i < 12; i++) {
                 let total = 0;
                 let count = 0;
-                for (let j = 0; j < 12; j++) {
-                    const date = new Date();
-                    date.setMonth((i) - j);
-                    const year = date.getFullYear().toString();
-                    const month = date.getMonth();
-                    if (aGroupedData[year] && aGroupedData[year][month] !== 0) {
-                        total += aGroupedData[year][month];
+                for (let j = 1+i; j < 13+i; j++) {
+                    if(tempData[j] != 0) {
                         count++;
+                        total += tempData[j];
                     }
                 }
-                bGraphData[i] = count > 0 ? Math.round(total / count) : 0;
+                bGroupedData[i] = count > 0 ? Math.round(total / count) : 0;
             }
+            console.log(bGroupedData);
 
             // 통합 차트 데이터 담을 배열 선언
             const chartData = [];
 
             // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용
-            const today = new Date();
-            const thisYear = today.getFullYear().toString();
-            if (typeof aGroupedData[thisYear] !== 'undefined') {
+            if (typeof aGroupedData !== 'undefined') {
                 chartData.push({
                     curve: "linear",
                     id: '0',
-                    data: aGroupedData[thisYear],
+                    data: aGroupedData,
                     label: '월별 지출금액',
                 });
             }
 
             // chartData에 B 그래프 데이터 추가
-            if (typeof bGraphData !== 'undefined') {
+            if (typeof bGroupedData !== 'undefined') {
                 chartData.push({
                     curve: "linear",
                     id: '1',
-                    data: bGraphData,
+                    data: bGroupedData,
                     label: '월별 지출금액(12MA)',
                 });
             }

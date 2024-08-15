@@ -294,13 +294,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           {!addStatus ? (
             <>
               {/* file download */}
-              <Tooltip title="Download">
+              <Tooltip title="지출내역 엑셀 다운로드">
                 <IconButton component="span" aria-label="download" onClick={handleFileDown}>
                   <FileDownloadIcon />
                 </IconButton>
               </Tooltip>
               {/* sheet download */}
-              <Tooltip title="FormDownload">
+              <Tooltip title="입력 양식 다운로드">
                 <IconButton component="span" aria-label="formDownload" onClick={handleFormFileDown}>
                   <AttachFileIcon />
                 </IconButton>
@@ -313,7 +313,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 onChange={handleFileUpChange}
               />
               <label htmlFor="upload-file">
-                <Tooltip title="Upload">
+                <Tooltip title="지출내역 엑셀 업로드">
                   <IconButton component="span" aria-label="upload">
                     <FileUploadIcon />
                   </IconButton>

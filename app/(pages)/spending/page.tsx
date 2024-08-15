@@ -10,10 +10,10 @@ export default function SpendingPage() {
         <Box sx={{ width: '100%' }}>
             {/* SpendingTable 컴포넌트 */}
             <SpendingTable />
-            {/* SpendingPieChart 컴포넌트 */}
-            <SpendingPieChart />
             {/* SpendingLineChart 컴포넌트 */}
             <SpendingLineChart />
+            {/* SpendingPieChart 컴포넌트 */}
+            <SpendingPieChart />
         </Box>
     );
 }
