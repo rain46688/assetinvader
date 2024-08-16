@@ -76,7 +76,7 @@ export default function SpendingLineChart() {
                 }
                 bGroupedData[i] = count > 0 ? Math.round(total / count) : 0;
             }
-            console.log(bGroupedData);
+            // console.log(bGroupedData);
 
             // 통합 차트 데이터 담을 배열 선언
             const chartData = [];
@@ -107,6 +107,18 @@ export default function SpendingLineChart() {
             console.log('error');
         }
     };
+
+    const getYearMonth = (code:string) => {
+        let mod_code = code.replace('M','').replace('-','');
+        let num = 0;
+        const today = new Date();
+        const date = new Date();
+        if(mod_code.length != 0)
+            num = Number(mod_code);
+        date.setMonth(today.getMonth()-num);
+        const str_date = date.getFullYear().toString()+'-'+(date.getMonth()+1).toString().padStart(2, '0');;
+        return str_date;
+    }
 
     // 새로고침 버튼 클릭 이벤트
     const handleRefreshClick = () => {
@@ -144,10 +156,18 @@ export default function SpendingLineChart() {
                             data: ['M-11', 'M-10', 'M-9', 'M-8', 'M-7', 'M-6', 'M-5', 'M-4', 'M-3', 'M-2', 'M-1', 'M'],
                             id: 'months',
                             label: '최근 12개월 지출',
+                            valueFormatter: (code: string, context) => {
+                                const str_date = getYearMonth(code);
+                                if (context.location === 'tick')
+                                    return code
+                                else {
+                                    return code+'('+str_date+')'
+                                }
+                            }
                         },
                     ]}
                     series={chartData}
-                    height={220}
+                    height={250}
                 />
             ) : (
                 <Box sx={{
