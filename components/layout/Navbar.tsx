@@ -166,6 +166,40 @@ export default function Navbar() {
             </List>
           </Collapse>
 
+          {/* 지출관리 */}
+          <ListItemButton
+            onClick={() => {
+              dispatch(
+                setSpendingOpened({ isSpendingOpened: !isSpendingOpened })
+              );
+            }}
+          >
+            <ListItemIcon>
+              <CreditScoreIcon />
+            </ListItemIcon>
+            <ListItemText primary="지출관리" />
+            {isSpendingOpened ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse
+            in={isSpendingOpened as boolean | undefined}
+            timeout="auto"
+            unmountOnExit
+          >
+            <List component="div" disablePadding>
+              {/* 지출관리 > 지출내역 기록 */}
+              <ListItemButton
+                sx={{ pl: 4 }}
+                component={Link}
+                href={process.env.NEXT_PUBLIC_SPENDING_URL || "/"}
+              >
+                <ListItemIcon>
+                  <CreditScoreIcon />
+                </ListItemIcon>
+                <ListItemText primary="지출내역 기록" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+
           {/* 이자·배당관리 */}
           <ListItemButton
             onClick={() => {
@@ -248,39 +282,6 @@ export default function Navbar() {
             </List>
           </Collapse>
 
-          {/* 지출관리 */}
-          <ListItemButton
-            onClick={() => {
-              dispatch(
-                setSpendingOpened({ isSpendingOpened: !isSpendingOpened })
-              );
-            }}
-          >
-            <ListItemIcon>
-              <CreditScoreIcon />
-            </ListItemIcon>
-            <ListItemText primary="지출관리" />
-            {isSpendingOpened ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse
-            in={isSpendingOpened as boolean | undefined}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List component="div" disablePadding>
-              {/* 지출관리 > 지출내역 기록 */}
-              <ListItemButton
-                sx={{ pl: 4 }}
-                component={Link}
-                href={process.env.NEXT_PUBLIC_SPENDING_URL || "/"}
-              >
-                <ListItemIcon>
-                  <CreditScoreIcon />
-                </ListItemIcon>
-                <ListItemText primary="지출내역 기록" />
-              </ListItemButton>
-            </List>
-          </Collapse>
         </React.Fragment>
         <Divider sx={{ my: 1 }} />
       </List>

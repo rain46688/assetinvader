@@ -215,6 +215,7 @@ export default function InterestTable() {
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
+                                                        sx={{ textAlignLast : 'center'}}
                                                         variant="standard"
                                                         format="YYYY-MM-DD"
                                                         helperText={validationList[index]?.occurrence_date ? "날짜 선택 필요" : ''}

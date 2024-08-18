@@ -160,6 +160,7 @@ export default function SpendingTable() {
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
+                                                        sx={{ textAlignLast : 'center'}}
                                                         variant="standard"
                                                         format="YYYY-MM"
                                                         helperText={validationList[index]?.spnd_date ? "날짜 선택 필요" : ''}

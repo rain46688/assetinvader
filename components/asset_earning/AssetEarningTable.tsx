@@ -110,9 +110,9 @@ export default function AssetEarningTable() {
                 setIsNotSortStatus={setIsNotSortStatus}
                 getList={getList}
             />
-            <TableContainer>
+            <TableContainer 
+                sx={{ overflowX: 'auto', width: '100%' }}>
                 <Table
-                    sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
                     size='small'>
                     {/* 헤더 props */}
@@ -142,7 +142,12 @@ export default function AssetEarningTable() {
                                     selected={isItemSelected}
                                     sx={{ cursor: 'pointer' }}>
                                     {/*  */}
-                                    <TableCell padding="checkbox">
+                                    <TableCell 
+                                        sx={{ width: '5%' }}
+                                        component="th"
+                                        scope="center"
+                                        padding="none"
+                                        align="center">
                                         {!addStatus ? (
                                             <Checkbox
                                                 color="primary"
@@ -155,8 +160,8 @@ export default function AssetEarningTable() {
                                             <></>
                                         )}
                                     </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
+                                    {/* 자산계좌명 */}
+                                    <TableCell align="center" sx={{ width: '20%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 // disabled={true}
@@ -170,13 +175,8 @@ export default function AssetEarningTable() {
                                             </Typography>
                                         )}
                                     </TableCell>
-                                    {/*  */}
-                                    <TableCell
-                                        component="th"
-                                        id={labelId}
-                                        scope="center"
-                                        padding="none"
-                                        align="center">
+                                    {/* 자산명 */}
+                                    <TableCell align="center" sx={{ width: '20%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <Autocomplete
                                                 // disablePortal
@@ -196,13 +196,13 @@ export default function AssetEarningTable() {
                                             </Typography>
                                         )}
                                     </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
+                                    {/* 종류 */}
+                                    <TableCell align="center" sx={{ width: '15%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <NativeSelect
                                                 value={row.trns_type}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
-                                                style={{ width: '150px', border: 'none' }}
+                                                style={{ width: '150px', border: 'none', textAlignLast: 'center' }}
                                                 inputProps={{ 'aria-label': 'Without label' }}>
                                                 <option value={'매매'}>매매</option>
                                                 <option value={'배당금'}>배당금</option>
@@ -216,8 +216,8 @@ export default function AssetEarningTable() {
                                             </Typography>
                                         )}
                                     </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
+                                    {/* 수익(원) */}
+                                    <TableCell align="center" sx={{ width: '15%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 variant="standard"
@@ -235,12 +235,13 @@ export default function AssetEarningTable() {
                                             </Typography>
                                         )}
                                     </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
+                                    {/* 수익 발생일 */}
+                                    <TableCell align="center" sx={{ width: '15%', textAlign:'center'}}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
+                                                        sx={{ textAlignLast : 'center'}}
                                                         variant="standard"
                                                         format="YYYY-MM-DD"
                                                         helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
@@ -255,11 +256,6 @@ export default function AssetEarningTable() {
                                             </Typography>
                                         )}
                                     </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {row.reg_date}
-                                    </TableCell>
-                                    {/*  */}
                                 </TableRow>
                             );
                         })}

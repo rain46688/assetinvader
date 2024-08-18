@@ -110,9 +110,9 @@ export default function AssetTransactionTable() {
                 setIsNotSortStatus={setIsNotSortStatus}
                 getList={getList}
             />
-            <TableContainer>
+            <TableContainer
+                sx={{ overflowX: 'auto', width: '100%' }}>
                 <Table
-                    sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
                     size='small'>
                     {/* 헤더 props */}
@@ -157,8 +157,8 @@ export default function AssetTransactionTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell
+                                        sx={{ width: '22.5%' }}
                                         component="th"
-                                        id={labelId}
                                         scope="center"
                                         padding="none"
                                         align="center">
@@ -178,7 +178,7 @@ export default function AssetTransactionTable() {
                                         )}
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '22.5%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 disabled={true}
@@ -193,12 +193,12 @@ export default function AssetTransactionTable() {
                                         )}
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '15%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <NativeSelect
                                                 value={row.trns_type}
                                                 onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'trns_type')}
-                                                style={{ width: '150px', border: 'none' }}
+                                                style={{ width: '150px', border: 'none', textAlignLast: 'center'  }}
                                                 inputProps={{ 'aria-label': 'Without label' }}>
                                                 <option value={'매수'}>매수</option>
                                                 <option value={'매도'}>매도</option>
@@ -210,7 +210,7 @@ export default function AssetTransactionTable() {
                                         )}
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '15%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <TextField
                                                 variant="standard"
@@ -229,11 +229,12 @@ export default function AssetTransactionTable() {
                                         )}
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center">
+                                    <TableCell align="center" sx={{ width: '15%' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
+                                                        sx={{ textAlignLast : 'center'}}
                                                         variant="standard"
                                                         format="YYYY-MM-DD"
                                                         helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}
@@ -247,10 +248,6 @@ export default function AssetTransactionTable() {
                                                 {row.trns_date || ''}
                                             </Typography>
                                         )}
-                                    </TableCell>
-                                    {/*  */}
-                                    <TableCell align="center">
-                                        {row.reg_date}
                                     </TableCell>
                                     {/*  */}
                                 </TableRow>
