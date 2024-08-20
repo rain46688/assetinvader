@@ -163,6 +163,7 @@ export const useCashFlow = () => {
         valList.push({
           id: item.id,
           asset_name: false,
+          asset_big_class: false,
           jan: false,
           feb: false,
           mar: false,
@@ -181,6 +182,7 @@ export const useCashFlow = () => {
         return createData(
           item.id,
           item.asset_name,
+          item.asset_big_class,
           cashFlowList.jan,
           cashFlowList.feb,
           cashFlowList.mar,
@@ -265,6 +267,7 @@ export const useCashFlow = () => {
       setSumCashFlow({
         id: 0,
         asset_name: '총계',
+        asset_big_class: '총계',
         jan: sumCashFlowList.jan,
         feb: sumCashFlowList.feb,
         mar: sumCashFlowList.mar,

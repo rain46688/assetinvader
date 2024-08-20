@@ -3,6 +3,7 @@
 export interface CashFlowData {
     id: number;
     asset_name: string;
+    asset_big_class: string;
     jan: number;
     feb: number;
     mar: number;
@@ -21,6 +22,7 @@ export interface CashFlowData {
 export interface CashFlowValidation {
     id: number;
     asset_name: boolean;
+    asset_big_class: boolean;
     jan: boolean;
     feb: boolean;
     mar: boolean;
@@ -39,6 +41,7 @@ export interface CashFlowValidation {
 export function createData(
     id: number,
     asset_name: string,
+    asset_big_class: string,
     jan: number,
     feb: number,
     mar: number,
@@ -55,6 +58,7 @@ export function createData(
     return {
         id,
         asset_name,
+        asset_big_class,
         jan,
         feb,
         mar,
