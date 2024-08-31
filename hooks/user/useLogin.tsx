@@ -12,6 +12,8 @@ export const useLogin = () => {
   // 유저아이디와 비밀번호 값 가져오기
   const user_id = useAppSelector(state => state.userReducer.user_id);
   const password = useAppSelector(state => state.userReducer.password);
+  const role = useAppSelector(state => state.userReducer.role);
+  const locked = useAppSelector(state => state.userReducer.locked);
   // 아이디 유효성 검사
   const [idVaild, setIdVaild] = useState(false);
   // 비밀번호 유효성 검사
@@ -61,10 +63,19 @@ export const useLogin = () => {
       // 아이디와 유저아이디 값은 세션 스토리지에 저장
       sessionStorage.setItem('id', result.data.id);
       sessionStorage.setItem('user_id', result.data.user_id);
-      // 성공 후 빈값으로 초기화
-      dispatch(setUser({ user_id: '', password: '' }))
-      // 성공 후 라우팅
-      userouter.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
+      sessionStorage.setItem('role', result.data.role);
+      sessionStorage.setItem('locked', result.data.locked);
+      if (result.data.locked) { // 잠금체크
+        // 실패시 스낵바 메시지 설정
+        setSnackMessage("해당 계정이 잠겨있습니다. 관리자에게 문의해주세요.");
+        // 스낵바 오픈
+        setSnack(true);
+      } else {
+        // 성공 후 빈값으로 초기화
+        dispatch(setUser({ user_id: '', password: '', role: 2, locked: false }))
+        // 성공 후 라우팅
+        userouter.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
+      }
     } else {
       // 실패시 스낵바 메시지 설정
       setSnackMessage("로그인에 실패하였습니다. 다시 시도해주세요.");
