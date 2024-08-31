@@ -34,6 +34,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 export default function Navbar() {
   // Custom Hook 사용
   const {
+    role,
     Drawer,
     isopened,
     setOpened,
@@ -87,17 +88,20 @@ export default function Navbar() {
             unmountOnExit
           >
             <List component="div" disablePadding>
-              {/* 자산관리 > 자산관리 개요 */}
-              <ListItemButton
-                sx={{ pl: 4 }}
-                component={Link}
-                href={process.env.NEXT_PUBLIC_DESCRIPTION_URL || "/"}
-              >
-                <ListItemIcon>
-                  <MenuBookIcon />
-                </ListItemIcon>
-                <ListItemText primary="자산관리 개요" />
-              </ListItemButton>
+              {role < 3 ? (
+                <>
+                  {/* 자산관리 > 자산관리 개요 */}
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    component={Link}
+                    href={process.env.NEXT_PUBLIC_DESCRIPTION_URL || "/"}
+                  >
+                    <ListItemIcon>
+                      <MenuBookIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="자산관리 개요" />
+                  </ListItemButton>
+                </>) : (<></>)}
               {/* 자산관리 > 유형별 자산관리 */}
               <ListItemButton
                 sx={{ pl: 4 }}
@@ -200,88 +204,89 @@ export default function Navbar() {
             </List>
           </Collapse>
 
-          {/* 이자·배당관리 */}
-          <ListItemButton
-            onClick={() => {
-              dispatch(
-                setDividendOpened({ isDividendOpened: !isDividendOpened })
-              );
-            }}
-          >
-            <ListItemIcon>
-              <LocalAtmIcon />
-            </ListItemIcon>
-            <ListItemText primary="이자·배당관리" />
-            {isDividendOpened ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse
-            in={isDividendOpened as boolean | undefined}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List component="div" disablePadding>
-              {/* 이자·배당관리 > 배당자산 거래기록 */}
-              <ListItemButton
-                sx={{ pl: 4 }}
-                component={Link}
-                href={process.env.NEXT_PUBLIC_ASSET_TRANSACTION_URL || "/"}
-              >
-                <ListItemIcon>
-                  <SyncAltIcon />
-                </ListItemIcon>
-                <ListItemText primary="배당자산 거래기록" />
-              </ListItemButton>
-              {/* 이자·배당관리 > 확정배당금 기록 */}
-              <ListItemButton
-                sx={{ pl: 4 }}
-                component={Link}
-                href={process.env.NEXT_PUBLIC_DIVIDEND_URL || "/"}
-              >
-                <ListItemIcon>
-                  <PriceCheckIcon />
-                </ListItemIcon>
-                <ListItemText primary="확정배당금 기록" />
-              </ListItemButton>
-              {/* 이자·배당관리 > 확정이자 기록 */}
-              <ListItemButton
-                sx={{ pl: 4 }}
-                component={Link}
-                href={process.env.NEXT_PUBLIC_INTEREST_URL || "/"}
-              >
-                <ListItemIcon>
-                  <PriceCheckIcon />
-                </ListItemIcon>
-                <ListItemText primary="확정이자 기록" />
-              </ListItemButton>
-              {/* 이자·배당관리 > 월별 이자·배당금 조회 */}
-              <ListItemButton
-                sx={{ pl: 4 }}
-                component={Link}
-                href={process.env.NEXT_PUBLIC_CASH_FLOW_URL || "/"}
-              >
-                <ListItemIcon>
-                  <ListAltIcon />
-                </ListItemIcon>
-                {/* <ListItemText secondary="월별 이자·배당금 조회" />
-                 */}
-                <ListItemText
-                  primary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        월별 이자·배당금 조회
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItemButton>
-            </List>
-          </Collapse>
 
+          {role < 3 ? (
+            <>
+              {/* 이자·배당관리 */}
+              <ListItemButton
+                onClick={() => {
+                  dispatch(
+                    setDividendOpened({ isDividendOpened: !isDividendOpened })
+                  );
+                }}
+              >
+                <ListItemIcon>
+                  <LocalAtmIcon />
+                </ListItemIcon>
+                <ListItemText primary="이자·배당관리" />
+                {isDividendOpened ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse
+                in={isDividendOpened as boolean | undefined}
+                timeout="auto"
+                unmountOnExit
+              >
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    component={Link}
+                    href={process.env.NEXT_PUBLIC_ASSET_TRANSACTION_URL || "/"}
+                  >
+                    <ListItemIcon>
+                      <SyncAltIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="배당자산 거래기록" />
+                  </ListItemButton>
+                  {/* 이자·배당관리 > 확정배당금 기록 */}
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    component={Link}
+                    href={process.env.NEXT_PUBLIC_DIVIDEND_URL || "/"}
+                  >
+                    <ListItemIcon>
+                      <PriceCheckIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="확정배당금 기록" />
+                  </ListItemButton>
+                  {/* 이자·배당관리 > 확정이자 기록 */}
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    component={Link}
+                    href={process.env.NEXT_PUBLIC_INTEREST_URL || "/"}
+                  >
+                    <ListItemIcon>
+                      <PriceCheckIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="확정이자 기록" />
+                  </ListItemButton>
+                  {/* 이자·배당관리 > 월별 이자·배당금 조회 */}
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    component={Link}
+                    href={process.env.NEXT_PUBLIC_CASH_FLOW_URL || "/"}
+                  >
+                    <ListItemIcon>
+                      <ListAltIcon />
+                    </ListItemIcon>
+                    {/* <ListItemText secondary="월별 이자·배당금 조회" />*/}
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            월별 이자·배당금 조회
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </>) : (<></>)}
         </React.Fragment>
         <Divider sx={{ my: 1 }} />
       </List>

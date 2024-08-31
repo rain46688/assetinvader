@@ -1,4 +1,4 @@
-
+import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { setOpened, setAssetOpened, setEarningOpened, setDividendOpened, setSpendingOpened } from '@/redux/layout/layoutSlice';
 
@@ -7,7 +7,6 @@ import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 
 export const useNavbar = () => {
-
     const drawerWidth: number = 240;
     const dispatch = useAppDispatch();
     const isopened = useAppSelector(state => state.layoutReducer.isopened);
@@ -15,6 +14,15 @@ export const useNavbar = () => {
     const isEarningOpened = useAppSelector(state => state.layoutReducer.isEarningOpened);
     const isDividendOpened = useAppSelector(state => state.layoutReducer.isDividendOpened);
     const isSpendingOpened = useAppSelector(state => state.layoutReducer.isSpendingOpened);
+
+    // 권한 관련
+    const [role, setRole] = useState<number>(3);
+
+    // 데이터 가져오기
+    useEffect(() => {
+        // 세션 스토리지에 저장된 role값 가져오기
+        setRole(Number(sessionStorage.getItem('role')));
+    }, []);
 
     const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
@@ -44,6 +52,7 @@ export const useNavbar = () => {
 
     // 함수 반환
     return { 
+        role,
         Drawer, 
         isopened, setOpened,
         dispatch, 
