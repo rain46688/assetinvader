@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { setOpened } from '@/redux/layout/layoutSlice';
 import { refresh_jwtoken } from '@/utils/util';
@@ -12,6 +12,7 @@ export const useHeader = () => {
     const userouter = useRouter();
     const dispatch = useAppDispatch();
     const isopened = useAppSelector(state => state.layoutReducer.isopened);
+    const pathname = usePathname();
 
     useEffect(() => {
         // 토큰 재발급 함수 호출
@@ -22,6 +23,20 @@ export const useHeader = () => {
                 handleLogout();
             }
         });
+
+        // 인터셉터 설정
+        const user_role = Number(sessionStorage.getItem('role'));
+        const split_pathname = pathname.split('/')[1];
+        if(split_pathname == 'asset_transaction' 
+        || split_pathname == 'dividend' 
+        || split_pathname == 'interest' 
+        || split_pathname == 'cash_flow' 
+        || split_pathname == 'description') {
+            if(user_role > 2) {
+                // 메인으로 라우팅
+                userouter.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
+            }
+        }
     }, []);
 
     // 로그 아웃 함수
