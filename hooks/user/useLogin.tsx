@@ -92,5 +92,5 @@ export const useLogin = () => {
     setSnack(false);
   };
 
-  return { handleLogin, user_id, password, dispatch, idVaild, passwordVaild, snack, snackMessage, handleSnackClose };
+  return { handleLogin, user_id, password, role, locked, dispatch, idVaild, passwordVaild, snack, snackMessage, handleSnackClose };
 }

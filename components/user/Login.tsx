@@ -15,7 +15,7 @@ import Alert from '@mui/material/Alert';
 export default function Login() {
 
     // custom hook 사용
-    const { handleLogin, dispatch, user_id, password, idVaild, passwordVaild, snack, snackMessage, handleSnackClose } = useLogin();
+    const { handleLogin, dispatch, user_id, password, role, locked, idVaild, passwordVaild, snack, snackMessage, handleSnackClose } = useLogin();
 
     return (
         <Container component="main" maxWidth="xs">
@@ -48,7 +48,7 @@ export default function Login() {
                     value={user_id}
                     autoComplete="id"
                     autoFocus
-                    onChange={(event) => dispatch(setUser({ user_id: event.target.value, password }))}
+                    onChange={(event) => dispatch(setUser({ user_id: event.target.value, password, role, locked }))}
                     error={idVaild}
                     helperText={idVaild ? "아이디를 제대로 입력해주세요." : ""}
                 />
@@ -62,7 +62,7 @@ export default function Login() {
                     type="password"
                     id="password"
                     autoComplete="current-password"
-                    onChange={(event) => dispatch(setUser({ user_id, password: event.target.value }))}
+                    onChange={(event) => dispatch(setUser({ user_id, password: event.target.value, role, locked }))}
                     error={passwordVaild}
                     helperText={passwordVaild ? "비밀번호를 제대로 입력해주세요." : ""}
                 />
