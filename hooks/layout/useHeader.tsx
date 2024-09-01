@@ -27,12 +27,16 @@ export const useHeader = () => {
         // 인터셉터 설정
         const user_role = Number(sessionStorage.getItem('role'));
         const split_pathname = pathname.split('/')[1];
-        if(split_pathname == 'asset_transaction' 
-        || split_pathname == 'dividend' 
-        || split_pathname == 'interest' 
-        || split_pathname == 'cash_flow' 
-        || split_pathname == 'description') {
+        if(split_pathname == 'description') {
             if(user_role > 2) {
+                // 메인으로 라우팅
+                userouter.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
+            }
+        } else if (split_pathname == 'asset_transaction' 
+                    || split_pathname == 'dividend' 
+                    || split_pathname == 'interest' 
+                    || split_pathname == 'cash_flow') {
+            if(user_role > 3) {
                 // 메인으로 라우팅
                 userouter.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
             }

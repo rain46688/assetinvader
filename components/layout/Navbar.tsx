@@ -205,7 +205,7 @@ export default function Navbar() {
           </Collapse>
 
 
-          {role < 3 ? (
+          {role < 4 ? (
             <>
               {/* 이자·배당관리 */}
               <ListItemButton
