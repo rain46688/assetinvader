@@ -1,4 +1,5 @@
-import { useLogin } from '@/hooks/user/useLogin';
+"use client"
+import { useSignup } from '@/hooks/user/useSignup';
 // redux 관련 임포트
 import { setUser } from '@/redux/user/userSlice';
 
@@ -11,11 +12,11 @@ import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-// 로그인 컴포넌트
-export default function Login() {
+// 회원가입 컴포넌트
+export default function Signup() {
 
     // custom hook 사용
-    const { handleLogin, dispatch, user_id, password, role, locked, idVaild, passwordVaild, snack, snackMessage, handleSnackClose, handleSignUp } = useLogin();
+    const { handleSignup, dispatch, user_id, password, password_re, setPassword_re, invitecode, setInvitecode, role, locked, idVaild, passwordVaild, invitecodeVaild, snack, snackMessage, handleSnackClose } = useSignup();
 
     return (
         <Container component="main" maxWidth="xs">
@@ -35,9 +36,9 @@ export default function Login() {
             </Snackbar>
             {/*  */}
             <Typography component="h1" variant="h5" align="center">
-                Log In
+                Sign Up
             </Typography>
-            <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+            <Box component="form" onSubmit={handleSignup} noValidate sx={{ mt: 1 }}>
                 <TextField
                     margin="normal"
                     required
@@ -66,19 +67,39 @@ export default function Login() {
                     error={passwordVaild}
                     helperText={passwordVaild ? "비밀번호를 입력해주세요." : ""}
                 />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password_re"
+                    value={password}
+                    label="Password(재)"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={(event) => setPassword_re(event.target.value)}
+                    error={passwordVaild}
+                    helperText={passwordVaild ? "비밀번호를 입력해주세요." : ""}
+                />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="invitecode"
+                    value={invitecode}
+                    label="초대코드(10자)"
+                    type="invitecode"
+                    id="invitecode"
+                    autoComplete="id"
+                    onChange={(event) => setInvitecode(event.target.value)}
+                    error={invitecodeVaild}
+                    helperText={invitecodeVaild ? "초대코드를 제대로 입력해주세요." : ""}
+                />
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}>
-                    Login
-                </Button>
-                <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={() => {
-                        handleSignUp();
-                    }}>
                     Sign Up
                 </Button>
             </Box>

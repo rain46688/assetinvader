@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
 export const useHeader = () => {
-    const userouter = useRouter();
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const isopened = useAppSelector(state => state.layoutReducer.isopened);
     const pathname = usePathname();
@@ -30,7 +30,7 @@ export const useHeader = () => {
         if(split_pathname == 'description') {
             if(user_role > 2) {
                 // 메인으로 라우팅
-                userouter.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
+                router.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
             }
         } else if (split_pathname == 'asset_transaction' 
                     || split_pathname == 'dividend' 
@@ -38,7 +38,7 @@ export const useHeader = () => {
                     || split_pathname == 'cash_flow') {
             if(user_role > 3) {
                 // 메인으로 라우팅
-                userouter.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
+                router.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
             }
         }
     }, []);
@@ -53,7 +53,7 @@ export const useHeader = () => {
         sessionStorage.removeItem('user_id');
         sessionStorage.removeItem('targetRatio');
         // 메인으로 라우팅
-        userouter.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
+        router.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
     }
 
     // 헤더 레이아웃 관련 함수들

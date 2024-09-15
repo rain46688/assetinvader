@@ -16,14 +16,18 @@ interface LayoutProps {
 }
 
 export default function PageLayout(props: LayoutProps) {
+    const pageState = sessionStorage.getItem('pageState');
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            {/* 헤더 컴포넌트 */}
-            <Header />
-            {/* 네비게이션 컴포넌트 */}
-            <Navbar />
+            {pageState == null ? // 회원가입 페이지가 아닌경우
+                (<>
+                    {/* 헤더 컴포넌트 */}
+                    <Header />
+                    {/* 네비게이션 컴포넌트 */}
+                    <Navbar />
+                </>) : (<></>)}
             <Box component="main"
                 sx={{
                     backgroundColor: (theme) =>
