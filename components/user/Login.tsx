@@ -35,7 +35,7 @@ export default function Login() {
             </Snackbar>
             {/*  */}
             <Typography component="h1" variant="h5" align="center">
-                Log In
+                로그인
             </Typography>
             <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -71,7 +71,7 @@ export default function Login() {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}>
-                    Login
+                    로그인
                 </Button>
                 <Button
                     fullWidth
@@ -79,7 +79,7 @@ export default function Login() {
                     onClick={() => {
                         handleSignUp();
                     }}>
-                    Sign Up
+                    회원가입
                 </Button>
             </Box>
         </Container>

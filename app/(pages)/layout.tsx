@@ -16,8 +16,14 @@ interface LayoutProps {
 }
 
 export default function PageLayout(props: LayoutProps) {
-    const pageState = sessionStorage.getItem('pageState');
 
+    let pageState = null;
+    if (typeof window !== 'undefined') {
+        // 브라우저 환경에서만 실행됨
+        if (sessionStorage.getItem('pageState') != undefined) {
+            pageState = sessionStorage.getItem('pageState');
+        }
+    }
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />

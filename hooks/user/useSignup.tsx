@@ -20,12 +20,16 @@ export const useSignup = () => {
   const [idVaild, setIdVaild] = useState(false);
   // 비밀번호 유효성 검사
   const [passwordVaild, setPasswordVaild] = useState(false);
+  // 비밀번호 유효성 검사2
+  const [passwordReVaild, setPasswordReVaild] = useState(false);
   // 초대코드 유효성 검사
   const [invitecodeVaild, setInvitecodeVaild] = useState(false);
   // 스낵바 관련
   const [snack, setSnack] = useState(false);
   // 스낵바 메시지 관련
   const [snackMessage, setSnackMessage] = useState('');
+  // 가입완료 상태
+  const [signupState, setSignupState] = useState(false);
 
   useEffect(() => {
     // 토큰이 존재하면 기본 페이지로 이동 (일단 유형별 자산관리 /asset_type)
@@ -54,14 +58,35 @@ export const useSignup = () => {
     } else {
       setPasswordVaild(false);
     }
+    if (password != password_re) {
+      setPasswordReVaild(true);
+      return;
+    } else {
+      setPasswordReVaild(false);
+    }
+    if (invitecode == '' || invitecode.length != 10) {
+      setInvitecodeVaild(true);
+      return;
+    } else {
+      setInvitecodeVaild(false);
+    }
 
     const data = JSON.stringify({
       "user_id": user_id,
-      "password": password
+      "password": password,
+      "role": 2,
+      "code": invitecode
     });
 
     const result = await sendPost(data, 'member/add_member');
-    
+    if (result.status == 'success') {
+      setSignupState(true);
+    } else {
+      // 실패시 스낵바 메시지 설정
+      setSnackMessage("회원가입에 실패하였습니다. 다시 시도해주세요.\n" + result.msg);
+      // 스낵바 오픈
+      setSnack(true);
+    }
   };
 
   // 스낵바 닫기 함수
@@ -72,21 +97,32 @@ export const useSignup = () => {
     setSnack(false);
   };
 
-  return { 
-    handleSignup, 
-    user_id, 
+  const handleBack= () => {
+    // 성공 후 빈값으로 초기화
+    dispatch(setUser({ user_id: '', password: '', role: 2, locked: false }))
+    router.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
+  };
+
+
+  return {
+    handleSignup,
+    user_id,
     password,
     password_re,
     setPassword_re,
-    invitecode, 
-    setInvitecode, 
-    role, 
-    locked, 
-    dispatch, 
-    idVaild, 
-    passwordVaild, 
-    invitecodeVaild, 
-    snack, 
-    snackMessage, 
-    handleSnackClose };
+    invitecode,
+    setInvitecode,
+    role,
+    locked,
+    dispatch,
+    idVaild,
+    passwordVaild,
+    passwordReVaild,
+    invitecodeVaild,
+    snack,
+    snackMessage,
+    handleSnackClose,
+    handleBack,
+    signupState
+  };
 }
