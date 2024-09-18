@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 export default function Header() {
 
     // Custom Hook 사용
-    const { handleLogout, AppBar, setOpened, dispatch, isopened } = useHeader();
+    const { handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage } = useHeader();
 
     return (
         <AppBar position="absolute" open={isopened as boolean | undefined}>
@@ -40,11 +40,16 @@ export default function Header() {
                     AssetInvader
                 </Typography>
                 <Button
-                    type="submit"
+                    variant="contained"
+                    onClick={handleModifyPage}
+                    sx={{ mt: 1, mb: 1, mr: 3 }}>
+                    회원정보수정
+                </Button>
+                <Button
                     variant="contained"
                     onClick={handleLogout}
                     sx={{ mt: 1, mb: 1 }}>
-                    logout
+                    로그아웃
                 </Button>
             </Toolbar>
         </AppBar>
