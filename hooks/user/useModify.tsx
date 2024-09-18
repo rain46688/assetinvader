@@ -51,8 +51,7 @@ export const useModify = () => {
     }
 
     const data = JSON.stringify({
-      "oldPassword": oldPassword,
-      "newPassword": newPassword
+      "password": newPassword
     });
 
     const result = await sendPost(data, 'member/update_member/'+id);
