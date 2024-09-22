@@ -29,17 +29,28 @@ export default function Modify() {
         snackMessage,
         handleSnackClose,
         handleBack,
-        modifyState } = useModify();
+        modifyState,
+        handleLogout } = useModify();
 
     return (
         <Container component="main" maxWidth="xs">
             {modifyState ?
                 (
-                    <Box sx={{ width: '100%' }}>
-                        <Typography component="h1" variant="subtitle1" align="center">
-                            회원정보 수정이 완료되었습니다.
-                        </Typography>
-                    </Box>
+                    <>
+                        <Box sx={{ width: '100%' }}>
+                            <Typography component="h1" variant="subtitle1" align="center">
+                                회원정보 수정이 완료되었습니다.
+                            </Typography>
+                        </Box>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            onClick={() => {
+                                handleLogout();
+                            }}>
+                            다시 로그인하기
+                        </Button>
+                    </>
                 )
                 : (
                     <>
@@ -70,7 +81,7 @@ export default function Modify() {
                                 value={oldPassword}
                                 label="Password(기존)"
                                 type="password"
-                                id="password"
+                                id="oldPassword"
                                 autoComplete="current-password"
                                 onChange={(event) => setOldPassword(event.target.value)}
                                 error={oldPasswordVaild}
@@ -84,7 +95,7 @@ export default function Modify() {
                                 value={newPassword}
                                 label="Password(신규)"
                                 type="password"
-                                id="password"
+                                id="newPassword"
                                 autoComplete="current-password"
                                 onChange={(event) => setNewPassword(event.target.value)}
                                 error={newPasswordVaild}
@@ -98,7 +109,7 @@ export default function Modify() {
                                 value={newPassword_re}
                                 label="Password(재입력)"
                                 type="password"
-                                id="password"
+                                id="newPassword_re"
                                 autoComplete="current-password"
                                 onChange={(event) => setNewPassword_re(event.target.value)}
                                 error={newPasswordReVaild}
@@ -112,16 +123,16 @@ export default function Modify() {
                                 수정하기
                             </Button>
                         </Box>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            onClick={() => {
+                                handleBack();
+                            }}>
+                            나가기
+                        </Button>
                     </>
                 )}
-            <Button
-                fullWidth
-                variant="contained"
-                onClick={() => {
-                    handleBack();
-                }}>
-                나가기
-            </Button>
         </Container>
     );
 }
