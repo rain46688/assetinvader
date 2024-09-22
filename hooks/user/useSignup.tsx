@@ -98,8 +98,9 @@ export const useSignup = () => {
   };
 
   const handleBack= () => {
-    // 성공 후 빈값으로 초기화
+    // 빈값으로 초기화
     dispatch(setUser({ user_id: '', password: '', role: 2, locked: false }))
+    sessionStorage.removeItem('pageState');
     router.push('' + process.env.NEXT_PUBLIC_LOGIN_URL);
   };
 

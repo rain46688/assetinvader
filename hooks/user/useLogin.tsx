@@ -93,7 +93,7 @@ export const useLogin = () => {
   };
 
   const handleSignUp = () => {
-    // 성공 후 빈값으로 초기화
+    // 빈값으로 초기화
     dispatch(setUser({ user_id: '', password: '', role: 2, locked: false }))
     sessionStorage.setItem('pageState', 'signup');
     router.push('' + process.env.NEXT_PUBLIC_SIGNUP_URL);
