@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { setOpened } from '@/redux/layout/layoutSlice';
@@ -14,7 +14,11 @@ export const useHeader = () => {
     const isopened = useAppSelector(state => state.layoutReducer.isopened);
     const pathname = usePathname();
 
+    // 권한 관련
+    const [role, setRole] = useState<number>(3);
+
     useEffect(() => {
+
         // 토큰 재발급 함수 호출
         refresh_jwtoken().then((res) => {
             if (res !== undefined && res.status === 'fail') {
@@ -41,6 +45,8 @@ export const useHeader = () => {
                 router.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
             }
         }
+
+        setRole(user_role);
     }, []);
 
     // 로그 아웃 함수
@@ -86,6 +92,10 @@ export const useHeader = () => {
         router.push('' + process.env.NEXT_PUBLIC_MODIFY_URL);
     };
 
+    const handleAdminPage = () => {
+        router.push('' + process.env.NEXT_PUBLIC_ADMIN_URL);
+    };
+
     // 함수 반환
-    return { handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage };
+    return { role, handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage, handleAdminPage };
 }

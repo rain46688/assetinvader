@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 export default function Header() {
 
     // Custom Hook 사용
-    const { handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage } = useHeader();
+    const { role, handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage, handleAdminPage } = useHeader();
 
     return (
         <AppBar position="absolute" open={isopened as boolean | undefined}>
@@ -39,6 +39,16 @@ export default function Header() {
                     sx={{ flexGrow: 1 }}>
                     AssetInvader
                 </Typography>
+                {role < 2 ? (
+                    <Button
+                        variant="contained"
+                        onClick={handleAdminPage}
+                        sx={{ mt: 1, mb: 1, mr: 3 }}>
+                        관리자페이지
+                    </Button>
+                ) : (
+                    <></>)
+                }
                 <Button
                     variant="contained"
                     onClick={handleModifyPage}
