@@ -55,6 +55,9 @@ export default function UserAdminTable() {
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
+        handleUserAdmission,
+        handleUserBanishment,
+        handleUserEdit,
     } = useUserAdmin();
 
     return (
@@ -150,17 +153,17 @@ export default function UserAdminTable() {
                                     <TableCell align="center" sx={{ width: '12.5%', minWidth: '100px' }}>
                                         {row.locked == 1 ?
                                             (<Tooltip title="승인">
-                                                <IconButton aria-label="Admission" onClick={() => { console.log('test1 : ' + row.id) }}>
+                                                <IconButton aria-label="Admission" onClick={(event: any) => handleUserAdmission(event, row.id)}>
                                                     <HowToRegIcon />
                                                 </IconButton>
                                             </Tooltip>) : (<></>)}
-                                        <Tooltip title="삭제">
-                                            <IconButton aria-label="Banishment" onClick={() => { console.log('test2 : ' + row.id) }}>
+                                        <Tooltip title="잠금">
+                                            <IconButton aria-label="Banishment" onClick={(event: any) => handleUserBanishment(event, row.id)}>
                                                 <PersonRemoveIcon />
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title="수정">
-                                            <IconButton aria-label="Edit" onClick={() => { console.log('test3 : ' + row.id) }}>
+                                            <IconButton aria-label="Edit" onClick={(event: any) => handleUserEdit(event, row.id)}>
                                                 <PersonSearchIcon />
                                             </IconButton>
                                         </Tooltip>

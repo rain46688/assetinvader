@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
-import { sendGet } from "@/utils/fetch";
-import { formatDate, formatDateV2, formatDateV3 } from "@/utils/format";
+import { sendGet, sendPut } from "@/utils/fetch";
+import { useRouter } from "next/navigation";
+import { formatDate} from "@/utils/format";
 import { Order, getComparator, stableSort } from '@/utils/sort';
-import { validationCheck } from '@/utils/util';
 import { UserAdminData, createData } from '@/redux/user_admin/UserAdmin';
 
 // redux 관련 임포트
@@ -10,6 +10,7 @@ import { setUserAdminList } from '@/redux/user_admin/userAdminSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
 export const useUserAdmin = () => {
+    const router = useRouter();
     // 정렬 ASC / DESC 관련
     const [order, setOrder] = useState<Order>('asc');
     // 정렬 기준 관련
@@ -125,6 +126,56 @@ export const useUserAdmin = () => {
         setSnack(false);
     };
 
+    const handleUserAdmission = async (event: ChangeEvent<HTMLInputElement>, id: number) => {
+        console.log('Admission : ' + id)
+        let data = JSON.stringify({
+            "locked": false
+        });
+
+        const result = await sendPut(data, 'member/update_member/' + id);
+        if (result.status == 'success') {
+            // 성공시 스낵바 메시지 설정
+            setSnackMessage("회원 승인이 완료되었습니다.\n");
+            // 스낵바 오픈
+            setSnack(true);
+            getList(sessionStorage.getItem('id') + '');
+        } else {
+            // 실패시 스낵바 메시지 설정
+            setSnackMessage("회원정보 수정에 실패하였습니다. 다시 시도해주세요.\n" + result.msg);
+            // 스낵바 오픈
+            setSnack(true);
+        }
+    };
+
+    const handleUserBanishment = async (event: ChangeEvent<HTMLInputElement>, id: number) => {
+        console.log('Banishment : ' + id)
+        console.log('Admission : ' + id)
+        let data = JSON.stringify({
+            "locked": true
+        });
+
+        const result = await sendPut(data, 'member/update_member/' + id);
+        if (result.status == 'success') {
+            // 성공시 스낵바 메시지 설정
+            setSnackMessage("회원 잠금이 완료되었습니다.\n");
+            // 스낵바 오픈
+            setSnack(true);
+            getList(sessionStorage.getItem('id') + '');
+        } else {
+            // 실패시 스낵바 메시지 설정
+            setSnackMessage("회원정보 수정에 실패하였습니다. 다시 시도해주세요.\n" + result.msg);
+            // 스낵바 오픈
+            setSnack(true);
+        }
+    };
+
+    const handleUserEdit = (event: ChangeEvent<HTMLInputElement>, id: number) => {
+        console.log('Edit : ' + id)
+        sessionStorage.setItem('ModifyAdminSelectedId', id.toString());
+        // 관리자 페이지로 라우팅
+        router.push('' + process.env.NEXT_PUBLIC_MODIFY_ADMIN_URL);
+    };
+
     // 함수 반환
     return {
         selected, setSelected,
@@ -151,5 +202,8 @@ export const useUserAdmin = () => {
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
+        handleUserAdmission,
+        handleUserBanishment,
+        handleUserEdit,
     };
 }
