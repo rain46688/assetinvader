@@ -11,9 +11,9 @@ import { useAppDispatch, useAppSelector } from '@/app/store';
 
 export const useUserAdmin = () => {
     // 정렬 ASC / DESC 관련
-    const [order, setOrder] = useState<Order>('desc');
+    const [order, setOrder] = useState<Order>('asc');
     // 정렬 기준 관련
-    const [orderBy, setOrderBy] = useState<keyof UserAdminData>('id');
+    const [orderBy, setOrderBy] = useState<keyof UserAdminData>('user_id');
     // 데이터 선택 관련
     const [selected, setSelected] = useState<readonly number[]>([]);
     // 페이지 관련
@@ -28,8 +28,6 @@ export const useUserAdmin = () => {
     const [snackBarStatus, setSnackBarStatus] = useState("success");
     // 데이터 추가 상태 관련
     const [addStatus, setAddStatus] = useState(false);
-    // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
-    const [isNotSortStatus, setIsNotSortStatus] = useState(true)
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -51,8 +49,9 @@ export const useUserAdmin = () => {
 
             // 데이터 저장
             const list = res.data;
-            // 데이터 변환
+            console.log(list)
 
+            // 데이터 변환
             const newList = list.map((item: UserAdminData, index: number) => {
                 // 타입 변환 필요
                 return createData(
@@ -88,60 +87,16 @@ export const useUserAdmin = () => {
         setOrderBy(property);
     };
 
-    // 데이터 선택 관련 함수
-    const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
-    };
-
-    // 데이터 선택 관련 함수
-    const handleClick = (event: MouseEvent<unknown>, id: number) => {
-        const selectcheck = (event.target as HTMLInputElement).value;
-
-        // 체크박스가 아닌 곳을 클릭했을 때
-        if (selectcheck != 'on') {
-            return;
-        }
-
-        const selectedIndex = selected.indexOf(id);
-        let newSelected: readonly number[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-        setSelected(newSelected);
-    };
-
     // 페이지 관련 함수
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
-        // 페이지 이동시에 정렬 허용
-        setIsNotSortStatus(false);
     };
 
     // 페이지 관련 함수
     const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-        // 페이지 데이터 갯수 변경시에 정렬 허용
-        setIsNotSortStatus(false);
     };
-
-    // 선택된 데이터 확인 함수
-    const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
     // 빈 행 계산
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -152,15 +107,7 @@ export const useUserAdmin = () => {
         console.log(" ==== useMemo ==== ");
         let sortedRows: any[] = [];
 
-        // 수정 상태일 때 정렬하지 않음
-        if (isNotSortStatus) {
-            console.log(" === 정렬 안함 상태 === ");
-            sortedRows = rows;
-        } else {
-            console.log(" === 정렬 가능 상태 === ");
-            setIsNotSortStatus(true);
-            sortedRows = stableSort(rows, getComparator(order, orderBy));
-        }
+        sortedRows = stableSort(rows, getComparator(order, orderBy));
 
         const slicedRows = sortedRows.slice(
             page * rowsPerPage,
@@ -193,7 +140,6 @@ export const useUserAdmin = () => {
         addStatus,
         snackBarStatus,
         getList,
-        setIsNotSortStatus,
         setSnackBarStatus,
         setSnack,
         setSnackMessage,
@@ -201,10 +147,7 @@ export const useUserAdmin = () => {
         setOrder,
         setOrderBy,
         setPage,
-        isSelected,
-        handleSelectAllClick,
         handleRequestSort,
-        handleClick,
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,

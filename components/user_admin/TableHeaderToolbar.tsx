@@ -25,66 +25,23 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 interface EnhancedTableToolbarProps {
-  numSelected: number;
-  selected: readonly number[];
-  setSelected: React.Dispatch<React.SetStateAction<readonly number[]>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  rowsPerPage: number;
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
   setOrderBy: React.Dispatch<React.SetStateAction<keyof UserAdminData>>;
-  addStatus: boolean;
-  setAddStatus: React.Dispatch<React.SetStateAction<boolean>>;
-  setSnack: React.Dispatch<React.SetStateAction<boolean>>;
-  setSnackMessage: React.Dispatch<React.SetStateAction<string>>;
-  setSnackBarStatus: React.Dispatch<React.SetStateAction<string>>;
-  setIsNotSortStatus: React.Dispatch<React.SetStateAction<boolean>>;
   getList: (id: string) => Promise<void>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
-    addStatus, setAddStatus, setSnack, setSnackMessage, setSnackBarStatus, setIsNotSortStatus, getList } = props;
+  const { setPage, setOrder, setOrderBy, getList } = props;
 
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.userAdminReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
-  // 항목 추가
-  const handleAddList = async () => {
-    console.log('=== handleAddList === ');
-
-    // 추가 버튼 클릭 시 addStatus 변경
-    if (addStatus == false) {
-      setAddStatus(true);
-    }
-
-    const newList = [
-      ...list,
-      createData(
-        0,
-        "",
-        0,
-        0,
-        "",
-        "",
-        "",
-        "",
-      )
-    ];
-
-    // 추가 시에 마지막 페이지로 이동
-    const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-    setPage(movePage);
-    setOrder('desc');
-    setOrderBy('id');
-    dispatch(setUserAdminList(newList));
-  };
-
-
   // 목록 새로고침
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
-    setOrder('desc');
-    setOrderBy('id');
+    setOrder('asc');
+    setOrderBy('user_id');
     setPage(0);
     // 목록 새로고침
     getList(sessionStorage.getItem('id') + '');
