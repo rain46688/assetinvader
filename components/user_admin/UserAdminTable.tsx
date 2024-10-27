@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from 'react';
-import { useSpending } from '@/hooks/spending/useSpending';
-import { ChangeEvent } from 'react';
-import { EnhancedTableHead } from "@/components/spending/TableHeader";
-import { EnhancedTableToolbar } from "@/components/spending/TableHeaderToolbar";
+import { useUserAdmin } from '@/hooks/user_admin/useUserAdmin';
+import { EnhancedTableHead } from '@/components/user_admin/TableHeader';
+import { EnhancedTableToolbar } from '@/components/user_admin/TableHeaderToolbar';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -15,22 +14,15 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { NumericFormatCustom, parseNumber } from '@/utils/format';
 
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { AlertColor, Box } from '@mui/material';
 
-// 날짜 관련 임포트
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
 
-export default function SpendingTable() {
+export default function UserAdminTable() {
 
     // custom hook 사용
     const {
@@ -42,11 +34,9 @@ export default function SpendingTable() {
         emptyRows,
         page,
         rowsPerPage,
-        validationList,
         snack,
         snackMessage,
         addStatus,
-        validation,
         snackBarStatus,
         getList,
         setIsNotSortStatus,
@@ -54,7 +44,6 @@ export default function SpendingTable() {
         setSnack,
         setSnackMessage,
         setAddStatus,
-        setValidationList,
         setOrder,
         setOrderBy,
         setPage,
@@ -62,11 +51,10 @@ export default function SpendingTable() {
         handleSelectAllClick,
         handleRequestSort,
         handleClick,
-        handleDataChange,
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
-    } = useSpending();
+    } = useUserAdmin();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -93,11 +81,8 @@ export default function SpendingTable() {
                 rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
                 setOrderBy={setOrderBy}
-                validationList={validationList}
-                setValidationList={setValidationList}
                 addStatus={addStatus}
                 setAddStatus={setAddStatus}
-                validation={validation}
                 setSnack={setSnack}
                 setSnackMessage={setSnackMessage}
                 setSnackBarStatus={setSnackBarStatus}
@@ -150,83 +135,47 @@ export default function SpendingTable() {
                                         )}
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell
-                                        component="th"
-                                        id={labelId}
-                                        scope="center"
-                                        padding="none"
-                                        align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DemoContainer components={['DatePicker', 'DatePicker']}>
-                                                    <DateField
-                                                        sx={{ textAlignLast : 'center'}}
-                                                        variant="standard"
-                                                        format="YYYY-MM"
-                                                        helperText={validationList[index]?.spnd_date ? "날짜 선택 필요" : ''}
-                                                        onChange={(event: any) => handleDataChange(event, row.id, index, 'spnd_date')}
-                                                        value={row.spnd_date}
-                                                    />
-                                                </DemoContainer>
-                                            </LocalizationProvider>
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.spnd_date || ''}
-                                            </Typography>
-                                        )}
+                                    <TableCell align="center">
+                                        <Typography variant="body1" align="center">
+                                            {row.user_id || ''}
+                                        </Typography>
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                variant="standard"
-                                                helperText={validationList[index]?.spnd_type ? "한영특 숫자 입력" : ''}
-                                                error={validationList[index]?.spnd_type}
-                                                value={row.spnd_type || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'spnd_type')}
-                                            />
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.spnd_type || ''}
-                                            </Typography>
-                                        )}
+                                        <Typography variant="body1" align="center">
+                                            {row.role || ''}
+                                        </Typography>
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                variant="standard"
-                                                helperText={validationList[index]?.description ? "한영특 숫자 입력" : ''}
-                                                error={validationList[index]?.description}
-                                                value={row.description || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'description')}
-                                            />
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {row.description || ''}
-                                            </Typography>
-                                        )}
+                                        <Typography variant="body1" align="center">
+                                            {row.locked || ''}
+                                        </Typography>
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
-                                            <TextField
-                                                variant="standard"
-                                                helperText={validationList[index]?.amount ? "숫자 입력" : ''}
-                                                error={validationList[index]?.amount}
-                                                value={row.amount || ''}
-                                                onChange={(event: ChangeEvent<any>) => handleDataChange(event, row.id, index, 'amount')}
-                                                InputProps={{
-                                                    inputComponent: NumericFormatCustom as any,
-                                                }}
-                                            />
-                                        ) : (
-                                            <Typography variant="body1" align="center">
-                                                {parseNumber(row.amount) || ''}
-                                            </Typography>
-                                        )}
+                                        <Typography variant="body1" align="center">
+                                            {row.reg_date || ''}
+                                        </Typography>
                                     </TableCell>
                                     {/*  */}
+                                    <TableCell align="center">
+                                        <Typography variant="body1" align="center">
+                                            {row.mod_date || ''}
+                                        </Typography>
+                                    </TableCell>
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <Typography variant="body1" align="center">
+                                            {row.visit_date || ''}
+                                        </Typography>
+                                    </TableCell>
+                                    {/*  */}
+                                    <TableCell align="center">
+                                        <Typography variant="body1" align="center">
+                                            {row.accept_date || ''}
+                                        </Typography>
+                                    </TableCell>
                                 </TableRow>
                             );
                         })}

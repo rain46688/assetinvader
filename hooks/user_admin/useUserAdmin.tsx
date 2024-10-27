@@ -9,7 +9,7 @@ import { UserAdminData, createData } from '@/redux/user_admin/UserAdmin';
 import { setUserAdminList } from '@/redux/user_admin/userAdminSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
-export const useSpending = () => {
+export const useUserAdmin = () => {
     // 정렬 ASC / DESC 관련
     const [order, setOrder] = useState<Order>('desc');
     // 정렬 기준 관련
@@ -60,10 +60,10 @@ export const useSpending = () => {
                     item.user_id,
                     item.role,
                     item.locked,
-                    formatDateV3(item.reg_date),
-                    formatDateV3(item.mod_date),
-                    formatDateV3(item.visit_date),
-                    formatDateV3(item.accept_date),
+                    formatDate(item.reg_date),
+                    formatDate(item.mod_date),
+                    formatDate(item.visit_date),
+                    formatDate(item.accept_date),
                 )
             }
             );
