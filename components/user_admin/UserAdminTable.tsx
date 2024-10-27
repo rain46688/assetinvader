@@ -157,11 +157,12 @@ export default function UserAdminTable() {
                                                     <HowToRegIcon />
                                                 </IconButton>
                                             </Tooltip>) : (<></>)}
-                                        <Tooltip title="잠금">
-                                            <IconButton aria-label="Banishment" onClick={(event: any) => handleUserBanishment(event, row.id)}>
-                                                <PersonRemoveIcon />
-                                            </IconButton>
-                                        </Tooltip>
+                                        {row.locked == 0 ?
+                                            (<Tooltip title="잠금">
+                                                <IconButton aria-label="Banishment" onClick={(event: any) => handleUserBanishment(event, row.id)}>
+                                                    <PersonRemoveIcon />
+                                                </IconButton>
+                                            </Tooltip>) : (<></>)}
                                         <Tooltip title="수정">
                                             <IconButton aria-label="Edit" onClick={(event: any) => handleUserEdit(event, row.id)}>
                                                 <PersonSearchIcon />
