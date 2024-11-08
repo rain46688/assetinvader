@@ -14,6 +14,7 @@ import cashFlowReducer from '@/redux/cash_flow/cashFlowSlice';
 import interestReducer from '@/redux/interest/interestSlice';
 import assetEarningReducer from '@/redux/asset_earning/assetEarningSlice';
 import userAdminReducer from '@/redux/user_admin/userAdminSlice'; 
+import inviteCodeReducer from '@/redux/invitecode/inviteCodeSlice';
 
 export const store = configureStore({
   reducer: {
@@ -29,6 +30,7 @@ export const store = configureStore({
     interestReducer,
     assetEarningReducer,
     userAdminReducer,
+    inviteCodeReducer,
   },
 });
 
