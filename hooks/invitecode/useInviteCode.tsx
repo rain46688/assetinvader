@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo, ChangeEvent, MouseEvent } from 'react';
-import { sendGet, sendPut } from "@/utils/fetch";
+import { useState, useEffect, useMemo, ChangeEvent, MouseEvent, MouseEventHandler } from 'react';
+import { sendGet, sendPost } from "@/utils/fetch";
 import { useRouter } from "next/navigation";
 import { formatDate} from "@/utils/format";
 import { Order, getComparator, stableSort } from '@/utils/sort';
@@ -126,6 +126,25 @@ export const useInviteCode = () => {
         setSnack(false);
     };
 
+    // 신규 초대코드 발급
+    const createInviteCode = async (id: string) => {
+        const data = JSON.stringify({
+          });
+        const res = await sendPost(data, '/invitecode/add_invitecode/' + id);
+        if (res.status === 'success') {
+
+            // 데이터 저장
+            const list = res.data;
+            console.log(list)
+
+        } else {
+            console.log(' === getList error === ');
+            setSnack(true);
+            setSnackBarStatus("warning");
+            setSnackMessage('신규코드 발급에 실패했습니다.');
+        }
+    };
+
     // 함수 반환
     return {
         selected, setSelected,
@@ -152,5 +171,6 @@ export const useInviteCode = () => {
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
+        createInviteCode,
     };
 }

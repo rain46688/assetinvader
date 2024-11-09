@@ -1,10 +1,10 @@
-import { ChangeEvent, MouseEvent } from 'react';
+import { MouseEvent } from 'react';
 import { visuallyHidden } from '@mui/utils';
 import { Order } from '@/utils/sort';
 import { InviteCodeData } from '@/redux/invitecode/InviteCode';
 
 // material-ui 관련 임포트
-import { Box, Checkbox, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
+import { Box, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 
 interface HeadCell {
     id: keyof InviteCodeData;

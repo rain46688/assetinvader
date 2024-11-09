@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { sendPost, sendDelete, sendFile } from '@/utils/fetch';
-import { createData } from '@/redux/invitecode/InviteCode';
 import { InviteCodeData } from '@/redux/invitecode/InviteCode';
 
 // redux 관련 임포트
-import { setInviteCodeList } from '@/redux/invitecode/inviteCodeSlice';
-import { useAppDispatch, useAppSelector } from '@/app/store';
+import { useAppSelector } from '@/app/store';
 
 
 // material-ui 관련 임포트
-import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -22,12 +18,11 @@ interface EnhancedTableToolbarProps {
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
   setOrderBy: React.Dispatch<React.SetStateAction<keyof InviteCodeData>>;
   getList: (id: string) => Promise<void>;
+  createInviteCode: (id: string) => Promise<void>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { setPage, setOrder, setOrderBy, getList } = props;
-
-  const dispatch = useAppDispatch();
+  const { setPage, setOrder, setOrderBy, getList, createInviteCode } = props;
   const list = useAppSelector(state => state.inviteCodeReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
   // 목록 새로고침
@@ -36,6 +31,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setOrder('asc');
     setOrderBy('member_id');
     setPage(0);
+    // 목록 새로고침
+    getList(sessionStorage.getItem('id') + '');
+  };
+
+  const hadleCreateInviteCode = () => {
+    createInviteCode(sessionStorage.getItem('id') + '');
+    
     // 목록 새로고침
     getList(sessionStorage.getItem('id') + '');
   };
@@ -54,7 +56,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         초대코드 관리
       </Typography>
       <Tooltip title="초대코드 생성">
-        <IconButton aria-label="create" onClick={handleRefreshList}>
+        <IconButton aria-label="create" onClick={hadleCreateInviteCode}>
           <AddIcon />
         </IconButton>
       </Tooltip>

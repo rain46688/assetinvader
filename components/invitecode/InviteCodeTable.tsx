@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useInviteCode } from '@/hooks/invitecode/useInviteCode';
 import { EnhancedTableHead } from '@/components/invitecode/TableHeader';
 import { EnhancedTableToolbar } from '@/components/invitecode/TableHeaderToolbar';
+import { formatDateV2 } from '@/utils/format';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -38,6 +39,7 @@ export default function InviteCodeTable() {
         addStatus,
         snackBarStatus,
         getList,
+        createInviteCode,
         setSnackBarStatus,
         setSnack,
         setSnackMessage,
@@ -73,6 +75,7 @@ export default function InviteCodeTable() {
                 setOrder={setOrder}
                 setOrderBy={setOrderBy}
                 getList={getList}
+                createInviteCode={createInviteCode}
             />
             <TableContainer
                 sx={{ width: '100%' }}>
@@ -110,13 +113,13 @@ export default function InviteCodeTable() {
                                     {/*  */}
                                     <TableCell align="center" sx={{ width: '12.5%', minWidth: '100px' }}>
                                         <Typography variant="body1" align="center">
-                                            {row.reg_date || ''}
+                                            {formatDateV2(row.reg_date) || ''}
                                         </Typography>
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center" sx={{ width: '12.5%', minWidth: '100px' }}>
                                         <Typography variant="body1" align="center">
-                                            {row.use_date || ''}
+                                            {row.use_flag == 0 ? '' : formatDateV2(row.use_date) || ''}
                                         </Typography>
                                     </TableCell>
                                     {/*  */}
@@ -128,7 +131,7 @@ export default function InviteCodeTable() {
                                     {/*  */}
                                     <TableCell align="center" sx={{ width: '12.5%', minWidth: '100px' }}>
                                         <Typography variant="body1" align="center">
-                                            {row.exp_date || ''}
+                                            {formatDateV2(row.exp_date) || ''}
                                         </Typography>
                                     </TableCell>
                                     {/*  */}
