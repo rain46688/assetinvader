@@ -34,12 +34,18 @@ export const useUserAdmin = () => {
     const dispatch = useAppDispatch();
     const rows = useAppSelector(state => state.userAdminReducer);
 
+    // 권한 관련
+    const [role, setRole] = useState<number>(3);
+
     // 데이터 가져오기
     useEffect(() => {
         // 세션 스토리지에 저장된 id값 가져오기
         const id = sessionStorage.getItem('id');
         // id값으로 데이터 가져오기
         getList('' + id);
+
+        const user_role = Number(sessionStorage.getItem('role'));
+        setRole(user_role);
     }, []);
 
     // 데이터 가져오기 함수
@@ -178,6 +184,7 @@ export const useUserAdmin = () => {
 
     // 함수 반환
     return {
+        role,
         selected, setSelected,
         order,
         orderBy,
