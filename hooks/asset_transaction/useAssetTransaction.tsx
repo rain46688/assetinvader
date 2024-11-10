@@ -56,7 +56,7 @@ export const useAssetTransaction = () => {
         if (res.status === 'success') {
 
             // 셀렉트 박스 거래 내역 이름 데이터 가져오기
-            const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
+            const asset_type_rest = await sendGet('/asset/getlist_asset_type_all/' + id);
             const asset_type_rest_list = asset_type_rest.data;
             asset_type_rest_list.map((item: any) => {
                 selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });

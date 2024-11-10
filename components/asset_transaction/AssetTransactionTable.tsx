@@ -125,7 +125,7 @@ export default function AssetTransactionTable() {
                         rowCount={rows.length}
                         addStatus={addStatus}
                         setIsNotSortStatus={setIsNotSortStatus}
-                         />
+                        />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
