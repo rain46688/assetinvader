@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { sendGet } from '@/utils/fetch';
 import { ChangeEvent } from 'react';
 
@@ -48,7 +48,7 @@ export default function AssetEarningChart() {
     }, [thisYear, chartTypeName]);
 
     // 차트 생성 함수
-    const CreateChart = async () => {
+    const CreateChart = useCallback(async () => {
         const id = sessionStorage.getItem('id');
         const res = await sendGet('/assetearning/getlist_assetearning/' + id);
         if (res.status === 'success') {
@@ -133,7 +133,7 @@ export default function AssetEarningChart() {
                 });
 
                 // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용 
-                if (typeof aGroupedData[thisYear] !== 'undefined' && chartTypeName == '월별') {
+                if (aGroupedData[thisYear] && typeof aGroupedData[thisYear] !== 'undefined' && chartTypeName == '월별') {
                     chartData.push({
                         type: 'bar',
                         id: 'earnings',
@@ -145,7 +145,7 @@ export default function AssetEarningChart() {
                 }
 
                 // chartData에 B 그래프 데이터 추가 
-                if (typeof bGroupedData[thisYear] !== 'undefined' && chartTypeName != '월별') {
+                if (bGroupedData[thisYear] && typeof bGroupedData[thisYear] !== 'undefined' && chartTypeName != '월별') {
                     chartData.push({
                         type: 'line',
                         id: 'stackEarnings',
@@ -175,7 +175,7 @@ export default function AssetEarningChart() {
         } else {
             console.log('error');
         }
-    };
+    }, [thisYear, chartTypeName]);
 
     // 새로고침 버튼 클릭 이벤트
     const handleRefreshClick = () => {
