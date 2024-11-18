@@ -1,3 +1,5 @@
+"use client"
+
 // material-ui 관련 임포트
 import Box from '@mui/material/Box';
 import AssetTypeTable from '@/components/asset_type/AssetTypeTable';
