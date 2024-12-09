@@ -35,9 +35,20 @@ import { getNextMonth } from '@/utils/util';
 export default function AssetEarningChart() {
 
     // 데이터 저장
-    const [chartData, setChartData] = useState<any[]>([]);
+    // const [chartData, setChartData] = useState<any[]>([]);
+    const [chartData, setChartData] = useState<{[key: string]:any[]}>({'월별':[], '누적':[]});
     const [thisYear, setThisYear] = useState(new Date().getFullYear().toString());
     const [detailChartData, setDetailChartData] = useState<any[]>([]);
+
+    // 타입설정
+    type ChartItem = {
+        type: string;
+        id: string;
+        label: string;
+        yAxisKey: string;
+        color: string;
+        data: number[];
+    };
 
     // 선택 데이터 저장
     const [chartTypeName, setChartTypeName] = useState('월별');
@@ -48,7 +59,7 @@ export default function AssetEarningChart() {
     }, [thisYear, chartTypeName]);
 
     // 차트 생성 함수
-    const CreateChart = useCallback(async () => {
+    const CreateChart = async () => {
         const id = sessionStorage.getItem('id');
         const res = await sendGet('/assetearning/getlist_assetearning/' + id);
         if (res.status === 'success') {
@@ -64,7 +75,11 @@ export default function AssetEarningChart() {
             const cGroupedData: { [key: string]: number[][] } = {};
 
             // 통합 차트 데이터 담을 배열 선언
-            const chartData = [];
+            // const chartData = [];
+            const chartData: { [key: string]: ChartItem[] } = {
+                '월별': [],
+                '누적': [],
+            };
 
             // 종류 헤더 배열 선언
             const typeList = ['매매', '배당금', '은행이자', '채권이자', '공모주'];
@@ -133,8 +148,8 @@ export default function AssetEarningChart() {
                 });
 
                 // chartData에 A 그래프 데이터 추가, 단 오늘 날짜 기준으로 이번 년도 데이터만 사용 
-                if (aGroupedData[thisYear] && typeof aGroupedData[thisYear] !== 'undefined' && chartTypeName == '월별') {
-                    chartData.push({
+                if (aGroupedData[thisYear] && typeof aGroupedData[thisYear] !== 'undefined') {
+                    chartData['월별'].push({
                         type: 'bar',
                         id: 'earnings',
                         label: '월별 수익',
@@ -145,8 +160,8 @@ export default function AssetEarningChart() {
                 }
 
                 // chartData에 B 그래프 데이터 추가 
-                if (bGroupedData[thisYear] && typeof bGroupedData[thisYear] !== 'undefined' && chartTypeName != '월별') {
-                    chartData.push({
+                if (bGroupedData[thisYear] && typeof bGroupedData[thisYear] !== 'undefined') {
+                    chartData['누적'].push({
                         type: 'line',
                         id: 'stackEarnings',
                         label: '누적 수익',
@@ -172,10 +187,12 @@ export default function AssetEarningChart() {
             // 데이터 저장
             setChartData(chartData);
             setDetailChartData(result);
+            console.log(chartData);
+            console.log(chartTypeName);
         } else {
             console.log('error');
         }
-    }, [thisYear, chartTypeName]);
+    };
 
     // 새로고침 버튼 클릭 이벤트
     const handleRefreshClick = () => {
@@ -242,7 +259,7 @@ export default function AssetEarningChart() {
                 </Tooltip>
                 {/*  */}
             </Toolbar>
-            {chartData.length > 0 ? (
+            {chartData['월별'].length > 0 && chartData['누적'].length > 0 ? (
                 <Box sx={{ width: '100%' }}>
                     {chartTypeName == "월별" ? (
                         <>
@@ -272,7 +289,7 @@ export default function AssetEarningChart() {
                                         },
                                     }
                                 ]}
-                                series={chartData}
+                                series={chartData['월별']}
                                 height={400}
                                 margin={{ left: 100 }}
                                 sx={{
@@ -311,7 +328,7 @@ export default function AssetEarningChart() {
                                     },
                                 }
                             ]}
-                            series={chartData}
+                            series={chartData['누적']}
                             height={400}
                             margin={{ left: 100 }}
                             sx={{
