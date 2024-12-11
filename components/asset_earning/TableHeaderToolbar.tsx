@@ -188,6 +188,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setIsNotSortStatus(false);
       dispatch(setAssetEarningList([...list]));
     }
+    setOrder('asc');
+    setOrderBy('trns_date');
   };
 
   // 항목 추가 취소
