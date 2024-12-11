@@ -3,6 +3,16 @@
 
 /**
  * formatDate 함수 : 날짜를 받아서 yyyy-mm-dd hh:mm:ss 형태로 변환
+ */
+export const getTodayAsYYYYMM = () => {
+    const today = new Date(); // 오늘 날짜
+    const year = today.getFullYear(); // 연도
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월 (1월이 0부터 시작하므로 +1)
+    return `${year}-${month}`; // yyyy-mm 형식으로 반환
+};
+
+/**
+ * formatDate 함수 : 날짜를 받아서 yyyy-mm-dd hh:mm:ss 형태로 변환
  * @param dateString : 날짜
  * @returns : yyyy-mm-dd hh:mm:ss 형태의 날짜
  */
