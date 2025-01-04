@@ -156,7 +156,7 @@ export default function SpendingTable() {
                                         scope="center"
                                         padding="none"
                                         align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                        {(index == 0 && addStatus) ? (
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
@@ -177,7 +177,7 @@ export default function SpendingTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                        {(index == 0 && addStatus) ? (
                                             <TextField
                                                 variant="standard"
                                                 helperText={validationList[index]?.spnd_type ? "한영특 숫자 입력" : ''}
@@ -193,7 +193,7 @@ export default function SpendingTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                        {(index == 0 && addStatus) ? (
                                             <TextField
                                                 variant="standard"
                                                 helperText={validationList[index]?.description ? "한영특 숫자 입력" : ''}
@@ -209,7 +209,7 @@ export default function SpendingTable() {
                                     </TableCell>
                                     {/*  */}
                                     <TableCell align="center">
-                                        {((visibleRows.length - 1) == index && addStatus) ? (
+                                        {(index == 0 && addStatus) ? (
                                             <TextField
                                                 variant="standard"
                                                 helperText={validationList[index]?.amount ? "숫자 입력" : ''}

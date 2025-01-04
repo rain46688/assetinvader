@@ -62,14 +62,14 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     }
 
     const newList = [
-      ...list,
       createData(
         0,
         "",
         "",
         "",
         0
-      )
+      ),
+      ...list
     ];
 
     // 유효성 검사 리스트에 추가
@@ -84,8 +84,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     // 유효성 검사 리스트 업데이트
     setValidationList(validationList);
 
-    // 추가 시에 마지막 페이지로 이동
-    const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
+    // 추가 시에 맨처음 페이지로 이동
+    const movePage = 0;
     setPage(movePage);
     setOrder('desc');
     setOrderBy('spnd_date');
@@ -101,8 +101,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       if (result.status === 'success') {
         const newList = list.filter((item) => !selected.includes(item.id));
         setSelected([]);
-        // 삭제 시에 마지막 페이지로 이동
-        const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
+        // 삭제 시에 맨처음 페이지로 이동
+        const movePage = 0;
         setPage(movePage);
         setOrder('desc');
         setOrderBy('spnd_date');
@@ -132,7 +132,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 항목 추가 완료
   const handleCompleteList = async () => {
     console.log('=== handleCompleteList === ');
-    const new_data = { ...list[list.length - 1] };
+    const new_data = { ...list[0] };
 
     // 유효성 검사
     if (validation == false) {
@@ -162,10 +162,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setIsNotSortStatus(false);
       // 기존 리스트에 추가된 임시 id값 데이터의 id(0임)를 서버에 추가 후 반환 받은 진짜 id로 변경
       let newList = [...list];
-      let lastItem = { ...newList[newList.length - 1] };
-      lastItem.id = result.data.id;
-      newList[newList.length - 1] = lastItem;
+      let firstItem = { ...newList[0] };
+      firstItem.id = result.data.id;
+      newList[0] = firstItem;
       dispatch(setSpendingList(newList));
+      // 다시 추가할때 순서가 입력된 순서로 정렬되어 처리하기 위함
+      handleRefreshList();
     } else {
       console.log("fail");
       setSnack(true);
@@ -184,8 +186,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setSelected([]);
     setAddStatus(false);
     dispatch(setSpendingList(newList));
-    // 추가 시에 마지막 페이지로 이동
-    const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
+    // 추가 시에 맨처음 페이지로 이동
+    const movePage = 0;
     setPage(movePage);
   };
 

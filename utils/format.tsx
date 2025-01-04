@@ -2,7 +2,7 @@
 // 포멧 관련 함수들을 모아둔 파일
 
 /**
- * formatDate 함수 : 날짜를 받아서 yyyy-mm-dd hh:mm:ss 형태로 변환
+ * formatDate 함수 : 오늘 날짜를 yyyy-mm 형태로 변환
  */
 export const getTodayAsYYYYMM = () => {
     const today = new Date(); // 오늘 날짜
