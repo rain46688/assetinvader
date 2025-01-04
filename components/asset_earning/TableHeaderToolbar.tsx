@@ -29,6 +29,7 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   selected: readonly number[];
   setSelected: React.Dispatch<React.SetStateAction<readonly number[]>>;
+  page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
@@ -46,7 +47,7 @@ interface EnhancedTableToolbarProps {
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected, setSelected, setPage, rowsPerPage, setOrder, setOrderBy,
+  const { numSelected, selected, setSelected, page, setPage, rowsPerPage, setOrder, setOrderBy,
     validationList, setValidationList, addStatus, setAddStatus, validation, setSnack, setSnackMessage, setSnackBarStatus, setIsNotSortStatus, getList } = props;
 
   const dispatch = useAppDispatch();
@@ -128,7 +129,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     console.log('=== handleRefreshList === ');
     setOrder('asc');
     setOrderBy('trns_date');
-    setPage(0);
+    // 새로고침 시 현재 페이지로 이동
+    setPage(page);
     // 목록 새로고침
     getList(sessionStorage.getItem('id') + '');
   };
@@ -179,6 +181,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       lastItem.id = result.data.id; 
       newList[newList.length - 1] = lastItem; 
       dispatch(setAssetEarningList(newList));
+      // 다시 추가할때 순서가 입력된 순서로 정렬되어 처리하기 위함
+      handleRefreshList();
     } else {
       console.log("fail");
       setSnack(true);

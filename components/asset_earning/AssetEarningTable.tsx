@@ -95,6 +95,7 @@ export default function AssetEarningTable() {
                 numSelected={selected.length}
                 selected={selected}
                 setSelected={setSelected}
+                page={page}
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setOrder={setOrder}
