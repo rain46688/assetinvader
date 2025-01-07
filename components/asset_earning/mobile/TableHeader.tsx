@@ -13,25 +13,9 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'asset_acnt',
-        label: '자산계좌명',
-    },
-    {
         id: 'asset_name',
         label: '자산명',
-    },
-    {
-        id: 'trns_type',
-        label: '종류',
-    },
-    {
-        id: 'amount',
-        label: '수익(원)',
-    },
-    {
-        id: 'trns_date',
-        label: '수익 발생일',
-    },
+    }
 ];
 
 interface EnhancedTableProps {
