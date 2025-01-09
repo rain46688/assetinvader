@@ -1,10 +1,14 @@
 "use client"
 
 import * as React from 'react';
+import { sendDelete } from '@/utils/fetch';
 import { useAssetEarning } from '@/hooks/asset_earning/useAssetEarning';
-import { ChangeEvent } from 'react';
 import { EnhancedTableHead } from "@/components/asset_earning/mobile/TableHeader";
 import { EnhancedTableToolbar } from "@/components/asset_earning/mobile/TableHeaderToolbar";
+
+// redux 관련 임포트
+import { setAssetEarningList } from '@/redux/asset_earning/assetEarningSlice';
+import { useAppDispatch, useAppSelector } from '@/app/store';
 
 // material-ui 관련 임포트
 import Table from '@mui/material/Table';
@@ -14,15 +18,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import NativeSelect from '@mui/material/NativeSelect';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Autocomplete from '@mui/material/Autocomplete';
 import Collapse from "@mui/material/Collapse";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // 스낵바 관련 임포트
 import Snackbar from '@mui/material/Snackbar';
@@ -39,8 +41,8 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 import { NumericFormatCustom, parseNumber } from '@/utils/format';
 
 
-function Row(props: { row: any }) {
-    const { row } = props;
+function Row(props: { row: any, handleDeleteList: (id: number) => Promise<void> }) {
+    const { row, handleDeleteList } = props;
     const [open, setOpen] = React.useState(false);
 
     return (
@@ -55,12 +57,12 @@ function Row(props: { row: any }) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell sx={{whiteSpace: 'nowrap'}} component="th" scope="row">
+                <TableCell sx={{ whiteSpace: 'nowrap' }} component="th" scope="row">
                     <Typography variant="body1" align="center">
                         {row.asset_name || ''}
                     </Typography>
                 </TableCell>
-                <TableCell sx={{whiteSpace: 'nowrap'}} component="th" scope="row">
+                <TableCell sx={{ whiteSpace: 'nowrap' }} component="th" scope="row">
                     <Typography variant="body1" align="center">
                         {row.trns_date || ''}
                     </Typography>
@@ -80,6 +82,16 @@ function Row(props: { row: any }) {
                             <Typography variant="body2" gutterBottom component="div">
                                 수익(원) : {parseNumber(row.amount) || ''}
                             </Typography>
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => {
+                                    handleDeleteList(row.id) 
+                                    setOpen(!open)
+                                }}>
+                                삭제
+                            </Button>
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -89,6 +101,8 @@ function Row(props: { row: any }) {
 }
 
 export default function AssetEarningTableMobile() {
+    const dispatch = useAppDispatch();
+    const list = useAppSelector(state => state.assetEarningReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
     // custom hook 사용
     const {
@@ -127,6 +141,30 @@ export default function AssetEarningTableMobile() {
         handleChangeRowsPerPage,
         handleSnackClose,
     } = useAssetEarning();
+
+    // 선택된 항목 삭제
+    const handleDeleteList = async (id: number) => {
+        console.log('=== handleDeleteList === ');
+        console.log(id);
+
+        const result = await sendDelete('assetearning/delete_assetearning/' + id);
+        if (result.status === 'success') {
+            const newList = list.filter((item) => !selected.includes(item.id));
+            setOrder('asc');
+            setOrderBy('trns_date');
+            setSnack(true);
+            setSnackMessage("데이터 삭제 완료.");
+            setSnackBarStatus("success");
+            dispatch(setAssetEarningList(newList));
+            // 목록 새로고침
+            getList(sessionStorage.getItem('id') + '');
+        } else {
+            setSnack(true);
+            setSnackMessage("데이터 삭제 실패.");
+            setSnackBarStatus("error");
+            console.log("fail");
+        }
+    };
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -187,7 +225,7 @@ export default function AssetEarningTableMobile() {
                             const labelId = `enhanced-table-checkbox-${index}`;
 
                             return (
-                                <Row key={labelId} row={row} />
+                                <Row key={labelId} row={row} handleDeleteList={handleDeleteList} />
                             );
                         })}
                     </TableBody>

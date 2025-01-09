@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { sendPost, sendDelete, sendFile } from '@/utils/fetch';
+import { sendPost } from '@/utils/fetch';
 import { createData } from '@/redux/asset_earning/AssetEarning';
 import { AssetEarningData } from '@/redux/asset_earning/AssetEarning';
 import { AssetEarningValidation } from '@/redux/asset_earning/AssetEarning';
@@ -95,35 +95,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     dispatch(setAssetEarningList(newList));
   };
 
-  // 선택된 항목 삭제
-  const handleDeleteList = async () => {
-    console.log('=== handleDeleteList === ');
-
-    console.log(selected);
-
-    selected.forEach(async (id) => {
-      const result = await sendDelete('assetearning/delete_assetearning/' + id);
-      if (result.status === 'success') {
-        const newList = list.filter((item) => !selected.includes(item.id));
-        setSelected([]);
-        // 삭제 시에 마지막 페이지로 이동
-        const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-        setPage(movePage);
-        setOrder('asc');
-        setOrderBy('trns_date');
-        setSnack(true);
-        setSnackMessage("데이터 삭제 완료.");
-        setSnackBarStatus("success");
-        dispatch(setAssetEarningList(newList));
-      } else {
-        setSnack(true);
-        setSnackMessage("데이터 삭제 실패.");
-        setSnackBarStatus("error");
-        console.log("fail");
-      }
-    });
-  };
-
   // 목록 새로고침
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
@@ -154,7 +125,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     if (new_data.trns_type === "") {
       new_data.trns_type = "매매";
     }
-    
+
 
     console.log(new_data);
 
@@ -177,9 +148,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       setIsNotSortStatus(false);
       // 기존 리스트에 추가된 임시 id값 데이터의 id(0임)를 서버에 추가 후 반환 받은 진짜 id로 변경
       let newList = [...list];
-      let lastItem = { ...newList[newList.length - 1] }; 
-      lastItem.id = result.data.id; 
-      newList[newList.length - 1] = lastItem; 
+      let lastItem = { ...newList[newList.length - 1] };
+      lastItem.id = result.data.id;
+      newList[newList.length - 1] = lastItem;
       dispatch(setAssetEarningList(newList));
       // 다시 추가할때 순서가 입력된 순서로 정렬되어 처리하기 위함
       handleRefreshList();
@@ -208,71 +179,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setPage(movePage);
   };
 
-  // 엑셀 데이터 업로드
-  const handleFileUpChange = async (event: any) => {
-    debugger;
-    console.log('=== handleFileChange === ');
-    const file = event.target.files[0];
-
-    const formData = new FormData();
-    formData.append('excelFile', file);
-    formData.append('member_id', sessionStorage.getItem('id') || '');
-
-    const result = await sendFile(formData, 'assetearning/upload');
-    if (result.status === 'success') {
-      setSnack(true);
-      setSnackMessage("데이터 업로드 완료.");
-      setSnackBarStatus("success");
-      getList(sessionStorage.getItem('id') + '');
-    } else {
-      console.log("fail");
-      setSnack(true);
-      setSnackMessage("데이터 업로드 실패.");
-      setSnackBarStatus("error");
-    }
-  };
-
-  // 엑셀 양식 데이터 다운로드
-  const handleFormFileDown = () => {
-    console.log('=== handleFormFileDown === ');
-    const ws = XLSX.utils.aoa_to_sheet([['자산계좌명' ,'자산명', '종류', '수익(원)', '수익 발생일']]);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, '수익내역');
-
-    // 엑셀 파일을 Blob 형태로 생성합니다.
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([wbout], { type: 'application/octet-stream' });
-
-    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', '수익내역 데이터 양식.xlsx');
-    document.body.appendChild(link);
-    link.click();
-  }
-
-    // 엑셀 데이터 다운로드
-    const handleFileDown = () => {
-      console.log('=== handleFileDown === ');
-      const wsData = list.map(item => [item.asset_acnt, item.asset_name, item.trns_type, item.amount, item.trns_date]);
-      const ws = XLSX.utils.aoa_to_sheet([['자산계좌명' ,'자산명', '종류', '수익(원)', '수익 발생일'], ...wsData]);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, '수익내역');
-  
-      // 엑셀 파일을 Blob 형태로 생성합니다.
-      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([wbout], { type: 'application/octet-stream' });
-  
-      // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', '수익내역 데이터.xlsx');
-      document.body.appendChild(link);
-      link.click();
-    }
-
   return (
     <Toolbar
       sx={{
@@ -283,18 +189,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         }),
       }}>
-      {numSelected > 0 ? (
         <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ 
+          sx={{
             flex: '1 1 100%',
             fontSize: 'clamp(14px, 4vw, 24px)',
           }}
@@ -303,43 +199,31 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           component="div">
           자산수익 기록
         </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton onClick={handleDeleteList}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+      {!addStatus ? (
+        <>
+          <Tooltip title="새로고침">
+            <IconButton sx={{ flex: '1 1 25%' }} aria-label="refresh" onClick={handleRefreshList}>
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="수기입력">
+            <IconButton sx={{ flex: '1 1 25%' }} onClick={handleAddList}>
+              <AddIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       ) : (
         <>
-          {!addStatus ? (
-            <>
-              <Tooltip title="새로고침">
-                <IconButton sx={{flex: '1 1 25%'}} aria-label="refresh" onClick={handleRefreshList}>
-                  <RefreshIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="수기입력">
-                <IconButton sx={{flex: '1 1 25%'}} onClick={handleAddList}>
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
-            </>
-          ) : (
-            <>
-              <Tooltip title="Close">
-                <IconButton onClick={handleCloseList}>
-                  <CloseIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Complete">
-                <IconButton onClick={handleCompleteList}>
-                  <CheckIcon />
-                </IconButton>
-              </Tooltip>
-            </>
-          )}
+          <Tooltip title="Close">
+            <IconButton onClick={handleCloseList}>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Complete">
+            <IconButton onClick={handleCompleteList}>
+              <CheckIcon />
+            </IconButton>
+          </Tooltip>
         </>
       )}
     </Toolbar>

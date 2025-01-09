@@ -15,7 +15,7 @@ export default function AssetEarningMain() {
         {isMobile ? (
             <>
                 {/* AssetEarningTable 컴포넌트 */}
-                <AssetEarningTableMobile/>
+                <AssetEarningTable/>
                 <AssetEarningChart />
             </>
         ) : (
