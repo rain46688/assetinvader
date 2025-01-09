@@ -55,9 +55,14 @@ function Row(props: { row: any }) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell component="th" scope="row">
+                <TableCell sx={{whiteSpace: 'nowrap'}} component="th" scope="row">
                     <Typography variant="body1" align="center">
                         {row.asset_name || ''}
+                    </Typography>
+                </TableCell>
+                <TableCell sx={{whiteSpace: 'nowrap'}} component="th" scope="row">
+                    <Typography variant="body1" align="center">
+                        {row.trns_date || ''}
                     </Typography>
                 </TableCell>
                 <TableCell align="right">{row.calories}</TableCell>
@@ -74,9 +79,6 @@ function Row(props: { row: any }) {
                             </Typography>
                             <Typography variant="body2" gutterBottom component="div">
                                 수익(원) : {parseNumber(row.amount) || ''}
-                            </Typography>
-                            <Typography variant="body2" gutterBottom component="div">
-                                수익 발생일 : {row.trns_date || ''}
                             </Typography>
                         </Box>
                     </Collapse>

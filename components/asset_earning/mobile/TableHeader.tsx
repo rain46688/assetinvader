@@ -15,6 +15,10 @@ const headCells: readonly HeadCell[] = [
     {
         id: 'asset_name',
         label: '자산명',
+    },
+    {
+        id: 'trns_date',
+        label: '수익발생일',
     }
 ];
 
@@ -58,6 +62,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
+                        sx={{whiteSpace: 'nowrap'}}
                         key={headCell.id}
                         align='center'
                         padding='normal'

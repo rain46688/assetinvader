@@ -294,7 +294,10 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ 
+            flex: '1 1 100%',
+            fontSize: 'clamp(14px, 4vw, 24px)',
+          }}
           variant="h6"
           id="tableTitle"
           component="div">
@@ -312,39 +315,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {!addStatus ? (
             <>
-            {/* file download */}
-            <Tooltip title="수익내역 엑셀 다운로드">
-              <IconButton component="span" aria-label="download" onClick={handleFileDown}>
-                <FileDownloadIcon />
-              </IconButton>
-            </Tooltip>
-            {/* sheet download */}
-            <Tooltip title="입력 양식 다운로드">
-              <IconButton component="span" aria-label="formDownload" onClick={handleFormFileDown}>
-                <AttachFileIcon />
-              </IconButton>
-            </Tooltip>
-            {/* file upload */}
-            <input
-              type="file"
-              id="upload-file"
-              style={{ display: 'none' }}
-              onChange={handleFileUpChange}
-            />
-            <label htmlFor="upload-file">
-              <Tooltip title="수익내역 엑셀 업로드">
-                <IconButton component="span" aria-label="upload">
-                  <FileUploadIcon />
-                </IconButton>
-              </Tooltip>
-            </label>
               <Tooltip title="새로고침">
-                <IconButton aria-label="refresh" onClick={handleRefreshList}>
+                <IconButton sx={{flex: '1 1 25%'}} aria-label="refresh" onClick={handleRefreshList}>
                   <RefreshIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="수기입력">
-                <IconButton onClick={handleAddList}>
+                <IconButton sx={{flex: '1 1 25%'}} onClick={handleAddList}>
                   <AddIcon />
                 </IconButton>
               </Tooltip>
