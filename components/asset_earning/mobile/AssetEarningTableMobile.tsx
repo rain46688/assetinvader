@@ -202,6 +202,7 @@ export default function AssetEarningTableMobile() {
                 setSnackBarStatus={setSnackBarStatus}
                 setIsNotSortStatus={setIsNotSortStatus}
                 getList={getList}
+                selectData={selectData}
             />
             <TableContainer
                 sx={{ overflowX: 'auto', width: '100%' }}>
@@ -221,9 +222,7 @@ export default function AssetEarningTableMobile() {
                     />
                     <TableBody>
                         {visibleRows.map((row, index) => {
-                            const isItemSelected = isSelected(row.id);
                             const labelId = `enhanced-table-checkbox-${index}`;
-
                             return (
                                 <Row key={labelId} row={row} handleDeleteList={handleDeleteList} />
                             );
