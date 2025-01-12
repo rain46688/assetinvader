@@ -67,12 +67,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
   const dispatch = useAppDispatch();
   const list = useAppSelector(state => state.assetEarningReducer); // Redux 상태에서 필요한 데이터 읽어오기
+  console.log(list);
 
   const [openAddDialog, setOpenAddDialog] = React.useState(false);
 
   const handleClickOpenAddDialog = () => {
     setOpenAddDialog(true);
-    handleAddList()
   };
 
   const handleCloseAddDialog = () => {
@@ -82,6 +82,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   // 항목 추가
   const handleAddList = async () => {
     console.log('=== handleAddList === ');
+    handleClickOpenAddDialog();
 
     // 추가 버튼 클릭 시 addStatus 변경
     if (addStatus == false) {
@@ -187,21 +188,24 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     }
     setOrder('asc');
     setOrderBy('trns_date');
+    handleCloseAddDialog();
   };
 
   // 항목 추가 취소
   const handleCloseList = () => {
     console.log('=== handleCloseList === ');
     const newList = list.filter((item) => item.id !== 0);
-    setSelected([]);
-    setAddStatus(false);
     dispatch(setAssetEarningList(newList));
-    // 추가 시에 마지막 페이지로 이동
-    const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
-    setPage(movePage);
+    handleCloseAddDialog();
   };
 
-  const options = ['매매', '배당금', '은행이자', '채권이자', '공모주'];
+  const options = [
+    { id: '1', label: '매매' },
+    { id: '2', label: '배당금' },
+    { id: '3', label: '은행이자' },
+    { id: '4', label: '채권이자' },
+    { id: '5', label: '공모주' },
+  ];
 
   return (
     <React.Fragment>
@@ -231,7 +235,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             </IconButton>
           </Tooltip>
           <Tooltip title="수기입력">
-            <IconButton sx={{ flex: '1 1 25%' }} onClick={handleClickOpenAddDialog}>
+            <IconButton sx={{ flex: '1 1 25%' }} onClick={handleAddList}>
               <AddIcon />
             </IconButton>
           </Tooltip>
@@ -239,18 +243,14 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       </Toolbar>
       <Dialog
         open={openAddDialog}
-        onClose={handleCloseAddDialog}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            // const email = formJson.email;
-            console.log(formJson);
-            handleCloseAddDialog();
-          },
-        }}
+        onClose={handleCloseList}
+        // PaperProps={{
+        //   component: 'form',
+        //   onSubmit: () => {
+        //     handleCompleteList();
+        //     handleCloseAddDialog();
+        //   },
+        // }}
       >
         <DialogTitle>자산수익 내역추가</DialogTitle>
         <DialogContent>
@@ -282,8 +282,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 자산계좌명
               </Typography>
               <Autocomplete
-                disablePortal
-                // freeSolo
+                // disablePortal
+                freeSolo
                 id="combo-box-demo"
                 options={selectData}
                 getOptionKey={(option) => typeof option === "string" ? 0 : option.id}
@@ -308,7 +308,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 disablePortal
                 id="combo-box-demo"
                 options={options}
-                renderInput={(params) => <TextField {...params} label="옵션 선택" />}
+                getOptionKey={(option) => typeof option === "string" ? 0 : option.id}
+                getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                onChange={(event: ChangeEvent<any>) => handleDataChange(event, list[list.length - 1].id, list.length - 1, 'trns_type')}
+                onBlur={(event: ChangeEvent<any>) => handleDataChange(event, list[list.length - 1].id, list.length - 1, 'trns_type')}
+                renderInput={(params) => <TextField {...params} />}
               />
               {/* 수익(원) */}
               <Typography
@@ -322,9 +327,10 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 수익(원)
               </Typography>
               <TextField
-                helperText={validationList[0]?.amount ? "숫자 입력" : ''}
-                error={validationList[0]?.amount}
-                value={''}
+                helperText={validationList[list.length - 1]?.amount ? "숫자 입력" : ''}
+                error={validationList[list.length - 1]?.amount}
+                value={list[list.length - 1].amount || ''}
+                onChange={(event: ChangeEvent<any>) => handleDataChange(event, list[list.length - 1].id, list.length - 1, 'amount')}
                 InputProps={{
                   inputComponent: NumericFormatCustom as any,
                 }}
@@ -345,7 +351,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                   <DateField
                     sx={{ textAlignLast: 'center' }}
                     format="YYYY-MM-DD"
-                    helperText={validationList[0]?.trns_date ? "날짜 선택 필요" : ''}
+                    helperText={validationList[list.length - 1]?.trns_date ? "날짜 선택 필요" : ''}
+                    onChange={(event: any) => handleDataChange(event, list[list.length - 1].id, list.length - 1, 'trns_date')}
                     value={''}
                   />
                 </DemoContainer>
@@ -356,8 +363,8 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseAddDialog}>입력취소</Button>
-          <Button type="submit">추가</Button>
+          <Button onClick={handleCloseList}>입력취소</Button>
+          <Button onClick={handleCompleteList}>추가</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
