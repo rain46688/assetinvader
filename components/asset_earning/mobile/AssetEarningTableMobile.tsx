@@ -203,6 +203,8 @@ export default function AssetEarningTableMobile() {
                 setIsNotSortStatus={setIsNotSortStatus}
                 getList={getList}
                 selectData={selectData}
+                handleDataChange={handleDataChange}
+                handleDataAssetNameChange={handleDataAssetNameChange}
             />
             <TableContainer
                 sx={{ overflowX: 'auto', width: '100%' }}>
