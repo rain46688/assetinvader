@@ -36,6 +36,8 @@ export const useAssetEarning = () => {
     const [selectData, setSelectData] = useState<AssetName[]>([]);
     // 정렬 안함 상태 관련 (기본 정렬 안함 상태로 설정)
     const [isNotSortStatus, setIsNotSortStatus] = useState(true)
+    // 초기 마지막 페이지 이동 플래그(이게 맞나)
+    const [firstMove, setFirstMove] = useState(0);
 
     // redux 관련 추가
     const dispatch = useAppDispatch();
@@ -97,6 +99,12 @@ export const useAssetEarning = () => {
             setValidationList(valList);
             // 데이터 저장
             dispatch(setAssetEarningList(newList));
+            // 최초 1번 마지막 페이지로 이동
+            if (firstMove == 0) {
+                const movePage = Math.ceil((newList.length) / rowsPerPage) - 1;
+                setPage(movePage);
+                setFirstMove(1);
+            }
         } else {
             console.log(' === getList error === ');
             setSnack(true);

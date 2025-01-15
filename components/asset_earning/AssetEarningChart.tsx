@@ -36,7 +36,7 @@ export default function AssetEarningChart() {
 
     // 데이터 저장
     // const [chartData, setChartData] = useState<any[]>([]);
-    const [chartData, setChartData] = useState<{[key: string]:any[]}>({'월별':[], '누적':[]});
+    const [chartData, setChartData] = useState<{ [key: string]: any[] }>({ '월별': [], '누적': [] });
     const [thisYear, setThisYear] = useState(new Date().getFullYear().toString());
     const [detailChartData, setDetailChartData] = useState<any[]>([]);
 
@@ -176,12 +176,14 @@ export default function AssetEarningChart() {
             // 형식에 맞게 변환된 데이터 
             const yearData = cGroupedData[thisYear];
             const result = [];
-            for (let i = 0; i < typeList.length; i++) {
-                const data = yearData.map(row => row[i]);
-                result.push({
-                    label: typeList[i],
-                    data: data
-                });
+            if (yearData !== undefined) {
+                for (let i = 0; i < typeList.length; i++) {
+                    const data = yearData.map(row => row[i]);
+                    result.push({
+                        label: typeList[i],
+                        data: data
+                    });
+                }
             }
 
             // 데이터 저장
