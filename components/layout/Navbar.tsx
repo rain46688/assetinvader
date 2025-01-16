@@ -3,6 +3,7 @@
 import Link from "next/link";
 import * as React from "react";
 import { useNavbar } from "@/hooks/layout/useNavbar";
+import { useMediaQuery } from "@mui/material";
 
 // material-ui 관련 임포트
 import Toolbar from "@mui/material/Toolbar";
@@ -13,17 +14,16 @@ import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import Typography from "@mui/material/Typography";
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import SavingsIcon from "@mui/icons-material/Savings";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
-import PaymentsIcon from "@mui/icons-material/Payments";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
@@ -35,7 +35,7 @@ export default function Navbar() {
   // Custom Hook 사용
   const {
     role,
-    Drawer,
+    CustomDrawer,
     isopened,
     setOpened,
     dispatch,
@@ -49,8 +49,11 @@ export default function Navbar() {
     setSpendingOpened,
   } = useNavbar();
 
-  return (
-    <Drawer variant="permanent" open={isopened as boolean | undefined}>
+  // 모바일 페이지 체크
+  const isMobile = useMediaQuery('(max-width:600px) or (max-height:600px)');
+
+  const drawerContent = (
+    <Box sx={{ width: 240 }} role="presentation" >
       <Toolbar
         sx={{
           display: "flex",
@@ -290,6 +293,31 @@ export default function Navbar() {
         </React.Fragment>
         <Divider sx={{ my: 1 }} />
       </List>
-    </Drawer>
+    </Box>
+  );
+
+  return (
+    <>
+      {isMobile ? (
+        <Drawer
+          open={isopened as boolean | undefined}
+          onClose={() => {
+            // Drawer 닫을 때 포커스 복구
+            const focusTarget = document.getElementById('focus-target');
+            if (focusTarget) focusTarget.focus();
+            dispatch(setOpened({ isopened: false }));
+          }}
+          ModalProps={{
+            keepMounted: true, // DOM 성능 최적화
+          }}
+          >
+          {drawerContent}
+        </Drawer>
+      ) : (
+        <CustomDrawer variant="permanent" open={isopened as boolean | undefined}>
+          {drawerContent}
+        </CustomDrawer>
+      )}
+    </>
   );
 }

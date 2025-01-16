@@ -4,7 +4,6 @@ import { useMediaQuery } from "@mui/material";
 import AssetEarningTable from '@/components/asset_earning/AssetEarningTable';
 import AssetEarningChart from '@/components/asset_earning/AssetEarningChart';
 import AssetEarningTableMobile from "./mobile/AssetEarningTableMobile";
-import CollapsibleTable from "./mobile/test";
 
 export default function AssetEarningMain() {
 

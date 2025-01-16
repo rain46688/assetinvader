@@ -24,7 +24,7 @@ export const useNavbar = () => {
         setRole(Number(sessionStorage.getItem('role')));
     }, []);
 
-    const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    const CustomDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
             '& .MuiDrawer-paper': {
                 position: 'relative',
@@ -53,7 +53,7 @@ export const useNavbar = () => {
     // 함수 반환
     return { 
         role,
-        Drawer, 
+        CustomDrawer, 
         isopened, setOpened,
         dispatch, 
         isAssetOpened, setAssetOpened, 
