@@ -11,7 +11,7 @@ type LayoutState = {
 
 // 초기 상태 정의
 const initialState: LayoutState = {
-    isopened: true,
+    isopened: false,
     isAssetOpened: false,
     isEarningOpened: false,
     isDividendOpened: false,

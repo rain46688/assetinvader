@@ -98,6 +98,9 @@ export default function Navbar() {
                     sx={{ pl: 4 }}
                     component={Link}
                     href={process.env.NEXT_PUBLIC_DESCRIPTION_URL || "/"}
+                    onClick={() => {
+                      dispatch(setOpened({ isopened: !isopened }));
+                    }}
                   >
                     <ListItemIcon>
                       <MenuBookIcon />
@@ -110,6 +113,9 @@ export default function Navbar() {
                 sx={{ pl: 4 }}
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ROOT_URL || "/"}
+                onClick={() => {
+                  dispatch(setOpened({ isopened: !isopened }));
+                }}
               >
                 <ListItemIcon>
                   <DashboardIcon />
@@ -121,6 +127,9 @@ export default function Navbar() {
                 sx={{ pl: 4 }}
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ASSET_CLASS_URL || "/"}
+                onClick={() => {
+                  dispatch(setOpened({ isopened: !isopened }));
+                }}
               >
                 <ListItemIcon>
                   <BarChartIcon />
@@ -132,6 +141,9 @@ export default function Navbar() {
                 sx={{ pl: 4 }}
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ASSET_RECORD_URL || "/"}
+                onClick={() => {
+                  dispatch(setOpened({ isopened: !isopened }));
+                }}
               >
                 <ListItemIcon>
                   <ShowChartIcon />
@@ -164,6 +176,9 @@ export default function Navbar() {
                 sx={{ pl: 4 }}
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ASSET_EARNING_URL || "/"}
+                onClick={() => {
+                  dispatch(setOpened({ isopened: !isopened }));
+                }}
               >
                 <ListItemIcon>
                   <SavingsIcon />
@@ -198,6 +213,9 @@ export default function Navbar() {
                 sx={{ pl: 4 }}
                 component={Link}
                 href={process.env.NEXT_PUBLIC_SPENDING_URL || "/"}
+                onClick={() => {
+                  dispatch(setOpened({ isopened: !isopened }));
+                }}
               >
                 <ListItemIcon>
                   <CreditScoreIcon />
@@ -234,6 +252,9 @@ export default function Navbar() {
                     sx={{ pl: 4 }}
                     component={Link}
                     href={process.env.NEXT_PUBLIC_ASSET_TRANSACTION_URL || "/"}
+                    onClick={() => {
+                      dispatch(setOpened({ isopened: !isopened }));
+                    }}
                   >
                     <ListItemIcon>
                       <SyncAltIcon />
@@ -245,6 +266,9 @@ export default function Navbar() {
                     sx={{ pl: 4 }}
                     component={Link}
                     href={process.env.NEXT_PUBLIC_DIVIDEND_URL || "/"}
+                    onClick={() => {
+                      dispatch(setOpened({ isopened: !isopened }));
+                    }}
                   >
                     <ListItemIcon>
                       <PriceCheckIcon />
@@ -256,6 +280,9 @@ export default function Navbar() {
                     sx={{ pl: 4 }}
                     component={Link}
                     href={process.env.NEXT_PUBLIC_INTEREST_URL || "/"}
+                    onClick={() => {
+                      dispatch(setOpened({ isopened: !isopened }));
+                    }}
                   >
                     <ListItemIcon>
                       <PriceCheckIcon />
@@ -267,6 +294,9 @@ export default function Navbar() {
                     sx={{ pl: 4 }}
                     component={Link}
                     href={process.env.NEXT_PUBLIC_CASH_FLOW_URL || "/"}
+                    onClick={() => {
+                      dispatch(setOpened({ isopened: !isopened }));
+                    }}
                   >
                     <ListItemIcon>
                       <ListAltIcon />
