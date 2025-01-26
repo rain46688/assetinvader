@@ -60,8 +60,11 @@ export const useAssetEarning = () => {
             // 셀렉트 박스 거래 내역 이름 데이터 가져오기
             const asset_type_rest = await sendGet('/asset/getlist_asset_type/' + id);
             const asset_type_rest_list = asset_type_rest.data;
-            asset_type_rest_list.map((item: any) => {
-                selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
+            asset_type_rest_list.forEach((item: any) => {
+                const exists = selectData.some((data: any) => data.id === item.id);
+                if (!exists) {
+                    selectData.push({ id: item.id, label: item.asset_name, asset_acnt: item.asset_acnt });
+                }
             });
             setSelectData(selectData);
 
@@ -259,7 +262,6 @@ export const useAssetEarning = () => {
             return item;
         });
         dispatch(setAssetEarningList(updatedRows));
-        console.log(selectData);
     };
 
     // 스낵바 닫기 함수
