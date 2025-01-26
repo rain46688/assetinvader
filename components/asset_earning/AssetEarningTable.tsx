@@ -111,7 +111,7 @@ export default function AssetEarningTable() {
                 setIsNotSortStatus={setIsNotSortStatus}
                 getList={getList}
             />
-            <TableContainer 
+            <TableContainer
                 sx={{ overflowX: 'auto', width: '100%' }}>
                 <Table
                     aria-labelledby="tableTitle"
@@ -126,7 +126,7 @@ export default function AssetEarningTable() {
                         rowCount={rows.length}
                         addStatus={addStatus}
                         setIsNotSortStatus={setIsNotSortStatus}
-                        />
+                    />
                     <TableBody>
                         {visibleRows.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
@@ -143,7 +143,7 @@ export default function AssetEarningTable() {
                                     selected={isItemSelected}
                                     sx={{ cursor: 'pointer' }}>
                                     {/*  */}
-                                    <TableCell 
+                                    <TableCell
                                         sx={{ width: '5%' }}
                                         component="th"
                                         scope="center"
@@ -183,13 +183,18 @@ export default function AssetEarningTable() {
                                                 // disablePortal
                                                 freeSolo
                                                 id="combo-box-demo"
-                                                options={selectData}
+                                                options={Array.from(new Map(selectData.map(item => [item.id, item])).values())}
                                                 getOptionKey={(option) => typeof option === "string" ? 0 : option.id}
                                                 onChange={
-                                                    (event, newValue) => handleDataAssetNameChange(event, row.id, row.id, 'asset_name', 
-                                                    typeof newValue === "string" ? { id: 0, label: newValue, asset_acnt: row.asset_acnt } : newValue || { id: 0, label: '', asset_acnt: row.asset_acnt })}
-                                                onBlur={(event: ChangeEvent<any>) => {handleDataAssetNameChange(event, row.id, row.id, 'asset_name', { id: 0, label: event.target.value, asset_acnt: row.asset_acnt })}}
-                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params}/>}
+                                                    (event, newValue) => {
+                                                        handleDataAssetNameChange(event, row.id, row.id, 'asset_name',
+                                                            typeof newValue === "string" ? { id: 0, label: newValue, asset_acnt: row.asset_acnt } : newValue || { id: 0, label: '', asset_acnt: row.asset_acnt })
+                                                    }}
+                                                onBlur={
+                                                    (event: ChangeEvent<any>) => { 
+                                                        handleDataAssetNameChange(event, row.id, row.id, 'asset_name', { id: 0, label: event.target.value, asset_acnt: row.asset_acnt }) 
+                                                    }}
+                                                renderInput={(params) => <TextField key={params.id} variant="standard" {...params} />}
                                             />
                                         ) : (
                                             <Typography variant="body1" align="center">
@@ -237,12 +242,12 @@ export default function AssetEarningTable() {
                                         )}
                                     </TableCell>
                                     {/* 수익 발생일 */}
-                                    <TableCell align="center" sx={{ width: '15%', textAlign:'center'}}>
+                                    <TableCell align="center" sx={{ width: '15%', textAlign: 'center' }}>
                                         {((visibleRows.length - 1) == index && addStatus) ? (
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                     <DateField
-                                                        sx={{ textAlignLast : 'center'}}
+                                                        sx={{ textAlignLast: 'center' }}
                                                         variant="standard"
                                                         format="YYYY-MM-DD"
                                                         helperText={validationList[index]?.trns_date ? "날짜 선택 필요" : ''}

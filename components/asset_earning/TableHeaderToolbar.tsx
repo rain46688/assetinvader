@@ -137,7 +137,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
   // 항목 추가 완료
   const handleCompleteList = async () => {
-    console.log('=== handleCompleteList === ');
+    console.log('=== handleCompleteList === '); 
     const new_data = { ...list[list.length - 1] };
 
     // 유효성 검사

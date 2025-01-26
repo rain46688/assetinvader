@@ -259,6 +259,7 @@ export const useAssetEarning = () => {
             return item;
         });
         dispatch(setAssetEarningList(updatedRows));
+        console.log(selectData);
     };
 
     // 스낵바 닫기 함수

@@ -285,7 +285,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 // disablePortal
                 freeSolo
                 id="combo-box-demo"
-                options={selectData}
+                options={Array.from(new Map(selectData.map(item => [item.id, item])).values())}
                 getOptionKey={(option) => typeof option === "string" ? 0 : option.id}
                 onChange={
                   (event, newValue) => handleDataAssetNameChange(event, list[list.length - 1].id, list[list.length - 1].id, 'asset_name',
