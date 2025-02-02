@@ -2,6 +2,7 @@
 
 import { useHeader } from "@/hooks/layout/useHeader";
 import { useMediaQuery } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 // material-ui 관련 임포트
 import Toolbar from '@mui/material/Toolbar';
@@ -15,6 +16,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Header() {
+    const router = useRouter();
 
     // Custom Hook 사용
     const { role, handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage, handleAdminPage } = useHeader();
@@ -51,7 +53,10 @@ export default function Header() {
                     <Button
                         variant="text"
                         size="large"
-                        href={process.env.NEXT_PUBLIC_ROOT_URL || "/"}
+                        onClick={() => {
+                            router.push('' + process.env.NEXT_PUBLIC_ROOT_URL);
+                        }}
+                        // href={process.env.NEXT_PUBLIC_ROOT_URL || "/"}
                         sx={{ color: grey[50] }}
                     >
                         AssetInvader
