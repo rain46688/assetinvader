@@ -30,12 +30,12 @@ export async function sendPost(data: string, url: string): Promise<any> {
                 return result;
             } else {
                 console.log(" === API Error === ");
-                return { 'status': 'fail' }
+                return { 'status': 'fail', 'msg': result.msg}
             }
         })
         .catch((error) => {
             console.log(" === API Error : ", error);
-            return { 'status': 'fail' }
+            return { 'status': 'fail', 'msg': error}
         });
 };
 
@@ -61,12 +61,12 @@ export async function sendGet(url: string): Promise<any> {
                 return result;
             } else {
                 console.log(" === API Error === ");
-                return { 'status': 'fail' }
+                return { 'status': 'fail', 'msg': result.msg}
             }
         })
         .catch((error) => {
             console.log(" === API Error : ", error);
-            return { 'status': 'fail' }
+            return { 'status': 'fail', 'msg': error}
         });
 }
 
@@ -96,12 +96,12 @@ export async function sendPut(data: string, url: string): Promise<any> {
                 return result;
             } else {
                 console.log(" === API Error === ");
-                return { 'status': 'fail' }
+                return { 'status': 'fail', 'msg': result.msg}
             }
         })
         .catch((error) => {
             console.log(" === API Error : ", error);
-            return { 'status': 'fail' }
+            return { 'status': 'fail', 'msg': error}
         });
 }
 
@@ -128,12 +128,12 @@ export async function sendDelete(url: string): Promise<any> {
                 return result;
             } else {
                 console.log(" === API Error === ");
-                return { 'status': 'fail' }
+                return { 'status': 'fail', 'msg': result.msg}
             }
         })
         .catch((error) => {
             console.log(" === API Error : ", error);
-            return { 'status': 'fail' }
+            return { 'status': 'fail', 'msg': error}
         });
 }
 
@@ -163,11 +163,11 @@ export async function sendFile(data: FormData, url: string): Promise<any> {
                 return result;
             } else {
                 console.log(" === API Error === ");
-                return { 'status': 'fail' }
+                return { 'status': 'fail', 'msg': result.msg}
             }
         })
         .catch((error) => {
             console.log(" === API Error : ", error);
-            return { 'status': 'fail' }
+            return { 'status': 'fail', 'msg': error}
         });
 }

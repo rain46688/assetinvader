@@ -30,6 +30,7 @@ export const refresh_jwtoken = async () => {
     return await axios(process.env.NEXT_PUBLIC_API_URL + 'member/refresh', options)
         .then((response) => {
             const result = response.data;
+            console.log(result);
             if (result.status === 'success') {
                 // 재발급 성공시 토큰을 세션 스토리지에 저장
                 console.log(" === 토큰 재발급 가능 === ");

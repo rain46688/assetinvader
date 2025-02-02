@@ -82,6 +82,7 @@ export const useSignup = () => {
     if (result.status == 'success') {
       setSignupState(true);
     } else {
+      console.log(result);
       // 실패시 스낵바 메시지 설정
       setSnackMessage("회원가입에 실패하였습니다. 다시 시도해주세요.\n" + result.msg);
       // 스낵바 오픈
