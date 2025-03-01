@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { setOpened, setAssetOpened, setEarningOpened, setDividendOpened, setSpendingOpened } from '@/redux/layout/layoutSlice';
+import { setOpened, setAssetOpened, setEarningOpened, setDividendOpened, setSpendingOpened, setOpenedMobile } from '@/redux/layout/layoutSlice';
 
 // material-ui 관련 임포트
 import { styled } from '@mui/material/styles';
@@ -9,7 +9,8 @@ import MuiDrawer from '@mui/material/Drawer';
 export const useNavbar = () => {
     const drawerWidth: number = 240;
     const dispatch = useAppDispatch();
-    const isopened = useAppSelector(state => state.layoutReducer.isopened);
+    const isOpened = useAppSelector(state => state.layoutReducer.isOpened);
+    const isOpenedMobile = useAppSelector(state => state.layoutReducer.isOpenedMobile);
     const isAssetOpened = useAppSelector(state => state.layoutReducer.isAssetOpened);
     const isEarningOpened = useAppSelector(state => state.layoutReducer.isEarningOpened);
     const isDividendOpened = useAppSelector(state => state.layoutReducer.isDividendOpened);
@@ -54,8 +55,9 @@ export const useNavbar = () => {
     return { 
         role,
         CustomDrawer, 
-        isopened, setOpened,
         dispatch, 
+        isOpened, setOpened,
+        isOpenedMobile, setOpenedMobile,
         isAssetOpened, setAssetOpened, 
         isEarningOpened, setEarningOpened,
         isDividendOpened, setDividendOpened,

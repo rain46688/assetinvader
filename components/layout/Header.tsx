@@ -19,12 +19,12 @@ export default function Header() {
     const router = useRouter();
 
     // Custom Hook 사용
-    const { role, handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage, handleAdminPage } = useHeader();
+    const { role, handleLogout, AppBar, dispatch, isOpened, setOpened, isOpenedMobile, setOpenedMobile, handleModifyPage, handleAdminPage } = useHeader();
     // 모바일 페이지 체크
     const isMobile = useMediaQuery('(max-width:600px) or (max-height:600px)');
 
     return (
-        <AppBar position="absolute" open={isopened as boolean | undefined}>
+        <AppBar position="absolute" open={isMobile as boolean | undefined ? isOpenedMobile as boolean | undefined : isOpened as boolean | undefined}>
             <Toolbar
                 sx={{
                     // pr: '24px',
@@ -33,10 +33,13 @@ export default function Header() {
                     edge="start"
                     color="inherit"
                     aria-label="open drawer"
-                    onClick={() => { dispatch(setOpened({ isopened: !isopened })) }}
+                    onClick={() => { 
+                        dispatch(setOpened({ isOpened: !isOpened }));
+                        dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
+                    }}
                     sx={{
                         // marginRight: '36px',
-                        ...(isopened && { display: 'none' }),
+                        ...((isMobile ? isOpenedMobile : isOpened) && { display: 'none' }),
                     }}>
                     <MenuIcon />
                 </IconButton>

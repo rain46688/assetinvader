@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { setOpened } from '@/redux/layout/layoutSlice';
+import { setOpened, setOpenedMobile } from '@/redux/layout/layoutSlice';
 import { refresh_jwtoken } from '@/utils/util';
 
 // material-ui 관련 임포트
@@ -11,7 +11,8 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 export const useHeader = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const isopened = useAppSelector(state => state.layoutReducer.isopened);
+    const isOpened = useAppSelector(state => state.layoutReducer.isOpened);
+    const isOpenedMobile = useAppSelector(state => state.layoutReducer.isOpenedMobile);
     const pathname = usePathname();
 
     // 권한 관련
@@ -97,5 +98,5 @@ export const useHeader = () => {
     };
 
     // 함수 반환
-    return { role, handleLogout, AppBar, setOpened, dispatch, isopened, handleModifyPage, handleAdminPage };
+    return { role, handleLogout, AppBar, dispatch, isOpened, setOpened, isOpenedMobile, setOpenedMobile, handleModifyPage, handleAdminPage };
 }

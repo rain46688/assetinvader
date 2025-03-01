@@ -36,9 +36,11 @@ export default function Navbar() {
   const {
     role,
     CustomDrawer,
-    isopened,
-    setOpened,
     dispatch,
+    isOpened,
+    setOpened,
+    isOpenedMobile,
+    setOpenedMobile,
     isAssetOpened,
     setAssetOpened,
     isEarningOpened,
@@ -64,7 +66,8 @@ export default function Navbar() {
       >
         <IconButton
           onClick={() => {
-            dispatch(setOpened({ isopened: !isopened }));
+            dispatch(setOpened({ isOpened: !isOpened }));
+            dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
           }}
         >
           <ChevronLeftIcon />
@@ -99,7 +102,7 @@ export default function Navbar() {
                     component={Link}
                     href={process.env.NEXT_PUBLIC_DESCRIPTION_URL || "/"}
                     onClick={() => {
-                      dispatch(setOpened({ isopened: !isopened }));
+                      dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                     }}
                   >
                     <ListItemIcon>
@@ -114,7 +117,7 @@ export default function Navbar() {
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ROOT_URL || "/"}
                 onClick={() => {
-                  dispatch(setOpened({ isopened: !isopened }));
+                  dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                 }}
               >
                 <ListItemIcon>
@@ -128,7 +131,7 @@ export default function Navbar() {
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ASSET_CLASS_URL || "/"}
                 onClick={() => {
-                  dispatch(setOpened({ isopened: !isopened }));
+                  dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                 }}
               >
                 <ListItemIcon>
@@ -142,7 +145,7 @@ export default function Navbar() {
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ASSET_RECORD_URL || "/"}
                 onClick={() => {
-                  dispatch(setOpened({ isopened: !isopened }));
+                  dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                 }}
               >
                 <ListItemIcon>
@@ -177,7 +180,7 @@ export default function Navbar() {
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ASSET_EARNING_URL || "/"}
                 onClick={() => {
-                  dispatch(setOpened({ isopened: !isopened }));
+                  dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                 }}
               >
                 <ListItemIcon>
@@ -214,7 +217,7 @@ export default function Navbar() {
                 component={Link}
                 href={process.env.NEXT_PUBLIC_SPENDING_URL || "/"}
                 onClick={() => {
-                  dispatch(setOpened({ isopened: !isopened }));
+                  dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                 }}
               >
                 <ListItemIcon>
@@ -253,7 +256,7 @@ export default function Navbar() {
                     component={Link}
                     href={process.env.NEXT_PUBLIC_ASSET_TRANSACTION_URL || "/"}
                     onClick={() => {
-                      dispatch(setOpened({ isopened: !isopened }));
+                      dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                     }}
                   >
                     <ListItemIcon>
@@ -267,7 +270,7 @@ export default function Navbar() {
                     component={Link}
                     href={process.env.NEXT_PUBLIC_DIVIDEND_URL || "/"}
                     onClick={() => {
-                      dispatch(setOpened({ isopened: !isopened }));
+                      dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                     }}
                   >
                     <ListItemIcon>
@@ -281,7 +284,7 @@ export default function Navbar() {
                     component={Link}
                     href={process.env.NEXT_PUBLIC_INTEREST_URL || "/"}
                     onClick={() => {
-                      dispatch(setOpened({ isopened: !isopened }));
+                      dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                     }}
                   >
                     <ListItemIcon>
@@ -295,7 +298,7 @@ export default function Navbar() {
                     component={Link}
                     href={process.env.NEXT_PUBLIC_CASH_FLOW_URL || "/"}
                     onClick={() => {
-                      dispatch(setOpened({ isopened: !isopened }));
+                      dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                     }}
                   >
                     <ListItemIcon>
@@ -330,12 +333,12 @@ export default function Navbar() {
     <>
       {isMobile ? (
         <Drawer
-          open={isopened as boolean | undefined}
+          open={isOpenedMobile as boolean | undefined}
           onClose={() => {
             // Drawer 닫을 때 포커스 복구
             const focusTarget = document.getElementById('focus-target');
             if (focusTarget) focusTarget.focus();
-            dispatch(setOpened({ isopened: false }));
+            dispatch(setOpenedMobile({ isOpenedMobile: false }));
           }}
           ModalProps={{
             keepMounted: true, // DOM 성능 최적화
@@ -344,7 +347,7 @@ export default function Navbar() {
           {drawerContent}
         </Drawer>
       ) : (
-        <CustomDrawer variant="permanent" open={isopened as boolean | undefined}>
+        <CustomDrawer variant="permanent" open={isOpened as boolean | undefined}>
           {drawerContent}
         </CustomDrawer>
       )}
