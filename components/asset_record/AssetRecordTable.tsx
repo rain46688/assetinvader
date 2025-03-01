@@ -127,6 +127,7 @@ export default function AssetRecordTable() {
             </Toolbar>
             <TableContainer
                 sx={{ width: '100%' }}>
+                {/* <Table aria-label="tableTitle" size='small'> */}
                 <Table aria-label="collapsible table" size='small'>
                     {/* <Table aria-label="customized table"> */}
                     <TableHead>
@@ -135,6 +136,7 @@ export default function AssetRecordTable() {
                                 align="center"
                                 rowSpan={2}
                                 sx={{
+                                    width: '10%', minWidth: '100px',
                                     borderRight: 1,
                                     borderRightColor: grey[400],
                                     borderBottom: 1,
@@ -147,6 +149,7 @@ export default function AssetRecordTable() {
                                     align="center"
                                     rowSpan={2}
                                     sx={{
+                                        width: '10%', minWidth: '100px',
                                         borderRight: 1,
                                         borderRightColor: grey[400],
                                         borderBottom: 1,
@@ -159,6 +162,7 @@ export default function AssetRecordTable() {
                                 align="center"
                                 rowSpan={2}
                                 sx={{
+                                    width: '13%', minWidth: '130px',
                                     borderRight: 1,
                                     borderRightColor: grey[400],
                                     borderBottom: 1,
@@ -186,6 +190,7 @@ export default function AssetRecordTable() {
                                 align="center"
                                 rowSpan={2}
                                 sx={{
+                                    width: '15%', minWidth: '150px',
                                     borderBottom: 1,
                                     borderBottomColor: grey[400]
                                 }}>
@@ -194,16 +199,19 @@ export default function AssetRecordTable() {
                         </TableRow>
                         <TableRow>
                             <CurrentTableCell
+                                sx={{ width: '13%', minWidth: '130px' }}
                                 align="center">
                                 금액(원)
                             </CurrentTableCell>
                             <CurrentTableCell
+                                sx={{ width: '13%', minWidth: '130px' }}
                                 align="center">
                                 {classCheckBoxStatus ? "중" : "대"}분류별 비율(%)
                             </CurrentTableCell>
                             <TargetTableCell
                                 align="center"
                                 sx={{
+                                    width: '13%', minWidth: '130px',
                                     borderRight: 1,
                                     borderRightColor: grey[400],
                                     borderBottom: 1,
@@ -214,6 +222,7 @@ export default function AssetRecordTable() {
                             <TargetTableCell
                                 align="center"
                                 sx={{
+                                    width: '13%', minWidth: '130px',
                                     borderRight: 1,
                                     borderRightColor: grey[400],
                                     borderBottom: 1,
