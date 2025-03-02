@@ -3,6 +3,7 @@
 // material-ui 관련 임포트
 import Box from '@mui/material/Box';
 import AssetTypeTable from '@/components/asset_type/AssetTypeTable';
+import AssetTypeTableMobile from '@/components/asset_type/mobile/AssetTypeTableMobile';
 import AssetTypeChart from '@/components/asset_type/AssetTypeChart';
 import { useMediaQuery } from "@mui/material";
 
@@ -16,7 +17,7 @@ export default function AssetTypePage() {
       {isMobile ? (
         <>
           {/* AssetTypeTable 모바일 컴포넌트 */}
-          <AssetTypeTable />
+          <AssetTypeTableMobile />
           {/* AssetTypeChart 모바일 컴포넌트 */}
           <AssetTypeChart />
         </>

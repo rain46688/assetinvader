@@ -311,6 +311,7 @@ export const useAssetType = () => {
         validationList,
         snack,
         snackMessage,
+        validation,
         snackBarStatus,
         setValidationList,
         getList,
