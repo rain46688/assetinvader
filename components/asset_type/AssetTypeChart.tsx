@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { sendGet } from "@/utils/fetch";
 import { parseNumber } from "@/utils/format";
+import { useMediaQuery } from "@mui/material";
 
 // material-ui 관련 임포트
 import Paper from "@mui/material/Paper";
@@ -29,6 +30,10 @@ export default function AssetTypeChart() {
   // 세부차트크기 관련
   const [detailChartHeight, setDetailChartHeight] = useState(0);
   const [detailChartLPadding, setDetailChartLPadding] = useState(0);
+
+  // 모바일 페이지 체크
+  const isMobile = useMediaQuery('(max-width:600px) or (max-height:600px)');
+  const isMobileWith = useMediaQuery('(max-height:600px)');
 
   useEffect(() => {
     console.log(" === AssetTypeChart === ");
@@ -146,7 +151,15 @@ export default function AssetTypeChart() {
               id="tableTitle"
               component="div"
             >
-              파이차트의 각 항목을 선택하여 자산별 상세차트를 확인할 수 있습니다.
+                · 파이차트의 각 항목을 선택하여 자산별 상세차트를 확인할 수 있습니다.
+            </Typography>
+            <Typography
+              sx={{ pl: { sm: 2 }, flex: "1 1 100%" }}
+              variant="subtitle2"
+              id="tableTitle"
+              component="div"
+            >
+              {isMobile && !isMobileWith ? "  · 더 넓은 화면에서 차트를 확인하려면 가로 모드로 전환해 보세요!" : ""}
             </Typography>
             <PieChart
               series={[
