@@ -32,6 +32,8 @@ export const useAssetRecord = () => {
     const [totalTargetEarningRate, setTotalTargetEarningRate] = useState(0);
     // 목표자산 계산 숨김여부
     const [openEarning, setOpenEarning] = useState(false);
+    // 목표자산 비율 입력 여부
+    const [targetRatioNotEntered, setTargetRatioNotEntered] = useState(true);
     // 중분류 선택상자 상태
     const [classCheckBoxStatus, setClassCheckBoxStatus] = useState(false);
     // 목표자산 생략 체크
@@ -180,17 +182,23 @@ export const useAssetRecord = () => {
         if (total_target_ratio == 100) {
             setTableData({ ...tableData });
             setTargetAmountStatus(true);
+            setTargetRatioNotEntered(false);
+        } else if (total_target_ratio == 0) {
+            setTableData({ ...tableData });
+            setTargetAmountStatus(true);
         } else if (total_target_ratio < 100) {
             console.log(' === Error === ');
             console.log(total_target_ratio)
             setTableData({ ...tableData });
             setOpenEarning(false);
             setTargetAmountStatus(false);
+            setTargetRatioNotEntered(false);
         } else {
             console.log(' === Error === ');
             console.log(total_target_ratio)
             setOpenEarning(false);
             setTargetAmountStatus(false);
+            setTargetRatioNotEntered(false);
             setSnack(true);
             setSnackBarStatus("warning");
             setSnackMessage('입력한 조정비율의 합이 100%를 넘습니다.');
@@ -215,6 +223,7 @@ export const useAssetRecord = () => {
         totalEarningRate,
         totalTargetEarningRate,
         openEarning,
+        targetRatioNotEntered,
         classCheckBoxStatus,
         tartgetAmountStatus,
         getList,
