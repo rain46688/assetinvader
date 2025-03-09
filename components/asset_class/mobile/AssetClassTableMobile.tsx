@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from 'react';
-import { useAssetType } from '@/hooks/asset_type/useAssetType';
-import { EnhancedTableHead } from "@/components/asset_type/mobile/TableHeader";
-import { EnhancedTableToolbar } from "@/components/asset_type/mobile/TableHeaderToolbar";
+import { useAssetClass } from '@/hooks/asset_class/useAssetClass';
+import { EnhancedTableHead } from "@/components/asset_class/mobile/TableHeader";
+import { EnhancedTableToolbar } from "@/components/asset_class/mobile/TableHeaderToolbar";
 
 // redux 관련 임포트
 import { useAppSelector } from '@/app/store';
@@ -49,7 +49,7 @@ function Row(props: { row: any }) {
                 </TableCell>
                 <TableCell sx={{ whiteSpace: 'nowrap' }} component="th" scope="row">
                     <Typography variant="body1" align="center">
-                        {row.asset_type || ''}
+                        {row.asset_big_class || ''}
                     </Typography>
                 </TableCell>
                 <TableCell sx={{ whiteSpace: 'nowrap' }} component="th" scope="row">
@@ -64,7 +64,10 @@ function Row(props: { row: any }) {
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
                             <Typography variant="body2" gutterBottom component="div">
-                                자산계좌명 : {row.asset_acnt || ''} 
+                                자산계좌명 : {row.asset_acnt || ''}
+                            </Typography>
+                            <Typography variant="body2" gutterBottom component="div">
+                                자산세분류 : {row.asset_mid_class || ''}
                             </Typography>
                             <Typography variant="body2" gutterBottom component="div">
                                 자산금액(원) : {parseNumber(row.amount) || ''}
@@ -83,8 +86,8 @@ function Row(props: { row: any }) {
     );
 }
 
-export default function AssetTypeTableMobile() {
-    const list = useAppSelector(state => state.assetTypeReducer); // Redux 상태에서 필요한 데이터 읽어오기
+export default function AssetClassTableMobile() {
+    const list = useAppSelector(state => state.assetClassReducer); // Redux 상태에서 필요한 데이터 읽어오기
 
     // custom hook 사용
     const {
@@ -106,7 +109,7 @@ export default function AssetTypeTableMobile() {
         handleChangePage,
         handleChangeRowsPerPage,
         handleSnackClose,
-    } = useAssetType();
+    } = useAssetClass();
 
     return (
         <Paper sx={{ width: '100%', mb: 2 }}>

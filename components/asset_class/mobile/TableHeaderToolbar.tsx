@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AssetTypeData } from '@/redux/asset_type/AssetType';
+import { AssetClassData } from '@/redux/asset_class/AssetClass';
 
 // material-ui 관련 임포트
 import Toolbar from '@mui/material/Toolbar';
@@ -12,7 +12,7 @@ interface EnhancedTableToolbarProps {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   setOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
-  setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetTypeData>>;
+  setOrderBy: React.Dispatch<React.SetStateAction<keyof AssetClassData>>;
   getList: (id: string) => Promise<void>;
 }
 
@@ -23,7 +23,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
     setOrder('asc');
-    setOrderBy('asset_type');
+    setOrderBy('asset_big_class');
     // 새로고침 시 현재 페이지로 이동
     setPage(page);
     // 목록 새로고침
@@ -45,7 +45,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="h6"
           id="tableTitle"
           component="div">
-          유형별 자산관리
+          분류별 자산관리
         </Typography>
         <Tooltip title="새로고침">
           <IconButton sx={{ flex: '1 1 25%' }} aria-label="refresh" onClick={handleRefreshList}>

@@ -1,20 +1,20 @@
 import { MouseEvent } from 'react';
 import { visuallyHidden } from '@mui/utils';
 import { Order } from '@/utils/sort';
-import { AssetTypeData } from "@/redux/asset_type/AssetType";
+import { AssetClassData } from "@/redux/asset_class/AssetClass";
 
 // material-ui 관련 임포트
 import { Box, TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 
 interface HeadCell {
-    id: keyof AssetTypeData;
+    id: keyof AssetClassData;
     label: string;
 }
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'asset_type',
-        label: '자산유형',
+        id: 'asset_big_class',
+        label: '자산 분류',
     },
     {
         id: 'asset_name',
@@ -23,7 +23,7 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-    onRequestSort: (event: MouseEvent<unknown>, property: keyof AssetTypeData) => void;
+    onRequestSort: (event: MouseEvent<unknown>, property: keyof AssetClassData) => void;
     order: Order;
     orderBy: string;
     setIsNotSortStatus: (status: boolean) => void;
@@ -31,7 +31,7 @@ interface EnhancedTableProps {
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
     const { order, orderBy, onRequestSort, setIsNotSortStatus } = props;
-    const createSortHandler = (property: keyof AssetTypeData) => (event: MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof AssetClassData) => (event: MouseEvent<unknown>) => {
         onRequestSort(event, property);
         // 정렬 버튼 클릭시에 정렬 허용
         setIsNotSortStatus(false);
