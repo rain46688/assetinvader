@@ -279,7 +279,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 variant="subtitle1"
                 id="tableTitle"
                 component="div">
-                자산계좌명
+                자산명
               </Typography>
               <Autocomplete
                 // disablePortal
