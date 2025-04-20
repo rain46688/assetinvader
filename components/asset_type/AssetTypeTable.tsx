@@ -174,7 +174,7 @@ export default function AssetTypeTable() {
                                             onBlur={(event) => handleDataBlur(event, row.id, index, 'asset_name')} />
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center" sx={{width:'15%', minWidth: '150px' }}>
+                                    <TableCell align="center" sx={{width:'10%', minWidth: '150px' }}>
                                         <TextField
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.amount ? "숫자 입력" : ''}
@@ -188,7 +188,7 @@ export default function AssetTypeTable() {
                                         />
                                     </TableCell>
                                     {/*  */}
-                                    <TableCell align="center" sx={{width:'15%', minWidth: '150px' }}>
+                                    <TableCell align="center" sx={{width:'20%', minWidth: '200px' }}>
                                         <TextField
                                             variant="standard"
                                             helperText={(validationList.find(item => item.id === row.id))?.earning_rate ? "소수 2자리 숫자 입력" : ''}

@@ -9,6 +9,7 @@ import { AssetClassValidation } from '@/redux/asset_class/AssetClass';
 import { setAssetClassList } from '@/redux/asset_class/assetClassSlice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 
+import * as XLSX from "xlsx";
 
 // material-ui 관련 임포트
 import { alpha } from '@mui/material/styles';
@@ -20,6 +21,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -147,6 +151,47 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     });
   };
 
+  // 엑셀 양식 데이터 다운로드
+  const handleFormFileDown = () => {
+    console.log('=== handleFormFileDown === ');
+    const ws = XLSX.utils.aoa_to_sheet([['자산유형' ,'자산대분류' ,'자산중분류' ,'자산계좌명', '자산명', '금액(원)', '이자·배당수익률(%)']]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '자산내역');
+
+    // 엑셀 파일을 Blob 형태로 생성합니다.
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', '자산내역 데이터 양식.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  }
+
+  // 엑셀 데이터 다운로드
+  const handleFileDown = () => {
+    console.log('=== handleFileDown === ');
+    const wsData = list.map(item => [item.asset_type, item.asset_big_class, item.asset_mid_class, item.asset_acnt, item.asset_name, item.amount, item.earning_rate, item.mod_date]);
+    const ws = XLSX.utils.aoa_to_sheet([['자산유형' ,'자산대분류' ,'자산중분류' ,'자산계좌명', '자산명', '금액(원)', '이자·배당수익률(%)','최근수정일'], ...wsData]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '자산내역');
+
+    // 엑셀 파일을 Blob 형태로 생성합니다.
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+    // Blob을 URL로 변환하고 엑셀 파일을 다운로드합니다.
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', '자산내역 데이터.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  }
+
   // 목록 새로고침
   const handleRefreshList = () => {
     console.log('=== handleRefreshList === ');
@@ -208,6 +253,18 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       <Tooltip title="기록(월 1회)">
         <IconButton aria-label="Add Record" onClick={handleRecordList}>
           <BookmarkAddIcon />
+        </IconButton>
+      </Tooltip>
+      {/* sheet download */}
+      <Tooltip title="입력 양식 다운로드">
+        <IconButton component="span" aria-label="formDownload" onClick={handleFormFileDown}>
+          <AttachFileIcon />
+        </IconButton>
+      </Tooltip>
+      {/* file download */}
+      <Tooltip title="자산내역 엑셀 다운로드">
+        <IconButton component="span" aria-label="download" onClick={handleFileDown}>
+          <FileDownloadIcon />
         </IconButton>
       </Tooltip>
       <Tooltip title="새로고침">

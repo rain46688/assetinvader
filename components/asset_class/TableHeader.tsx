@@ -60,7 +60,7 @@ const headCells: readonly HeadCell[] = [
     },
     {
         id: 'earning_rate',
-        label: '연 수익률(%)',
+        label: '연 이자·배당수익률(%)',
         description: '이자·배당 수익률 입력(매매 차익으로인한 수익률이 아님)',
     },
     {

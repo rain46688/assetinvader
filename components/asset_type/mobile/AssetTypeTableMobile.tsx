@@ -70,7 +70,7 @@ function Row(props: { row: any }) {
                                 자산금액(원) : {parseNumber(row.amount) || ''}
                             </Typography>
                             <Typography variant="body2" gutterBottom component="div">
-                                연수익률(%) : {parseNumber(row.earning_rate) || ''}
+                                연 이자·배당수익률(%) : {parseNumber(row.earning_rate) || ''}
                             </Typography>
                             <Typography variant="body2" gutterBottom component="div">
                                 최근수정일 : {row.mod_date || ''}

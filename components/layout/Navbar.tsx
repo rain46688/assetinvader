@@ -111,11 +111,25 @@ export default function Navbar() {
                     <ListItemText primary="자산관리 개요" />
                   </ListItemButton>
                 </>) : (<></>)}
-              {/* 자산관리 > 유형별 자산관리 */}
+              {/* 자산관리 > 분류별 자산관리 */}
               <ListItemButton
                 sx={{ pl: 4 }}
                 component={Link}
                 href={process.env.NEXT_PUBLIC_ROOT_URL || "/"}
+                onClick={() => {
+                  dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
+                }}
+              >
+                <ListItemIcon>
+                  <BarChartIcon />
+                </ListItemIcon>
+                <ListItemText primary="분류별 자산관리" />
+              </ListItemButton>
+              {/* 자산관리 > 유형별 자산관리 */}
+              <ListItemButton
+                sx={{ pl: 4 }}
+                component={Link}
+                href={process.env.NEXT_PUBLIC_ASSET_TYPE_URL || "/"}
                 onClick={() => {
                   dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                 }}
@@ -129,7 +143,7 @@ export default function Navbar() {
               <ListItemButton
                 sx={{ pl: 4 }}
                 component={Link}
-                href={process.env.NEXT_PUBLIC_ASSET_CLASS_URL || "/"}
+                href={process.env.NEXT_PUBLIC_ASSET_TYPE_URL || "/"}
                 onClick={() => {
                   dispatch(setOpenedMobile({ isOpenedMobile: !isOpenedMobile }));
                 }}
