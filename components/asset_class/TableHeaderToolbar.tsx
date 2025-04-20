@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { sendPost, sendDelete } from '@/utils/fetch';
+import { sendPost, sendDelete, sendFile } from '@/utils/fetch';
 import { formatDate, formatDateV2 } from '@/utils/format';
 import { createData } from '@/redux/asset_class/AssetClass';
 import { AssetClassData } from '@/redux/asset_class/AssetClass';
@@ -151,10 +151,34 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     });
   };
 
+  // 엑셀 데이터 업로드
+  const handleFileUpChange = async (event: any) => {
+    debugger;
+    console.log('=== handleFileChange === ');
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('excelFile', file);
+    formData.append('member_id', sessionStorage.getItem('id') || '');
+
+    const result = await sendFile(formData, 'asset/upload');
+    if (result.status === 'success') {
+      setSnack(true);
+      setSnackMessage("데이터 업로드 완료.");
+      setSnackBarStatus("success");
+      getList(sessionStorage.getItem('id') + '');
+    } else {
+      console.log("fail");
+      setSnack(true);
+      setSnackMessage("데이터 업로드 실패.");
+      setSnackBarStatus("error");
+    }
+  };
+
   // 엑셀 양식 데이터 다운로드
   const handleFormFileDown = () => {
     console.log('=== handleFormFileDown === ');
-    const ws = XLSX.utils.aoa_to_sheet([['자산유형' ,'자산대분류' ,'자산중분류' ,'자산계좌명', '자산명', '금액(원)', '이자·배당수익률(%)']]);
+    const ws = XLSX.utils.aoa_to_sheet([['자산 유형' ,'자산 분류' ,'자산 세분류' ,'자산 계좌명', '자산명', '금액(원)', '이자·배당수익률(%)']]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, '자산내역');
 
@@ -175,7 +199,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const handleFileDown = () => {
     console.log('=== handleFileDown === ');
     const wsData = list.map(item => [item.asset_type, item.asset_big_class, item.asset_mid_class, item.asset_acnt, item.asset_name, item.amount, item.earning_rate, item.mod_date]);
-    const ws = XLSX.utils.aoa_to_sheet([['자산유형' ,'자산대분류' ,'자산중분류' ,'자산계좌명', '자산명', '금액(원)', '이자·배당수익률(%)','최근수정일'], ...wsData]);
+    const ws = XLSX.utils.aoa_to_sheet([['자산 유형' ,'자산 분류' ,'자산 세분류' ,'자산 계좌명', '자산명', '금액(원)', '이자·배당수익률(%)','최근수정일'], ...wsData]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, '자산내역');
 
@@ -267,6 +291,20 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           <FileDownloadIcon />
         </IconButton>
       </Tooltip>
+      {/* file upload */}
+      <input
+        type="file"
+        id="upload-file"
+        style={{ display: 'none' }}
+        onChange={handleFileUpChange}
+      />
+      <label htmlFor="upload-file">
+        <Tooltip title="지출내역 엑셀 업로드">
+          <IconButton component="span" aria-label="upload">
+            <FileUploadIcon />
+          </IconButton>
+        </Tooltip>
+      </label>
       <Tooltip title="새로고침">
         <IconButton aria-label="refresh" onClick={handleRefreshList}>
           <RefreshIcon />
