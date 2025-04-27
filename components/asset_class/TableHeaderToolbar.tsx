@@ -153,7 +153,6 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
   // 엑셀 데이터 업로드
   const handleFileUpChange = async (event: any) => {
-    debugger;
     console.log('=== handleFileChange === ');
     const file = event.target.files[0];
 
@@ -162,10 +161,16 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     formData.append('member_id', sessionStorage.getItem('id') || '');
 
     const result = await sendFile(formData, 'asset/upload');
-    if (result.status === 'success') {
+    console.log(result);
+    if (result.status === 'success' && result.error_count == 0) {
       setSnack(true);
       setSnackMessage("데이터 업로드 완료.");
       setSnackBarStatus("success");
+      getList(sessionStorage.getItem('id') + '');
+    } else if (result.status === 'success' && result.error_count != 0) {
+      setSnack(true);
+      setSnackMessage("데이터 업로드 일부 완료(미완료 " + result.error_count + "건). 자산명, 자산계좌명이 비어있는 행이 있습니다.");
+      setSnackBarStatus("warning");
       getList(sessionStorage.getItem('id') + '');
     } else {
       console.log("fail");
