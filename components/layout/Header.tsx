@@ -62,7 +62,7 @@ export default function Header() {
                         // href={process.env.NEXT_PUBLIC_ROOT_URL || "/"}
                         sx={{ color: grey[50] }}
                     >
-                        AssetInvader
+                        FindMyWealth
                     </Button>
                 </Typography>
                 {role < 2 ? (
